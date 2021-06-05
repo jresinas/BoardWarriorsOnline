@@ -6,13 +6,13 @@ using UnityEngine.AI;
 public class CharacterMove : MonoBehaviour {
     float OFFSET = 0.05f;
     int player = 0;
+    float animationTime = 1f;
 
     int destPoint;
     Vector2Int[] path;
 
     Vector3 originPosition;
     Vector3 targetPosition;
-    float animationTime = 1f;
     bool animating = false;
     float time = 0;
     [SerializeField] Animator anim;
