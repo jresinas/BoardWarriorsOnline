@@ -5,14 +5,16 @@ using Mirror;
 
 public class CharacterController : NetworkBehaviour {
     [SerializeField] CharacterMove characterMove;
-    [SyncVar] int id = -1;
 
     [SyncVar] public Vector2Int position;
     [SyncVar] int player;
 
+ /*
+    [SyncVar] public int id = -1;
     public void SetId(int id) {
         if (this.id < 0) this.id = id;
     }
+*/
 
     public void SetPosition(Vector2Int position) {
         this.position = position;

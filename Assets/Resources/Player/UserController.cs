@@ -34,8 +34,9 @@ public class UserController : NetworkBehaviour {
         foreach (CharacterPlayer character in characters) {
             GameObject charObject = Instantiate(character.prefab);
             NetworkServer.Spawn(charObject, netIdentity.connectionToClient);
-            CharacterController charController = charObject.GetComponent<CharacterController>();
-            CharacterManager.instance.AddCharacter(charController, character.position, character.player);
+            //CharacterController charController = charObject.GetComponent<CharacterController>();
+            //CharacterManager.instance.AddCharacter(charController, character.position, character.player);
+            CharacterManager.instance.AddCharacter(charObject.transform, character.position, character.player);
         }
     }
 }

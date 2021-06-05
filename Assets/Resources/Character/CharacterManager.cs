@@ -6,8 +6,8 @@ using Mirror;
 
 public class CharacterManager : NetworkBehaviour {
     public static CharacterManager instance = null;
-    public CharacterController[] characters = new CharacterController[Const.CHAR_NUMBER];
-    //readonly SyncList<CharacterController> characters = new SyncList<CharacterController>();
+    //public CharacterController[] characters = new CharacterController[Const.CHAR_NUMBER];
+    public SyncList<Transform> characters = new SyncList<Transform>();
     int number = 0;
 
     void Awake() {
@@ -19,17 +19,23 @@ public class CharacterManager : NetworkBehaviour {
         GameManager.instance.OnMove += MoveHandler;
     }
 
-    public void AddCharacter(CharacterController character, Vector2Int position, int player) {
-        characters[number] = character;
-        number++;
-        character.SetPosition(position);
-        character.SetPlayer(player);
-        //character.LocateCharacter();
+    //public void AddCharacter(CharacterController character, Vector2Int position, int player) {
+    public void AddCharacter(Transform character, Vector2Int position, int player) {
+        //characters[number] = character;
+        //number++;
+        //character.SetPosition(position);
+        //character.SetPlayer(player);
+        characters.Add(character);
+        CharacterController characterController = character.GetComponent<CharacterController>();
+        characterController.SetPosition(position);
+        characterController.SetPlayer(player);
     }
 
     public CharacterController Get(int id) {
-        if (id < Const.CHAR_NUMBER) return characters[id];
-        else return null;
+        if (id < Const.CHAR_NUMBER) {
+            CharacterController character = characters[id].GetComponent<CharacterController>();
+            return character;
+        } else return null;
     }
 
     public NetworkConnection GetOwner(int id) {
