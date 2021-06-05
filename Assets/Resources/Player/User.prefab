@@ -64,10 +64,6 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   characters:
-  - prefab: {fileID: 1875824042707688256, guid: 5a522f5ff033fa043933005d5592e74f, type: 3}
-    position: {x: 0, y: 2}
-    player: 0
-  - prefab: {fileID: 8203605810467984145, guid: 856952541ecae9446ba7b65be6a65e18, type: 3}
-    position: {x: 2, y: 2}
-    player: 0
+  - {fileID: 1875824042707688256, guid: 5a522f5ff033fa043933005d5592e74f, type: 3}
+  - {fileID: 8203605810467984145, guid: 856952541ecae9446ba7b65be6a65e18, type: 3}
   isTurn: 0

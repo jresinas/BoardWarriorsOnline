@@ -31,9 +31,9 @@ public class GameManager : NetworkBehaviour {
 
     public void PlayersReady(GameObject[] players) {
         Debug.Log("players ready");
-        foreach (GameObject player in players) {
-            UserController playerController = player.GetComponent<UserController>();
-            playerController.LoadCharacters();
+        for (int i = 0; i < 2; i++) {
+            UserController playerController = players[i].GetComponent<UserController>();
+            playerController.LoadCharacters(i);
         }
         StartCoroutine(PrepareGame(players));
     }

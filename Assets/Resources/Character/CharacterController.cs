@@ -9,6 +9,8 @@ public class CharacterController : NetworkBehaviour {
     [SyncVar] public Vector2Int position;
     [SyncVar] int player;
 
+    public int animationTime = 1;
+
  /*
     [SyncVar] public int id = -1;
     public void SetId(int id) {
@@ -30,6 +32,7 @@ public class CharacterController : NetworkBehaviour {
         Debug.Log(position);
         Debug.Log(BoardManager.instance.GetTile(position).transform.position);
         transform.position = BoardManager.instance.GetTile(position).transform.position;
+        characterMove.StartCharacterMove(player, animationTime);
     }
 
     [ClientRpc]

@@ -4,16 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-[Serializable]
-public class CharacterPlayer {
-    public GameObject prefab;
-    public Vector2Int position;
-    public int player;
-}
 
 public class UserController : NetworkBehaviour {
-    //[SerializeField] GameObject[] characters;
-    [SerializeField] CharacterPlayer[] characters;
+    [SerializeField] GameObject[] characters;
     public bool isTurn = false;
 
     /*
@@ -30,13 +23,16 @@ public class UserController : NetworkBehaviour {
             }
         }
     */
-    public void LoadCharacters() {
-        foreach (CharacterPlayer character in characters) {
-            GameObject charObject = Instantiate(character.prefab);
+    public void LoadCharacters(int player) {
+        int characterIndex = 0;
+        foreach (GameObject character in characters) {
+            GameObject charObject = Instantiate(character);
             NetworkServer.Spawn(charObject, netIdentity.connectionToClient);
             //CharacterController charController = charObject.GetComponent<CharacterController>();
             //CharacterManager.instance.AddCharacter(charController, character.position, character.player);
-            CharacterManager.instance.AddCharacter(charObject.transform, character.position, character.player);
+            Vector2Int position = new Vector2Int(characterIndex, player == 0 ? 4 : 0);
+            CharacterManager.instance.AddCharacter(charObject.transform, position, player);
+            characterIndex++;
         }
     }
 }

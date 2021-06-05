@@ -20,6 +20,7 @@ public class CharacterMove : MonoBehaviour {
     public void StartCharacterMove(int player, float animationTime) {
         this.player = player;
         this.animationTime = animationTime;
+        Idle();
     }
 
     // Update is called once per frame
