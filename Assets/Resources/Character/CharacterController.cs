@@ -9,6 +9,8 @@ public class CharacterController : NetworkBehaviour {
     [SyncVar] public Vector2Int position;
     [SyncVar] int player;
 
+    [SerializeField] Skill[] skills = new Skill[4];
+
     public int animationTime = 1;
 
  /*
