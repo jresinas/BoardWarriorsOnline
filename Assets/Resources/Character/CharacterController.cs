@@ -9,7 +9,7 @@ public class CharacterController : NetworkBehaviour {
     [SyncVar] public Vector2Int position;
     [SyncVar] int player;
 
-    [SerializeField] Skill[] skills = new Skill[4];
+    [SerializeField] Skill[] skills = new Skill[Const.SKILL_NUMBER];
 
     public int animationTime = 1;
 
@@ -26,6 +26,11 @@ public class CharacterController : NetworkBehaviour {
 
     public void SetPlayer(int player) {
         this.player = player;
+    }
+
+    public Skill GetSkill(int index) {
+        if (index < Const.SKILL_NUMBER) return skills[index];
+        else return null;
     }
 
     [ClientRpc]

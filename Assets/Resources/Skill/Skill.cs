@@ -10,4 +10,12 @@ public abstract class Skill : MonoBehaviour {
     public int GetRange() {
         return range;
     }
+
+    public Sprite GetIcon() {
+        return icon;
+    }
+
+    public string GetText() {
+        return text;
+    }
 }

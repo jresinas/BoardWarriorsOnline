@@ -39,9 +39,11 @@ public class CharacterManager : NetworkBehaviour {
     }
 
     public NetworkConnection GetOwner(int id) {
-        CharacterController cc = Get(id);
-        NetworkIdentity ni = cc.GetComponent<NetworkIdentity>();
-        return ni.connectionToClient;
+        CharacterController character = Get(id);
+        if (character != null) {
+            NetworkIdentity ni = character.GetComponent<NetworkIdentity>();
+            return ni.connectionToClient;
+        } else return null;
     }
 
     public bool AllowMove(int characterId, Vector2Int position) {

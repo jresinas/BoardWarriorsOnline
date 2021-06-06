@@ -10,6 +10,8 @@ public class GUIManager : NetworkBehaviour {
     public event EventHandler<Vector2Int> OnRequestMove;
     public event EventHandler<Vector2Int> OnRequestUseSkill;
 
+    [SerializeField] CharacterDataController characterData;
+
     bool isTurn = false;
     bool skillSelected = false;
 
@@ -18,14 +20,21 @@ public class GUIManager : NetworkBehaviour {
     }
 
     void Start() {
+        GameManager.instance.OnStartTurn += TargetStartTurnHandler;
         GameManager.instance.OnStartTurn += StartTurnHandler;
         GameManager.instance.OnEndTurn += EndTurnHandler;
         BoardManager.instance.OnClickTile += ClickTileHandler;
     }
 
     [TargetRpc]
-    void StartTurnHandler(NetworkConnection userConnection, int characterId) {
+    void TargetStartTurnHandler(NetworkConnection userConnection, int characterId) {
         isTurn = true;
+    }
+
+    [ClientRpc]
+    void StartTurnHandler(object source, int characterId) {
+        CharacterController character = CharacterManager.instance.Get(characterId);
+        if (character != null) characterData.SelectCharacter(character);
     }
 
     [ClientRpc]
