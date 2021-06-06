@@ -16,12 +16,6 @@ public class BoardManager : NetworkBehaviour {
     }
 
     void Start() {
-        GameManager.instance.OnStartGame += StartGameHandler;
-    }
-
-    [ClientRpc]
-    void StartGameHandler(object source, EventArgs args) {
-        Debug.Log("board manager start game");
         board.LoadTiles();
     }
 
