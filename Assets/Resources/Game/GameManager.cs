@@ -7,6 +7,8 @@ using Mirror;
 public class GameManager : NetworkBehaviour {
     public static GameManager instance = null;
 
+    [SerializeField] GameObject[] cameras = new GameObject[2];
+
     public event EventHandler OnStartGame;
     public event Action<NetworkConnection, int> OnStartTurn;
     public event EventHandler OnEndTurn;
@@ -29,24 +31,29 @@ public class GameManager : NetworkBehaviour {
         GUIManager.instance.OnRequestUseSkill += RequestUseSkillHandler;
     }
 
+    #region SetupGame
     public void PlayersReady(GameObject[] players) {
-        Debug.Log("players ready");
         for (int i = 0; i < 2; i++) {
             UserController playerController = players[i].GetComponent<UserController>();
             playerController.LoadCharacters(i);
+            LoadCamera(playerController.netIdentity.connectionToClient, i);
         }
-        StartCoroutine(PrepareGame(players));
+        StartCoroutine(SetupGame(players));
     }
 
-    IEnumerator PrepareGame(GameObject[] players) {
-        Debug.Log("starting prepare game");
-        yield return new WaitForSeconds(4);
-        Debug.Log("game prepared");
+    [TargetRpc]
+    void LoadCamera(NetworkConnection conn, int playerNumber) {
+        cameras[playerNumber].SetActive(true);
+    }
+
+    IEnumerator SetupGame(GameObject[] players) {
+        yield return new WaitForSeconds(2);
         StartGame();
     }
+    #endregion
 
-    public void StartGame() {
-        Debug.Log("start game");
+    #region GameFlow
+    void StartGame() {
         if (OnStartGame != null) OnStartGame(this, EventArgs.Empty);
         StartRound();
     }
@@ -57,7 +64,6 @@ public class GameManager : NetworkBehaviour {
         NextCharacter();
     }
     void NextCharacter() {
-        //while (orderIndex < Const.CHAR_NUMBER*2 && charactersOrder[orderIndex] == null) orderIndex++;
         while (turn < Const.CHAR_NUMBER*2 && charactersOrder[turn] < 0) turn++;
         if (turn >= Const.CHAR_NUMBER * 2) StartRound();
         else {
@@ -75,17 +81,12 @@ public class GameManager : NetworkBehaviour {
 
     void EndTurn() {
         if (OnEndTurn != null) OnEndTurn(this, EventArgs.Empty);
-        Debug.Log("end turn");
         charactersOrder[turn] = -1;
         NextCharacter();
     }
+    #endregion
 
-
-
-
-
-
-
+    #region GameEvents
     void RequestMoveHandler(object source, Vector2Int destiny) {
         CmdMove(destiny);
     }
@@ -107,22 +108,12 @@ public class GameManager : NetworkBehaviour {
         Debug.Log("This is a command send by" + netIdentity + " who wants to use a skill");
     }
 
-
-
-
-
-
-
     bool IsUserTurn(NetworkConnection conn) {
         CharacterController character = CharacterManager.instance.Get(activeCharacter);
         Debug.Log("Actual character selected is " + activeCharacter + "who is owned by" + character.netIdentity.connectionToClient);
         return character.netIdentity.connectionToClient == conn;
     }
-
-
-
-
-
+    #endregion
 
 
     private void Update() {
