@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Mirror;
 
-public class CharacterController : NetworkBehaviour {
+public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPointerExitHandler {
     [SerializeField] CharacterMove characterMove;
 
+    [SyncVar] public int id;
     [SyncVar] public Vector2Int position;
     [SyncVar] int player;
 
@@ -19,6 +21,10 @@ public class CharacterController : NetworkBehaviour {
         if (this.id < 0) this.id = id;
     }
 */
+
+    public void SetId(int id) {
+        this.id = id;
+    }
 
     public void SetPosition(Vector2Int position) {
         this.position = position;
@@ -52,5 +58,13 @@ public class CharacterController : NetworkBehaviour {
     [Server]
     public void Move(Vector2Int position) {
         SetPosition(position);
+    }
+
+    public void OnPointerEnter(PointerEventData eventData) {
+        CharacterManager.instance.EnterHover(id);
+    }
+
+    public void OnPointerExit(PointerEventData eventData) {
+        CharacterManager.instance.ExitHover(id);
     }
 }

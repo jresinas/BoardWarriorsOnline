@@ -6,9 +6,13 @@ using Mirror;
 
 public class CharacterManager : NetworkBehaviour {
     public static CharacterManager instance = null;
+
+    public event EventHandler<int> OnCharacterHoverEnter;
+    public event EventHandler<int> OnCharacterHoverExit;
+
     //public CharacterController[] characters = new CharacterController[Const.CHAR_NUMBER];
     public SyncList<Transform> characters = new SyncList<Transform>();
-    int number = 0;
+    //int number = 0;
 
     void Awake() {
         instance = this;
@@ -27,6 +31,7 @@ public class CharacterManager : NetworkBehaviour {
         //character.SetPlayer(player);
         characters.Add(character);
         CharacterController characterController = character.GetComponent<CharacterController>();
+        characterController.SetId(characters.IndexOf(character));
         characterController.SetPosition(position);
         characterController.SetPlayer(player);
     }
@@ -61,5 +66,13 @@ public class CharacterManager : NetworkBehaviour {
         character.MoveAnimation(position);
         character.Move(position);
         //Get(characterId).transform.position = BoardManager.instance.GetTile(position).transform.position;
+    }
+
+    public void EnterHover(int characterId) {
+        if (OnCharacterHoverEnter!= null) OnCharacterHoverEnter(this, characterId);
+    }
+
+    public void ExitHover(int characterId) {
+        if (OnCharacterHoverExit != null) OnCharacterHoverExit(this, characterId);
     }
 }
