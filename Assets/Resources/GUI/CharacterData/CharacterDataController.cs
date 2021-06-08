@@ -6,15 +6,14 @@ using TMPro;
 public class CharacterDataController : MonoBehaviour {
     public TextMeshProUGUI characterName;
     public SkillDataController[] characterSkills = new SkillDataController[Const.SKILL_NUMBER];
-    CharacterController selectedCharacter;
+    int selectedCharacterId;
 
     /// <summary>
     /// Select character who is in turn
     /// </summary>
     /// <param name="character"></param>
-    public void SelectCharacter(CharacterController character) {
-        selectedCharacter = character;
-        SelectSkill();
+    public void SelectCharacter(int characterId) {
+        selectedCharacterId = characterId;
         ShowSelectedCharacter();
     }
 
@@ -22,8 +21,8 @@ public class CharacterDataController : MonoBehaviour {
     /// Return selected character
     /// </summary>
     /// <returns></returns>
-    public CharacterController GetSelectedCharacter() {
-        return selectedCharacter;
+    public int GetSelectedCharacter() {
+        return selectedCharacterId;
     }
 
     /// <summary>
@@ -31,7 +30,7 @@ public class CharacterDataController : MonoBehaviour {
     /// </summary>
     public void ShowSelectedCharacter() {
         bool isTurn = GUIManager.instance.IsTurn();
-        ShowCharacter(selectedCharacter, isTurn);
+        ShowCharacter(selectedCharacterId, isTurn);
     }
 
     /// <summary>
@@ -39,7 +38,8 @@ public class CharacterDataController : MonoBehaviour {
     /// </summary>
     /// <param name="character">Character to show info</param>
     /// <param name="enable">If false, skills are shown as disabled</param>
-    public void ShowCharacter(CharacterController character, bool enable = false) {
+    public void ShowCharacter(int characterId, bool enable = false) {
+        CharacterController character = CharacterManager.instance.Get(characterId);
         if (character != null) {
             characterName.text = character.name;
             for (int i = 0; i < Const.SKILL_NUMBER; i++) {

@@ -11,6 +11,8 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     [SyncVar] public Vector2Int position;
     [SyncVar] int player;
 
+    int movement = 3;
+
     [SerializeField] Skill[] skills = new Skill[Const.SKILL_NUMBER];
 
     public int animationTime = 1;
@@ -28,6 +30,14 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
 
     public void SetPosition(Vector2Int position) {
         this.position = position;
+    }
+
+    public Vector2Int GetPosition() {
+        return position;
+    }
+
+    public int GetMovement() {
+        return movement;
     }
 
     public void SetPlayer(int player) {

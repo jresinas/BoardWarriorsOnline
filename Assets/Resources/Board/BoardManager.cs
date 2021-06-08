@@ -16,6 +16,10 @@ public class BoardManager : NetworkBehaviour {
     }
 
     void Start() {
+        GUIManager.instance.OnSelectSkill += SelectSkillHandler;
+        GUIManager.instance.OnUnselectSkill += UnselectSkillHandler;
+        GameManager.instance.OnMove += MoveHandler;
+
         board.LoadTiles();
     }
 
@@ -27,13 +31,31 @@ public class BoardManager : NetworkBehaviour {
         return board.GetTile(position);
     }
 
-    /*
-        public BoardController GetBoard() {
-            return board;
+    void SelectSkillHandler(int characterId, int skillId) {
+        if (characterId >= 0 && skillId >= 0) {
+            board.HideMarks();
+            CharacterController character = CharacterManager.instance.Get(characterId);
+            Skill skill = character.GetSkill(skillId);
+            Vector2Int origin = character.GetPosition();
+            int range = skill.GetRange();
+            board.ShowTargetMarks(origin, range);
         }
+    }
 
-        public TileController[] GetPath(Vector2Int origin, Vector2Int destiny) {
-            return board.GetPath(origin, destiny);
+    void UnselectSkillHandler(int characterId) {
+        if (characterId >= 0) {
+            board.HideMarks();
+            CharacterController character = CharacterManager.instance.Get(characterId);
+            Vector2Int origin = character.GetPosition();
+            int range = character.GetMovement();
+            board.ShowMoveMarks(origin, range);
         }
-    */
+    }
+
+    [ClientRpc]
+    void MoveHandler(int characterId, Vector2Int position) {
+        board.HideMarks();
+    }
+
+
 }

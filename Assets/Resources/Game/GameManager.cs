@@ -13,6 +13,7 @@ public class GameManager : NetworkBehaviour {
     public event Action<NetworkConnection, int> OnStartTurn;
     public event EventHandler OnEndTurn;
     public event Action<int, Vector2Int> OnMove;
+    public event EventHandler OnEndActions;
 
     int turn;
     //[SerializeField] CharacterController[] charactersPriority = new CharacterController[Const.CHAR_NUMBER];
@@ -21,6 +22,7 @@ public class GameManager : NetworkBehaviour {
     [SerializeField] int[] charactersPriority = new int[Const.CHAR_NUMBER];
     int[] charactersOrder = new int[Const.CHAR_NUMBER * 2];
     int activeCharacter;
+    int actions = 1;
 
     void Awake() {
         instance = this;    
@@ -69,9 +71,18 @@ public class GameManager : NetworkBehaviour {
         else {
             activeCharacter = charactersOrder[turn];
             NetworkConnection owner = CharacterManager.instance.GetOwner(activeCharacter);
-            Debug.Log(owner);
+            SetActions(activeCharacter);
             if (OnStartTurn != null) OnStartTurn(owner, activeCharacter);
         }
+    }
+
+    void SetActions(int characterId) {
+        actions = 1;
+    }
+
+    void ChangeActions(int value) {
+        actions += value;
+        if (actions <= 0 && OnEndActions != null) OnEndActions(this, EventArgs.Empty);
     }
 
     void SkipTurn() {
@@ -93,8 +104,10 @@ public class GameManager : NetworkBehaviour {
 
     [Command(requiresAuthority = false)]
     void CmdMove(Vector2Int destiny, NetworkConnectionToClient sender = null) {
-        if (IsUserTurn(sender) && CharacterManager.instance.AllowMove(activeCharacter, destiny))
+        if (IsUserTurn(sender) && actions > 0 && CharacterManager.instance.AllowMove(activeCharacter, destiny)) {
+            ChangeActions(-1);
             if (OnMove != null) OnMove(activeCharacter, destiny);
+        }
  
         Debug.Log("This is a command send by" + sender + " who wants to move to "+destiny);
     }

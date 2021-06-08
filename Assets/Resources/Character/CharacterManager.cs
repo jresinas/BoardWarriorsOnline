@@ -43,6 +43,14 @@ public class CharacterManager : NetworkBehaviour {
         } else return null;
     }
 
+    public CharacterController Get(Vector2Int position) {
+        for (int i = 0; i < Const.CHAR_NUMBER; i++) {
+            CharacterController character = Get(i);
+            if (character.GetPosition() == position) return character;
+        }
+        return null;
+    }
+
     public NetworkConnection GetOwner(int id) {
         CharacterController character = Get(id);
         if (character != null) {

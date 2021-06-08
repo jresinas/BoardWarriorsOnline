@@ -21,22 +21,32 @@ public class BoardController : MonoBehaviour {
         return tiles[tile.y][tile.x];
     }
 
-    /*
-    public TileController[] GetPath(Vector2Int origin, Vector2Int destiny) {
-        TileController[] path = new TileController[BoardUtils.Distance(origin, destiny)];
-        Vector2Int position = origin;
-        int i = 0;
-        while (position != destiny) {
-            if (position.y < destiny.y) position.y++;
-            else if (position.y > destiny.y) position.y--;
-            else if (position.x < destiny.x) position.x++;
-            else if (position.x > destiny.x) position.x--;
-            path[i] = GetTile(position);
-            i++;
+    public void HideMarks() {
+        for (int i = 0; i < Const.BOARD_ROWS; i++) {
+            for (int j = 0; j < Const.BOARD_COLS; j++) {
+                tiles[i][j].HideMark();
+            }
         }
-
-        return path;
     }
-    */
-    
+
+    public void ShowMoveMarks(Vector2Int position, int range) {
+        for (int i = 0; i < Const.BOARD_ROWS; i++) {
+            for (int j = 0; j < Const.BOARD_COLS; j++) {
+                if (BoardUtils.Distance(position, new Vector2Int(j, i)) <= range && !tiles[i][j].IsOccupy()) {
+                    tiles[i][j].ShowMoveMark();
+                }
+            }
+        }
+    }
+
+    public void ShowTargetMarks(Vector2Int position, int range) {
+        for (int i = 0; i < Const.BOARD_ROWS; i++) {
+            for (int j = 0; j < Const.BOARD_COLS; j++) {
+                if (BoardUtils.Distance(position, new Vector2Int(j, i)) <= range && tiles[i][j].IsOccupy()) {
+                    tiles[i][j].ShowTargetMark();
+                }
+            }
+        }
+    }
+
 }
