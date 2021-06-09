@@ -29,8 +29,8 @@ public class CharacterDataController : MonoBehaviour {
     /// Show selected character info
     /// </summary>
     public void ShowSelectedCharacter() {
-        bool isTurn = GUIManager.instance.IsTurn();
-        ShowCharacter(selectedCharacterId, isTurn);
+        bool isAvailableSkill = GUIManager.instance.IsAvailableSkill();
+        ShowCharacter(selectedCharacterId, isAvailableSkill);
     }
 
     /// <summary>

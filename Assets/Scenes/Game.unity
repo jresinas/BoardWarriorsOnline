@@ -564,6 +564,7 @@ MonoBehaviour:
   - {fileID: 50967134}
   - {fileID: 1114247630}
   charactersPriority: 00000000010000000200000003000000
+  charactersOrder: 0000000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &254287095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1149,6 +1150,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   characterData: {fileID: 515787570043926267}
+  buttons: {fileID: 515787568602247095}
 --- !u!114 &781103049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3336,9 +3338,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: SkipTurn
+      - m_Target: {fileID: 515787568602247095}
+        m_TargetAssemblyTypeName: ButtonsController, Assembly-CSharp
+        m_MethodName: ClickSkip
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3463,6 +3465,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 515787568602246985}
+  - component: {fileID: 515787568602247095}
   m_Layer: 5
   m_Name: Buttons
   m_TagString: Untagged
@@ -3470,6 +3473,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &515787568602247095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 515787568602247094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ceb1efa71740b64bbf7d9e1658b5a9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endTurn: {fileID: 515787569465130106}
+  skip: {fileID: 515787568394054961}
 --- !u!224 &515787568958271064
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3739,9 +3756,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: EndTurn
+      - m_Target: {fileID: 515787568602247095}
+        m_TargetAssemblyTypeName: ButtonsController, Assembly-CSharp
+        m_MethodName: ClickEndTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

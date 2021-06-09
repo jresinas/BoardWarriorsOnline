@@ -11,11 +11,17 @@ public class GUIManager : NetworkBehaviour {
     public event EventHandler<Vector2Int> OnRequestUseSkill;
     public event Action<int, int> OnSelectSkill;
     public event Action<int> OnUnselectSkill;
+    public event EventHandler OnRequestSkip;
+    public event EventHandler OnRequestEndTurn;
 
     [SerializeField] CharacterDataController characterData;
+    [SerializeField] ButtonsController buttons;
 
     bool isTurn = false;
+    bool isAvailableMove = false;
+    bool isAvailableSkill = false;
     int skillSelected = -1;
+    
 
     void Awake() {
         instance = this;
@@ -33,12 +39,12 @@ public class GUIManager : NetworkBehaviour {
 
     [TargetRpc]
     void TargetStartTurnHandler(NetworkConnection userConnection, int characterId) {
-        isTurn = true;
+        StartTurn();
     }
 
     [ClientRpc]
     void EndTurnHandler(object source, EventArgs args) {
-        isTurn = false;
+        EndTurn();
     }
 
     [ClientRpc]
@@ -49,15 +55,17 @@ public class GUIManager : NetworkBehaviour {
 
     [ClientRpc]
     void EndActionsHandler(object source, EventArgs args) {
-        isTurn = false;
+        isAvailableMove = false;
+        isAvailableSkill = false;
+        buttons.DisableSkip();
         characterData.ShowSelectedCharacter();
+//        isTurn = false;
+//        characterData.ShowSelectedCharacter();
     }
 
     void ClickTileHandler(object source, Vector2Int destiny) {
-        if (IsTurn()) {
-            if (IsSkillSelected() && OnRequestUseSkill != null) OnRequestUseSkill(this, destiny);
-            else if (OnRequestMove != null) OnRequestMove(this, destiny);
-        }
+        if (IsAvailableSkill() && IsSkillSelected() && OnRequestUseSkill != null) OnRequestUseSkill(this, destiny);
+        else if (IsAvailableMove() && OnRequestMove != null) OnRequestMove(this, destiny);
     }
 
     void CharacterHoverEnterHandler(object sender, int characterId) {
@@ -69,12 +77,20 @@ public class GUIManager : NetworkBehaviour {
         characterData.ShowSelectedCharacter();
     }
 
+    public void ClickSkipButton() {
+        if (OnRequestSkip != null) OnRequestSkip(this, EventArgs.Empty);
+    }
+
+    public void ClickEndTurnButton() {
+        if (OnRequestEndTurn != null) OnRequestEndTurn(this, EventArgs.Empty);
+    }
+
     /// <summary>
     /// Handler when click on a skill
     /// </summary>
     /// <param name="skillIndex"></param>
     public void ClickSkill(int skillIndex) {
-        if (IsTurn()) {
+        if (IsAvailableSkill()) {
             if (skillSelected != skillIndex) {
                 SelectSkill(skillIndex);
             } else {
@@ -86,16 +102,37 @@ public class GUIManager : NetworkBehaviour {
     void SelectSkill(int skillIndex = -1) {
         skillSelected = skillIndex;
         characterData.SelectSkill(skillIndex);
-        if (IsTurn()) {
+        if (IsAvailableSkill()) {
             if (skillIndex >= 0 && OnSelectSkill != null) OnSelectSkill(characterData.GetSelectedCharacter(), skillIndex);
             else if (OnUnselectSkill != null) OnUnselectSkill(characterData.GetSelectedCharacter());
         }
     }
 
 
+    void StartTurn() {
+        isTurn = true;
+        isAvailableMove = true;
+        isAvailableSkill = true;
+        buttons.Enable();
+    }
+
+    void EndTurn() {
+        isTurn = false;
+        isAvailableMove = false;
+        isAvailableSkill = false;
+        buttons.Disable();
+    }
 
     public bool IsTurn() {
         return isTurn;
+    }
+
+    public bool IsAvailableMove() {
+        return IsTurn() && isAvailableMove;
+    }
+
+    public bool IsAvailableSkill() {
+        return IsTurn() && isAvailableSkill;
     }
 
     bool IsSkillSelected() {
