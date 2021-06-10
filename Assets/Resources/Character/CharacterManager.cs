@@ -70,7 +70,7 @@ public class CharacterManager : NetworkBehaviour {
 
     public bool AllowMove(int characterId, Vector2Int position) {
         CharacterController character = Get(characterId);
-        return BoardUtils.Distance(character.GetPosition(), position) < character.GetMovement();
+        return BoardUtils.Distance(character.GetPosition(), position) <= character.GetMovement();
     }
 
 

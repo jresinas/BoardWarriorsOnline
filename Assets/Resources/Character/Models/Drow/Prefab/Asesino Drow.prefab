@@ -2276,7 +2276,7 @@ MonoBehaviour:
   - {fileID: 5228802640969546255}
   - {fileID: -6560378582427464376}
   - {fileID: 6792802613616083025}
-  animationTime: 0
+  animationTime: 0.5
 --- !u!114 &8719126963549223383
 MonoBehaviour:
   m_ObjectHideFlags: 0
