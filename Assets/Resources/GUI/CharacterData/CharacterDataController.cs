@@ -29,7 +29,7 @@ public class CharacterDataController : MonoBehaviour {
     /// Show selected character info
     /// </summary>
     public void ShowSelectedCharacter() {
-        bool isAvailableSkill = GUIManager.instance.IsAvailableSkill();
+        bool isAvailableSkill = ClientManager.instance.IsAvailableSkill();
         ShowCharacter(selectedCharacterId, isAvailableSkill);
     }
 

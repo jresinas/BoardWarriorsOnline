@@ -7,16 +7,6 @@ public class ButtonsController : MonoBehaviour {
     [SerializeField] Button endTurn;
     [SerializeField] Button skip;
 
-    public void Enable() {
-        EnableSkip();
-        EnableEndTurn();
-    }
-
-    public void Disable() {
-        DisableSkip();
-        DisableEndTurn();
-    }
-
     public void EnableSkip() {
         skip.interactable = true;
     }

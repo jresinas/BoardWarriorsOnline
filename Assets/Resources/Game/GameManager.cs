@@ -29,8 +29,8 @@ public class GameManager : NetworkBehaviour {
     }
 
     void Start() {
-        GUIManager.instance.OnRequestMove += RequestMoveHandler;
-        GUIManager.instance.OnRequestUseSkill += RequestUseSkillHandler;
+        ClientManager.instance.OnRequestMove += RequestMoveHandler;
+        ClientManager.instance.OnRequestUseSkill += RequestUseSkillHandler;
         GUIManager.instance.OnRequestEndTurn += RequestEndTurnHandler;
         GUIManager.instance.OnRequestSkip += RequestSkipHandler;
     }
