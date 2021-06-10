@@ -33,8 +33,7 @@ public class GUIManager : NetworkBehaviour {
     }
 
     void CharacterHoverEnterHandler(object sender, int characterId) {
-        int selectedCharacterId = characterData.GetSelectedCharacter();
-        if (characterId >= 0 && characterId != selectedCharacterId) ShowCharacter(characterId);
+        ShowCharacter(characterId);
     }
 
     void CharacterHoverExitHandler(object sender, int characterId) {
@@ -81,8 +80,7 @@ public class GUIManager : NetworkBehaviour {
     /// </summary>
     /// <param name="characterId">Id of character to show. If null, show selected character</param>
     public void ShowCharacter(int characterId = -1) {
-        if (characterId < 0) characterData.ShowSelectedCharacter();
-        else characterData.ShowCharacter(characterId);
+        characterData.ShowCharacter(characterId);
     }
 
     public void EnableButtons(bool skip = false, bool endTurn = false) {

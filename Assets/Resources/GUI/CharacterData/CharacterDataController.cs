@@ -14,7 +14,8 @@ public class CharacterDataController : MonoBehaviour {
     /// <param name="character"></param>
     public void SelectCharacter(int characterId) {
         selectedCharacterId = characterId;
-        ShowSelectedCharacter();
+        //ShowSelectedCharacter();
+        ShowCharacter();
     }
 
     /// <summary>
@@ -26,24 +27,17 @@ public class CharacterDataController : MonoBehaviour {
     }
 
     /// <summary>
-    /// Show selected character info
+    /// Show Character Info
     /// </summary>
-    public void ShowSelectedCharacter() {
-        bool isAvailableSkill = ClientManager.instance.IsAvailableSkill();
-        ShowCharacter(selectedCharacterId, isAvailableSkill);
-    }
-
-    /// <summary>
-    /// Show specified character info
-    /// </summary>
-    /// <param name="character">Character to show info</param>
-    /// <param name="enable">If false, skills are shown as disabled</param>
-    public void ShowCharacter(int characterId, bool enable = false) {
+    /// <param name="characterId">Character id to show. If empty, selected character will be shown</param>
+    public void ShowCharacter(int characterId = -1) {
+        characterId = (characterId < 0) ? selectedCharacterId : characterId;
         CharacterController character = CharacterManager.instance.Get(characterId);
         if (character != null) {
+            bool enableSkill = (characterId == selectedCharacterId) && ClientManager.instance.IsAvailableSkill();
             characterName.text = character.name;
             for (int i = 0; i < Const.SKILL_NUMBER; i++) {
-                characterSkills[i].ShowSkill(character.GetSkill(i), enable);
+                characterSkills[i].ShowSkill(character.GetSkill(i), enableSkill);
             }
         }
     }
@@ -51,7 +45,7 @@ public class CharacterDataController : MonoBehaviour {
     /// <summary>
     /// Mark skill as active and others as inactive
     /// </summary>
-    /// <param name="skillIndex">Skill to active. If is not specified, all skills are unselected</param>
+    /// <param name="skillIndex">Skill to active. If empty, all skills are unselected</param>
     public void SelectSkill(int skillIndex = -1) {
         for (int i = 0; i < Const.SKILL_NUMBER; i++) {
             if (i == skillIndex) characterSkills[i].SelectSkill();
