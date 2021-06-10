@@ -3,4 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Hide : Skill {
+    public override bool TargetAllies() { return false; }
+    public override bool TargetEnemies() { return false; }
+    public override bool TargetSelf() { return true; }
 }

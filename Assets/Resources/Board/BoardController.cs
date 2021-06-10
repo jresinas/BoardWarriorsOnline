@@ -32,17 +32,18 @@ public class BoardController : MonoBehaviour {
     public void ShowMoveMarks(Vector2Int position, int range) {
         for (int i = 0; i < Const.BOARD_ROWS; i++) {
             for (int j = 0; j < Const.BOARD_COLS; j++) {
-                if (BoardUtils.Distance(position, new Vector2Int(j, i)) <= range && !tiles[i][j].IsOccupy()) {
-                    tiles[i][j].ShowMoveMark();
+                if (BoardUtils.Distance(position, new Vector2Int(j, i)) <= range && tiles[i][j].GetCharacter() < 0) {
+                        tiles[i][j].ShowMoveMark();
                 }
             }
         }
     }
 
-    public void ShowTargetMarks(Vector2Int position, int range) {
+    public void ShowTargetMarks(Vector2Int position, int range, List<int> targetIds) {
         for (int i = 0; i < Const.BOARD_ROWS; i++) {
             for (int j = 0; j < Const.BOARD_COLS; j++) {
-                if (BoardUtils.Distance(position, new Vector2Int(j, i)) <= range && tiles[i][j].IsOccupy()) {
+                int characterId;
+                if (BoardUtils.Distance(position, new Vector2Int(j, i)) <= range && (characterId = tiles[i][j].GetCharacter()) >= 0 && targetIds.Contains(characterId)) {
                     tiles[i][j].ShowTargetMark();
                 }
             }

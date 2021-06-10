@@ -43,12 +43,21 @@ public class CharacterManager : NetworkBehaviour {
         } else return null;
     }
 
-    public CharacterController Get(Vector2Int position) {
+    public int GetId(Vector2Int position) {
         for (int i = 0; i < Const.CHAR_NUMBER; i++) {
             CharacterController character = Get(i);
-            if (character.GetPosition() == position) return character;
+            if (character.GetPosition() == position) return i;
         }
-        return null;
+        return -1;
+    }
+
+    public List<int> GetPlayerCharacters(int player) {
+        List<int> characters = new List<int>();
+        for (int i = 0; i < Const.CHAR_NUMBER; i++) {
+            CharacterController character = Get(i);
+            if (character.GetPlayer() == player) characters.Add(i);
+        }
+        return characters;
     }
 
     public NetworkConnection GetOwner(int id) {
@@ -60,7 +69,8 @@ public class CharacterManager : NetworkBehaviour {
     }
 
     public bool AllowMove(int characterId, Vector2Int position) {
-        return true;
+        CharacterController character = Get(characterId);
+        return BoardUtils.Distance(character.GetPosition(), position) < character.GetMovement();
     }
 
 

@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Skill : MonoBehaviour {
     [SerializeField] Sprite icon;
     [SerializeField] string text;
-    int range;
+    [SerializeField] int range;
 
     public int GetRange() {
         return range;
@@ -17,5 +17,27 @@ public abstract class Skill : MonoBehaviour {
 
     public string GetText() {
         return text;
+    }
+
+    public abstract bool TargetEnemies();
+
+    public abstract bool TargetAllies();
+
+    public abstract bool TargetSelf();
+
+    /// <summary>
+    /// Get list of targeteable character ids for this skill casted by specified character
+    /// </summary>
+    /// <param name="caster"></param>
+    /// <returns></returns>
+    public List<int> GetTargetList(CharacterController caster) {
+        List<int> targetIds = new List<int>();
+        int alliesPlayer = caster.GetPlayer();
+        int enemiesPlayer = ((alliesPlayer + 1) % 2);
+        if (TargetAllies()) targetIds.AddRange(CharacterManager.instance.GetPlayerCharacters(alliesPlayer));
+        if (TargetEnemies()) targetIds.AddRange(CharacterManager.instance.GetPlayerCharacters(enemiesPlayer));
+        if (TargetSelf()) targetIds.Add(caster.GetId());
+        else targetIds.Remove(caster.GetId());
+        return targetIds;
     }
 }

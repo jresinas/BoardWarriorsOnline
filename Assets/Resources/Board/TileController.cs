@@ -30,8 +30,8 @@ public class TileController : NetworkBehaviour, IPointerClickHandler {
         mr.material.color = new Color32(200, 125, 125, 255);
     }
 
-    public bool IsOccupy() {
-        return CharacterManager.instance.Get(position);
+    public int GetCharacter() {
+        return CharacterManager.instance.GetId(position);
     }
 
     public void OnPointerClick(PointerEventData eventData) {

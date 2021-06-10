@@ -2270,12 +2270,13 @@ MonoBehaviour:
   characterMove: {fileID: 4649619527128059015}
   id: 0
   position: {x: 0, y: 0}
+  movement: 3
   skills:
   - {fileID: -3521657275299189209}
   - {fileID: 5228802640969546255}
   - {fileID: -6560378582427464376}
   - {fileID: 6792802613616083025}
-  animationTime: 1
+  animationTime: 0
 --- !u!114 &8719126963549223383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2320,6 +2321,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: a15930a92eb98dd48b03d872a7f1a27f, type: 3}
   text: 
+  range: 1
   dicesNumber: 3
 --- !u!114 &5228802640969546255
 MonoBehaviour:
@@ -2335,6 +2337,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: b529b00d1db059b4eb76cb6b0ccd3adc, type: 3}
   text: 
+  range: 0
 --- !u!114 &-6560378582427464376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2349,6 +2352,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: c27616178bbb4284990d3c3c408a828d, type: 3}
   text: 
+  range: 1
 --- !u!114 &6792802613616083025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2363,6 +2367,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: ba3e896320055c64ea48843514cc681e, type: 3}
   text: 
+  range: 1
 --- !u!1 &8222861846909530186
 GameObject:
   m_ObjectHideFlags: 0

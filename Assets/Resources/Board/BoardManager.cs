@@ -32,27 +32,6 @@ public class BoardManager : NetworkBehaviour {
         return board.GetTile(position);
     }
 
-    void SelectSkillHandler(int characterId, int skillId) {
-        if (characterId >= 0 && skillId >= 0) {
-            board.HideMarks();
-            CharacterController character = CharacterManager.instance.Get(characterId);
-            Skill skill = character.GetSkill(skillId);
-            Vector2Int origin = character.GetPosition();
-            int range = skill.GetRange();
-            board.ShowTargetMarks(origin, range);
-        }
-    }
-
-    void UnselectSkillHandler(int characterId) {
-        if (characterId >= 0) {
-            board.HideMarks();
-            CharacterController character = CharacterManager.instance.Get(characterId);
-            Vector2Int origin = character.GetPosition();
-            int range = character.GetMovement();
-            board.ShowMoveMarks(origin, range);
-        }
-    }
-
     [ClientRpc]
     void EndTurnHandler(object source, EventArgs args) {
         board.HideMarks();
@@ -62,4 +41,34 @@ public class BoardManager : NetworkBehaviour {
     void MoveHandler(int characterId, Vector2Int position) {
         board.HideMarks();
     }
+
+    void SelectSkillHandler(int characterId, int skillId) {
+        if (characterId >= 0 && skillId >= 0) {
+            board.HideMarks();
+            ShowTargetMarks(characterId, skillId);
+        }
+    }
+
+    void UnselectSkillHandler(int characterId) {
+        if (characterId >= 0) {
+            board.HideMarks();
+            ShowMoveMarks(characterId);
+        }
+    }
+
+    void ShowMoveMarks(int characterId) {
+        CharacterController character = CharacterManager.instance.Get(characterId);
+        Vector2Int origin = character.GetPosition();
+        int range = character.GetMovement();
+        board.ShowMoveMarks(origin, range);
+    }
+
+    void ShowTargetMarks(int characterId, int skillId) {
+        CharacterController character = CharacterManager.instance.Get(characterId);
+        Skill skill = character.GetSkill(skillId);
+        Vector2Int origin = character.GetPosition();
+        int range = skill.GetRange();
+        List<int> targetIds = skill.GetTargetList(character);
+        board.ShowTargetMarks(origin, range, targetIds);
+    }   
 }

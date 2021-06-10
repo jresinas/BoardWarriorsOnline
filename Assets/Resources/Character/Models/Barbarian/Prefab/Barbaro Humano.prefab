@@ -559,6 +559,7 @@ MonoBehaviour:
   characterMove: {fileID: 7827034868843211523}
   id: 0
   position: {x: 0, y: 0}
+  movement: 2
   skills:
   - {fileID: 6969040465130457712}
   - {fileID: -7763561353965280845}
@@ -609,6 +610,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: a15930a92eb98dd48b03d872a7f1a27f, type: 3}
   text: 
+  range: 1
   dicesNumber: 5
 --- !u!114 &-7763561353965280845
 MonoBehaviour:
@@ -624,6 +626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 7599f616c5ad72f46bd5807d4647deb2, type: 3}
   text: 
+  range: 1
 --- !u!114 &-5569749395958243429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -638,6 +641,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 9e9c3f678ae196e47b9a4c0424c0e565, type: 3}
   text: 
+  range: 0
 --- !u!114 &-6384361421745248098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -652,6 +656,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   icon: {fileID: 21300000, guid: 024b7201ad9313e458cdbff494d22b5e, type: 3}
   text: 
+  range: 1
 --- !u!1 &2307039325581341530
 GameObject:
   m_ObjectHideFlags: 0
