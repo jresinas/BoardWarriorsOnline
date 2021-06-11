@@ -16,9 +16,7 @@ public class GameManager : NetworkBehaviour {
     public event EventHandler OnEndActions;
 
     int turn;
-    //[SerializeField] CharacterController[] charactersPriority = new CharacterController[Const.CHAR_NUMBER];
-    //CharacterController[] charactersOrder = new CharacterController[Const.CHAR_NUMBER*2];
-    //CharacterController activeCharacter;
+
     [SerializeField] int[] charactersPriority = new int[Const.CHAR_NUMBER];
     public int[] charactersOrder = new int[Const.CHAR_NUMBER * 2];
     int activeCharacter;
@@ -149,10 +147,15 @@ public class GameManager : NetworkBehaviour {
     }
     #endregion
 
+    //* TESTING *//
+    private void Update() {
+        if (Input.GetButtonDown("Jump")) {
+            RollDices();
+        }
+    }
 
-    //private void Update() {
-    //    if (Input.GetButtonDown("Jump")) {
-    //        EndTurn();
-    //    }
-    //}
+    [ClientRpc]
+    void RollDices() {
+        GUIManager.instance.RollDices(3, 2);
+    }
 }

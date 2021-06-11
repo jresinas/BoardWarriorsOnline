@@ -14,6 +14,7 @@ public class GUIManager : NetworkBehaviour {
 
     [SerializeField] CharacterDataController characterData;
     [SerializeField] ButtonsController buttons;
+    [SerializeField] DicesController dices;
     int skillSelected = -1;
 
     void Awake() {
@@ -91,5 +92,13 @@ public class GUIManager : NetworkBehaviour {
     public void DisableButtons(bool skip = false, bool endTurn = false) {
         if (skip || (!skip && !endTurn)) buttons.DisableSkip();
         if (endTurn || (!skip && !endTurn)) buttons.DisableEndTurn();
+    }
+
+    public void RollDices(int dicesNumber, int minRequired) {
+        dices.Roll(dicesNumber, minRequired);
+    }
+
+    public void ResetDices() {
+        dices.Reset();
     }
 }
