@@ -10,9 +10,7 @@ public class CharacterManager : NetworkBehaviour {
     public event EventHandler<int> OnCharacterHoverEnter;
     public event EventHandler<int> OnCharacterHoverExit;
 
-    //public CharacterController[] characters = new CharacterController[Const.CHAR_NUMBER];
     public SyncList<Transform> characters = new SyncList<Transform>();
-    //int number = 0;
 
     void Awake() {
         instance = this;
@@ -21,14 +19,11 @@ public class CharacterManager : NetworkBehaviour {
     void Start() {
         GameManager.instance.OnStartGame += StartGameHandler;
         GameManager.instance.OnMove += MoveHandler;
+        GameManager.instance.OnUseSkill += UseSkillHandler;
     }
 
     //public void AddCharacter(CharacterController character, Vector2Int position, int player) {
     public void AddCharacter(Transform character, Vector2Int position, int player) {
-        //characters[number] = character;
-        //number++;
-        //character.SetPosition(position);
-        //character.SetPlayer(player);
         characters.Add(character);
         CharacterController characterController = character.GetComponent<CharacterController>();
         characterController.SetId(characters.IndexOf(character));
@@ -73,6 +68,16 @@ public class CharacterManager : NetworkBehaviour {
         return BoardUtils.Distance(character.GetPosition(), position) <= character.GetMovement();
     }
 
+    // TODO
+    public bool AllowUseSkill(int casterId, int skillIndex, int targetId) {
+        CharacterController caster = Get(casterId);
+        CharacterController target = Get(targetId);
+        if (caster != null && target != null) {
+            Skill skill = caster.GetSkill(skillIndex);
+            return true;
+        } else return false;
+    }
+
 
     void StartGameHandler(object source, EventArgs args) {
         for (int i = 0; i < Const.CHAR_NUMBER; i++) Get(i).LocateCharacter(); //Get(i).SetId(i);
@@ -84,6 +89,12 @@ public class CharacterManager : NetworkBehaviour {
         character.MoveAnimation(position);
         character.Move(position);
         //Get(characterId).transform.position = BoardManager.instance.GetTile(position).transform.position;
+    }
+
+    void UseSkillHandler(int casterId, int skillIndex, int targetId) {
+        CharacterController caster = Get(casterId);
+        bool success = caster.UseSkill(skillIndex, targetId);
+        caster.UseSkillAnimation(skillIndex, targetId, success);
     }
 
     public void EnterHover(int characterId) {

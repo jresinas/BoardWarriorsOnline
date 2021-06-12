@@ -27,6 +27,10 @@ public class GUIManager : NetworkBehaviour {
         CharacterManager.instance.OnCharacterHoverExit += CharacterHoverExitHandler;
     }
 
+    public int GetSkillSelected() {
+        return skillSelected;
+    }
+
     [ClientRpc]
     void StartTurnHandler(object source, int characterId) {
         characterData.SelectCharacter(characterId);

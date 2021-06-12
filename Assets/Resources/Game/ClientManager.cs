@@ -7,8 +7,8 @@ using Mirror;
 public class ClientManager : NetworkBehaviour {
     public static ClientManager instance = null;
 
-    public event EventHandler<Vector2Int> OnRequestMove;
-    public event EventHandler<Vector2Int> OnRequestUseSkill;
+    public event Action<Vector2Int> OnRequestMove;
+    public event Action<int, Vector2Int> OnRequestUseSkill;
 
     bool isTurn = false;
     bool isAvailableMove = false;
@@ -44,8 +44,8 @@ public class ClientManager : NetworkBehaviour {
     }
 
     void ClickTileHandler(object source, Vector2Int destiny) {
-        if (IsAvailableSkill() && GUIManager.instance.IsSkillSelected() && OnRequestUseSkill != null) OnRequestUseSkill(this, destiny);
-        else if (IsAvailableMove() && OnRequestMove != null) OnRequestMove(this, destiny);
+        if (IsAvailableSkill() && GUIManager.instance.IsSkillSelected() && OnRequestUseSkill != null) OnRequestUseSkill(GUIManager.instance.GetSkillSelected(), destiny);
+        else if (IsAvailableMove() && OnRequestMove != null) OnRequestMove(destiny);
     }
 
     void StartTurn() {

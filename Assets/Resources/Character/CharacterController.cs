@@ -6,6 +6,7 @@ using Mirror;
 
 public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPointerExitHandler {
     [SerializeField] CharacterMove characterMove;
+    [SerializeField] CharacterSkill characterSkill;
 
     [SyncVar] public int id;
     [SyncVar] public Vector2Int position;
@@ -64,6 +65,11 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
         characterMove.StartCharacterMove(player, animationTime);
     }
 
+    [Server]
+    public void Move(Vector2Int position) {
+        SetPosition(position);
+    }
+
     [ClientRpc]
     public void MoveAnimation(Vector2Int destiny) {
         //GetComponent<Animator>().SetBool("Walk", true);
@@ -72,8 +78,17 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     }
 
     [Server]
-    public void Move(Vector2Int position) {
-        SetPosition(position);
+    public bool UseSkill(int skillIndex, int targetId) {
+        Skill skill = GetSkill(skillIndex);
+        CharacterController target = CharacterManager.instance.Get(targetId);
+        return skill.Play(target);
+    }
+
+    [ClientRpc]
+    public void UseSkillAnimation(int skillIndex, int targetId, bool success) {
+        Skill skill = GetSkill(skillIndex);
+        CharacterController target = CharacterManager.instance.Get(targetId);
+        characterSkill.StartPlay(skill, target, success);
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
@@ -83,4 +98,18 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     public void OnPointerExit(PointerEventData eventData) {
         CharacterManager.instance.ExitHover(id);
     }
+
+    #region AnimationCallbacks
+    public void Waiting() {
+        characterSkill.Waiting();
+    }
+
+    public void ReceiveDamage() {
+        characterSkill.ReceiveDamage();
+    }
+
+    public void DodgeAttack() {
+        characterSkill.DodgeAttack();
+    }
+    #endregion
 }

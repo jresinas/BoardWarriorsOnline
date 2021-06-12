@@ -13,6 +13,7 @@ public class GameManager : NetworkBehaviour {
     public event Action<NetworkConnection, int> OnStartTurn;
     public event EventHandler OnEndTurn;
     public event Action<int, Vector2Int> OnMove;
+    public event Action<int, int, int> OnUseSkill;
     public event EventHandler OnEndActions;
 
     int turn;
@@ -98,7 +99,7 @@ public class GameManager : NetworkBehaviour {
     #endregion
 
     #region GameEvents
-    void RequestMoveHandler(object source, Vector2Int destiny) {
+    void RequestMoveHandler(Vector2Int destiny) {
         CmdMove(destiny);
     }
 
@@ -111,13 +112,18 @@ public class GameManager : NetworkBehaviour {
         }
     }
 
-    void RequestUseSkillHandler(object source, Vector2Int destiny) {
-        CmdUseSkill(destiny);
+    void RequestUseSkillHandler(int skillIndex, Vector2Int destiny) {
+        CmdUseSkill(skillIndex, destiny);
     }
 
     [Command(requiresAuthority = false)]
-    void CmdUseSkill(Vector2Int destiny, NetworkConnectionToClient sender = null) {
+    void CmdUseSkill(int skillIndex, Vector2Int destiny, NetworkConnectionToClient sender = null) {
         Debug.Log("This is a command send by" + netIdentity + " who wants to use a skill");
+        int targetId = CharacterManager.instance.GetId(destiny);
+        if (IsUserTurn(sender) && actions > 0 && CharacterManager.instance.AllowUseSkill(activeCharacter, skillIndex, targetId)) {
+            ChangeActions(-1);
+            if (OnUseSkill != null) OnUseSkill(activeCharacter, skillIndex, targetId);
+        }
     }
 
     void RequestEndTurnHandler(object source, EventArgs args) {

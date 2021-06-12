@@ -6,6 +6,7 @@ public abstract class Skill : MonoBehaviour {
     [SerializeField] Sprite icon;
     [SerializeField] string text;
     [SerializeField] int range;
+    [SerializeField] string animation = "Attack";
 
     public int GetRange() {
         return range;
@@ -19,11 +20,17 @@ public abstract class Skill : MonoBehaviour {
         return text;
     }
 
+    public string GetAnimation() {
+        return animation;
+    }
+
     public abstract bool TargetEnemies();
 
     public abstract bool TargetAllies();
 
     public abstract bool TargetSelf();
+
+    public bool Play(CharacterController target) { return true; }
 
     /// <summary>
     /// Get list of targeteable character ids for this skill casted by specified character

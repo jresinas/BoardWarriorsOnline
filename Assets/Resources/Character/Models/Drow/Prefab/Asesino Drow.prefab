@@ -2192,6 +2192,7 @@ GameObject:
   - component: {fileID: 2060469218482784611}
   - component: {fileID: 8719126963549223383}
   - component: {fileID: 4649619527128059015}
+  - component: {fileID: -3744417109872400881}
   - component: {fileID: -3521657275299189209}
   - component: {fileID: 5228802640969546255}
   - component: {fileID: -6560378582427464376}
@@ -2268,6 +2269,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   characterMove: {fileID: 4649619527128059015}
+  characterSkill: {fileID: -3744417109872400881}
   id: 0
   position: {x: 0, y: 0}
   movement: 3
@@ -2307,6 +2309,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 3202882307661485009}
+--- !u!114 &-3744417109872400881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8203605810467984145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a772a7b42ecb43418fbec4075cb8c8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 3202882307661485009}
 --- !u!114 &-3521657275299189209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2322,6 +2337,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: a15930a92eb98dd48b03d872a7f1a27f, type: 3}
   text: 
   range: 1
+  animation: Attack
   dicesNumber: 3
 --- !u!114 &5228802640969546255
 MonoBehaviour:
@@ -2338,6 +2354,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: b529b00d1db059b4eb76cb6b0ccd3adc, type: 3}
   text: 
   range: 0
+  animation: Attack
 --- !u!114 &-6560378582427464376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2353,6 +2370,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: c27616178bbb4284990d3c3c408a828d, type: 3}
   text: 
   range: 1
+  animation: Attack
 --- !u!114 &6792802613616083025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2368,6 +2386,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: ba3e896320055c64ea48843514cc681e, type: 3}
   text: 
   range: 1
+  animation: Attack
 --- !u!1 &8222861846909530186
 GameObject:
   m_ObjectHideFlags: 0
