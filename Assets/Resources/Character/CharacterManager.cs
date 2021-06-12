@@ -84,10 +84,11 @@ public class CharacterManager : NetworkBehaviour {
     }
 
 
-    void MoveHandler(int characterId, Vector2Int position) {
+    void MoveHandler(int characterId, Vector2Int destiny) {
         CharacterController character = Get(characterId);
-        character.MoveAnimation(position);
-        character.Move(position);
+        Vector2Int currentPosition = character.GetPosition();
+        character.MoveAnimation(currentPosition, destiny);
+        character.Move(destiny);
         //Get(characterId).transform.position = BoardManager.instance.GetTile(position).transform.position;
     }
 
