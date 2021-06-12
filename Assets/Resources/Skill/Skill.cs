@@ -30,7 +30,7 @@ public abstract class Skill : MonoBehaviour {
 
     public abstract bool TargetSelf();
 
-    public bool Play(CharacterController target) { return true; }
+    public abstract bool Play(CharacterController target);
 
     /// <summary>
     /// Get list of targeteable character ids for this skill casted by specified character

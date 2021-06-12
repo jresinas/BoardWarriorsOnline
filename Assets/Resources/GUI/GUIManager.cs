@@ -98,8 +98,8 @@ public class GUIManager : NetworkBehaviour {
         if (endTurn || (!skip && !endTurn)) buttons.DisableEndTurn();
     }
 
-    public void RollDices(int dicesNumber, int minRequired) {
-        dices.Roll(dicesNumber, minRequired);
+    public int RollDices(int dicesNumber, int minRequired) {
+        return dices.Roll(dicesNumber, minRequired);
     }
 
     public void ResetDices() {
