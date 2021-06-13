@@ -6,11 +6,12 @@ public class DicesController : MonoBehaviour {
     public Dice[] dices;
     public GameObject dicesView;
 
-    public void Reset() {
+    public void Hide() {
         dicesView.SetActive(false);
-        foreach (Dice dice in dices) dice.Reset();
+        foreach (Dice dice in dices) dice.Hide();
     }
 
+    /*
     public int[] Roll(int dicesNumber) {
         Reset();
         int[] results = new int[dicesNumber];
@@ -18,13 +19,25 @@ public class DicesController : MonoBehaviour {
         for (int i = 0; i < dicesNumber; i++) results[i] = dices[i].Roll(7);
         return results;
     }
+    */
 
-    public int Roll(int dicesNumber, int minRequired) {
-        Reset();
-        int result = 0;
+    public int[] Roll(int dicesNumber, int minRequired) {
+        int[] results = new int[dicesNumber];
+        for (int i = 0; i < dicesNumber; i++) results[i] = dices[i].Roll(minRequired);
+        return results;
+    }
+
+    public void Show(int[] results, int minRequired) {
+        Hide();
         dicesView.SetActive(true);
-        for (int i = 0; i < dicesNumber; i++) 
-            if (dices[i].Roll(minRequired) >= minRequired) result++;
+        for (int i = 0; i < results.Length; i++)
+            dices[i].Show(results[i], minRequired);
+    }
+
+    public int GetResult(int[] dices, int minRequired) {
+        int result = 0;
+        foreach (int dice in dices)
+            if (dice >= minRequired) result++;
         return result;
     }
 }

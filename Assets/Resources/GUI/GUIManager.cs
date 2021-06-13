@@ -25,6 +25,7 @@ public class GUIManager : NetworkBehaviour {
         GameManager.instance.OnStartTurn += StartTurnHandler;
         CharacterManager.instance.OnCharacterHoverEnter += CharacterHoverEnterHandler;
         CharacterManager.instance.OnCharacterHoverExit += CharacterHoverExitHandler;
+        GameManager.instance.OnEndTurn += EndTurnHandler;
     }
 
     public int GetSkillSelected() {
@@ -43,6 +44,11 @@ public class GUIManager : NetworkBehaviour {
 
     void CharacterHoverExitHandler(object sender, int characterId) {
         ShowCharacter();
+    }
+
+    [ClientRpc]
+    void EndTurnHandler(object sender, EventArgs args) {
+        dices.Hide();
     }
 
     public void ClickSkipButton() {
@@ -98,11 +104,27 @@ public class GUIManager : NetworkBehaviour {
         if (endTurn || (!skip && !endTurn)) buttons.DisableEndTurn();
     }
 
+    /*
     public int RollDices(int dicesNumber, int minRequired) {
         return dices.Roll(dicesNumber, minRequired);
     }
+    */
 
+    [Server]
+    public int RollDices(int dicesNumber, int minRequired) {
+        int[] results = dices.Roll(dicesNumber, minRequired);
+        ShowDices(results, minRequired);
+        return dices.GetResult(results, minRequired);
+    }
+
+    [ClientRpc]
+    void ShowDices(int[] results, int minRequired) {
+        dices.Show(results, minRequired);
+    }
+
+    /*
     public void ResetDices() {
         dices.Reset();
     }
+    */
 }

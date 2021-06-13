@@ -10,18 +10,21 @@ public class Dice : MonoBehaviour {
     bool success = false;
 
     public int Roll(int required) {
-        gameObject.SetActive(true);
         int result = Random.Range(1, 7);
-        anim.SetTrigger("Result" + result);
-        success = (result >= required);
         return result;
+    }
+
+    public void Show(int value, int required) {
+        gameObject.SetActive(true);
+        anim.SetTrigger("Result" + value);
+        success = (value >= required);
     }
 
     void Success() {
         lightPoint.SetActive(success);
     }
 
-    public void Reset() {
+    public void Hide() {
         lightPoint.SetActive(false);
         gameObject.SetActive(false);
         success = false;
