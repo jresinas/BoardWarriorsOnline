@@ -36,7 +36,7 @@ public class GameManager : NetworkBehaviour {
 
     #region SetupGame
     public void PlayersReady(GameObject[] players) {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < Const.PLAYER_NUMBER; i++) {
             UserController playerController = players[i].GetComponent<UserController>();
             playerController.LoadCharacters(i);
             LoadCamera(playerController.netIdentity.connectionToClient, i);

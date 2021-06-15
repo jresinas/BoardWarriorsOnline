@@ -27,7 +27,7 @@ public class NetworkManagerCustom : NetworkManager {
 
 
         int playersNumber = NetworkServer.connections.Count;
-        if (playersNumber == 2) {
+        if (playersNumber == Const.PLAYER_NUMBER) {
             int i = 0;
             foreach (int key in NetworkServer.connections.Keys) {
                 //UserController player = NetworkServer.connections[key].identity.gameObject.GetComponent<UserController>();
