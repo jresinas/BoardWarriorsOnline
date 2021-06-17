@@ -609,9 +609,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  cameras:
-  - {fileID: 50967134}
-  - {fileID: 1114247630}
   charactersPriority: 00000000010000000200000003000000
   charactersOrder: 0000000000000000000000000000000000000000000000000000000000000000
 --- !u!114 &254287095
@@ -645,6 +642,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  cameras:
+  - {fileID: 50967136}
+  - {fileID: 1114247633}
 --- !u!1 &299202218
 GameObject:
   m_ObjectHideFlags: 0

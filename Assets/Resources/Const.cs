@@ -1,5 +1,5 @@
 public static class Const {
-    public static int PLAYER_NUMBER = 1;
+    public static int PLAYER_NUMBER = 2;
 
     public static int CHAR_NUMBER = 2 * PLAYER_NUMBER;
     public static int BOARD_ROWS = 5;

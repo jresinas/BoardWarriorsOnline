@@ -7,6 +7,9 @@ using Mirror;
 public class ClientManager : NetworkBehaviour {
     public static ClientManager instance = null;
 
+    int playerId;
+    [SerializeField] Camera[] cameras = new Camera[2];
+
     public event Action<Vector2Int> OnRequestMove;
     public event Action<int, Vector2Int> OnRequestUseSkill;
 
@@ -24,6 +27,21 @@ public class ClientManager : NetworkBehaviour {
         GameManager.instance.OnEndActions += EndActionsHandler;
         BoardManager.instance.OnClickTile += ClickTileHandler;
     }
+
+    [TargetRpc]
+    public void LoadPlayer(NetworkConnection conn, int playerId) {
+        this.playerId = playerId;
+        LoadCamera();
+    }
+
+    void LoadCamera() {
+        GetCamera().gameObject.SetActive(true);
+    }
+
+    public Camera GetCamera() {
+        return cameras[playerId];
+    }
+
 
     [TargetRpc]
     void TargetStartTurnHandler(NetworkConnection userConnection, int characterId) {

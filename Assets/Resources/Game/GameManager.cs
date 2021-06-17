@@ -7,8 +7,6 @@ using Mirror;
 public class GameManager : NetworkBehaviour {
     public static GameManager instance = null;
 
-    [SerializeField] GameObject[] cameras = new GameObject[2];
-
     public event EventHandler OnStartGame;
     public event Action<NetworkConnection, int> OnStartTurn;
     public event EventHandler OnEndTurn;
@@ -39,15 +37,11 @@ public class GameManager : NetworkBehaviour {
         for (int i = 0; i < Const.PLAYER_NUMBER; i++) {
             UserController playerController = players[i].GetComponent<UserController>();
             playerController.LoadCharacters(i);
-            LoadCamera(playerController.netIdentity.connectionToClient, i);
+            ClientManager.instance.LoadPlayer(playerController.netIdentity.connectionToClient, i);
         }
         StartCoroutine(SetupGame(players));
     }
 
-    [TargetRpc]
-    void LoadCamera(NetworkConnection conn, int playerNumber) {
-        cameras[playerNumber].SetActive(true);
-    }
 
     IEnumerator SetupGame(GameObject[] players) {
         yield return new WaitForSeconds(2);

@@ -20,7 +20,8 @@ public class StatusController : MonoBehaviour {
     }
 
     void Update() {
-        transform.rotation = Camera.main.transform.rotation;
+        Camera camera = ClientManager.instance.GetCamera();
+        if (camera != null) transform.rotation = camera.transform.rotation;
     }
 
     void ChangeHealthHandler(object source, int health) {
