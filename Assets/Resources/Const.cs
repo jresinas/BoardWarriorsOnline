@@ -6,4 +6,5 @@ public static class Const {
     public static int BOARD_COLS = 5;
 
     public static int SKILL_NUMBER = 4;
+    public static int MAX_ENERGY = 10;
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,9 @@ using UnityEngine.EventSystems;
 using Mirror;
 
 public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPointerExitHandler {
+    public event EventHandler<int> OnChangeHealth;
+    public event EventHandler<int> OnChangeEnergy;
+
     [SerializeField] CharacterMove characterMove;
     [SerializeField] CharacterSkill characterSkill;
 
@@ -12,18 +16,20 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     [SyncVar] public Vector2Int position;
     [SyncVar] int player;
 
+    [SerializeField] float animationTime;
     [SerializeField] int movement;
     [SerializeField] int armor;
     [SerializeField] Skill[] skills = new Skill[Const.SKILL_NUMBER];
-    [SerializeField] float animationTime;
+    [SerializeField] int maxHealth;
+    int health;
+    int energy;
 
- /*
-    [SyncVar] public int id = -1;
-    public void SetId(int id) {
-        if (this.id < 0) this.id = id;
+    void Awake() {
+        health = maxHealth;
+        energy = 0;
     }
-*/
 
+    #region Get&Set
     public void SetId(int id) {
         this.id = id;
     }
@@ -48,6 +54,24 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
         return armor;
     }
 
+    public int GetHealth() {
+        return health;
+    }
+
+    public int GetEnergy() {
+        return energy;
+    }
+
+    public void ChangeHealth(int value) {
+        health = Mathf.Clamp(health+value, 0, maxHealth);
+        if (OnChangeHealth != null) OnChangeHealth(this, health);
+    }
+
+    public void ChangeEnergy(int value) {
+        energy = Mathf.Clamp(energy + value, 0, Const.MAX_ENERGY);
+        if (OnChangeEnergy != null) OnChangeEnergy(this, energy);
+    }
+
     public void SetPlayer(int player) {
         this.player = player;
     }
@@ -60,12 +84,11 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
         if (index < Const.SKILL_NUMBER) return skills[index];
         else return null;
     }
+    #endregion
+
 
     [ClientRpc]
     public void LocateCharacter() {
-        Debug.Log(this);
-        Debug.Log(position);
-        Debug.Log(BoardManager.instance.GetTile(position).transform.position);
         transform.position = BoardManager.instance.GetTile(position).transform.position;
         characterMove.StartCharacterMove(player, animationTime);
     }

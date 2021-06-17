@@ -156,7 +156,12 @@ public class GameManager : NetworkBehaviour {
     //* TESTING *//
     private void Update() {
         if (Input.GetButtonDown("Jump")) {
-            RollDices();
+            //RollDices();
+            CharacterManager.instance.Get(activeCharacter).ChangeHealth(-1);
+        }
+
+        if (Input.GetButtonDown("Fire1")) {
+            CharacterManager.instance.Get(activeCharacter).ChangeEnergy(1);
         }
     }
 
