@@ -12,8 +12,10 @@ public class CharacterDataController : MonoBehaviour {
     /// Select character who is in turn
     /// </summary>
     /// <param name="character"></param>
-    public void SelectCharacter(int characterId) {
+    public void SetCharacter(int characterId) {
         selectedCharacterId = characterId;
+        CharacterController character = CharacterManager.instance.Get(characterId);
+        for (int i = 0; i < Const.SKILL_NUMBER; i++) characterSkills[i].SetSkill(character.GetSkill(i));
         //ShowSelectedCharacter();
         ShowCharacter();
     }
@@ -32,12 +34,12 @@ public class CharacterDataController : MonoBehaviour {
     /// <param name="characterId">Character id to show. If empty, selected character will be shown</param>
     public void ShowCharacter(int characterId = -1) {
         characterId = (characterId < 0) ? selectedCharacterId : characterId;
+        bool isSelectedCharacter = (characterId == selectedCharacterId) && ClientManager.instance.IsAvailableSkill();
         CharacterController character = CharacterManager.instance.Get(characterId);
         if (character != null) {
-            bool enableSkill = (characterId == selectedCharacterId) && ClientManager.instance.IsAvailableSkill();
             characterName.text = character.name;
             for (int i = 0; i < Const.SKILL_NUMBER; i++) {
-                characterSkills[i].ShowSkill(character.GetSkill(i), enableSkill);
+                characterSkills[i].ShowSkill(character.GetSkill(i), isSelectedCharacter);
             }
         }
     }

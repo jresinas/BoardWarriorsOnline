@@ -14,19 +14,25 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] TextMeshProUGUI text;
 
     bool selected = false;
-    bool disabled = false;
+    Skill selectedCharacterSkill;
+
+    bool IsEnabled() {
+        return selectedCharacterSkill != null && selectedCharacterSkill.IsVisible();
+    }
+
+    public void SetSkill(Skill skill) {
+        selectedCharacterSkill = skill;
+    }
 
     /// <summary>
     /// Show skill data
     /// </summary>
     /// <param name="skill">Skill to show</param>
     /// <param name="enabled">If false, skill shows as disabled</param>
-    public void ShowSkill(Skill skill, bool enabled) {
-        disabled = !enabled;
+    public void ShowSkill(Skill skill, bool isSelectedCharacter = false) {
         icon.sprite = skill.GetIcon();
         text.text = skill.GetText();
-
-        if (enabled) {
+        if (isSelectedCharacter && IsEnabled()) {
             if (selected) SelectedStyle();
             else EnableStyle();
         } else DisableStyle();
@@ -36,7 +42,7 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
     /// Show skill as selected
     /// </summary>
     public void SelectSkill() {
-        if (!disabled) {
+        if (IsEnabled()) {
             selected = true;
             SelectedStyle();
         }
@@ -46,7 +52,7 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
     /// Show skill as unselected
     /// </summary>
     public void UnselectSkill() {
-        if (!disabled) {
+        if (IsEnabled()) {
             selected = false;
             EnableStyle();
         }
@@ -55,15 +61,15 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
     #region Events
     // Events
     public void OnPointerEnter(PointerEventData eventData) {
-        if (!selected && !disabled) HoverStyle();
+        if (!selected && IsEnabled()) HoverStyle();
     }
 
     public void OnPointerExit(PointerEventData eventData) {
-        if (!selected && !disabled) EnableStyle();
+        if (!selected && IsEnabled()) EnableStyle();
     }
 
     public void OnPointerClick(PointerEventData eventData) {
-        if (!disabled) GUIManager.instance.ClickSkill(index);
+        if (IsEnabled()) GUIManager.instance.ClickSkill(index);
     }
     #endregion
 

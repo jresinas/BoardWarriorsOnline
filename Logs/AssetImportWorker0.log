@@ -15,11 +15,11 @@ D:/Saniser/Documents/GitHub/BoardWarriorsOnline
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-54257
+55993
 Successfully changed project path to: D:/Saniser/Documents/GitHub/BoardWarriorsOnline
 D:/Saniser/Documents/GitHub/BoardWarriorsOnline
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 29.77 ms, found 0 plugins.
+Refreshing native plugins compatible for Editor in 33.41 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.2.1f1 (270dd8c3da1c)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/Resources/UnitySubsystems
@@ -35,123 +35,118 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56416
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56964
 Begin MonoManager ReloadAssembly
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.002217 seconds.
+Registered in 0.002292 seconds.
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 31.34 ms, found 0 plugins.
+Refreshing native plugins compatible for Editor in 47.70 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Invoked RoslynAnalysisRunner static constructor.
 RoslynAnalysisRunner will not be running.
 RoslynAnalysisRunner has terminated.
 Mono: successfully reloaded assembly
-- Completed reload, in  2.123 seconds
+- Completed reload, in  3.403 seconds
 Platform modules already initialized, skipping
 Registering precompiled user dll's ...
-Registered in 0.002655 seconds.
+Registered in 0.004251 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.28 ms, found 0 plugins.
+Refreshing native plugins compatible for Editor in 0.30 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Invoked RoslynAnalysisRunner static constructor.
 RoslynAnalysisRunner will not be running.
 RoslynAnalysisRunner has terminated.
-Find all reader and writers took 83 milliseconds
+Find all reader and writers took 92 milliseconds
 Script Module: SimpleWebTransport.dll
-Weave behaviours and messages took20 milliseconds
-Find all reader and writers took 61 milliseconds
+Weave behaviours and messages took24 milliseconds
+Find all reader and writers took 84 milliseconds
 Script Module: UnityEngine.TestRunner.dll
-Weave behaviours and messages took23 milliseconds
-Find all reader and writers took 61 milliseconds
-Script Module: UnityEngine.UI.dll
-Weave behaviours and messages took57 milliseconds
+Weave behaviours and messages took29 milliseconds
 Find all reader and writers took 62 milliseconds
+Script Module: UnityEngine.UI.dll
+Weave behaviours and messages took55 milliseconds
+Find all reader and writers took 68 milliseconds
 Script Module: Mirror.Cloud.dll
-Weave behaviours and messages took4 milliseconds
-Find all reader and writers took 58 milliseconds
+Weave behaviours and messages took3 milliseconds
+Find all reader and writers took 69 milliseconds
 Script Module: Unity.Timeline.dll
-Weave behaviours and messages took28 milliseconds
-Find all reader and writers took 79 milliseconds
+Weave behaviours and messages took40 milliseconds
+Find all reader and writers took 161 milliseconds
 Script Module: Unity.TextMeshPro.dll
-Weave behaviours and messages took80 milliseconds
-Find all reader and writers took 56 milliseconds
+Weave behaviours and messages took123 milliseconds
+Find all reader and writers took 108 milliseconds
 Script Module: kcp2k.dll
 Weave behaviours and messages took5 milliseconds
-Find all reader and writers took 57 milliseconds
+Find all reader and writers took 64 milliseconds
 Script Module: Telepathy.dll
-Weave behaviours and messages took2 milliseconds
-Find all reader and writers took 91 milliseconds
+Weave behaviours and messages took4 milliseconds
+Find all reader and writers took 92 milliseconds
 Script Module: UnityEditor.TestRunner.dll
-Weave behaviours and messages took42 milliseconds
-Find all reader and writers took 91 milliseconds
+Weave behaviours and messages took71 milliseconds
+Find all reader and writers took 116 milliseconds
 Script Module: UnityEditor.UI.dll
-Weave behaviours and messages took16 milliseconds
-Find all reader and writers took 83 milliseconds
+Weave behaviours and messages took13 milliseconds
+Find all reader and writers took 133 milliseconds
 Script Module: ParrelSync.dll
-Weave behaviours and messages took2 milliseconds
-Find all reader and writers took 66 milliseconds
+Weave behaviours and messages took7 milliseconds
+Find all reader and writers took 65 milliseconds
 Script Module: Mirror.CompilerSymbols.dll
 Weave behaviours and messages took0 milliseconds
 Mono: successfully reloaded assembly
-- Completed reload, in  3.517 seconds
+- Completed reload, in  4.544 seconds
 Platform modules already initialized, skipping
 ========================================================================
 Worker process is ready to serve import requests
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
-Refreshing native plugins compatible for Editor in 0.33 ms, found 0 plugins.
+Refreshing native plugins compatible for Editor in 0.29 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 1355 Unused Serialized files (Serialized files now loaded: 0)
 System memory in use before: 138.2 MB.
 System memory in use after: 138.2 MB.
 
 Unloading 15 unused Assets to reduce memory usage. Loaded Objects now: 1800.
-Total: 3.412900 ms (FindLiveObjects: 0.218900 ms CreateObjectMapping: 0.190600 ms MarkObjects: 2.906700 ms  DeleteObjects: 0.095500 ms)
+Total: 2.938300 ms (FindLiveObjects: 0.199000 ms CreateObjectMapping: 0.100800 ms MarkObjects: 2.543100 ms  DeleteObjects: 0.093700 ms)
 
 ========================================================================
 Received Import Request.
-  path: Assets/Resources/Others/CharacterStatus/StatusController.cs
-  artifactKey: Guid(8f5e0956d41654247b20d3ec936b87ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/Others/CharacterStatus/StatusController.cs using Guid(8f5e0956d41654247b20d3ec936b87ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4130eca81168f298051723fcb32cea7f') in 0.046288 seconds
-  Import took 0.051526 seconds .
+  path: Assets/Resources/Const.cs
+  artifactKey: Guid(c4c7dc5b633c0c14b8ace7aac8bf40e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Const.cs using Guid(c4c7dc5b633c0c14b8ace7aac8bf40e8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5896f31f31d460375056b8f9f7dd803b') in 0.046780 seconds
+  Import took 0.050540 seconds .
 
 ========================================================================
-Received Import Request.
-  Time since last request: 28.631249 seconds.
-  path: Assets/Resources/Others/CharacterStatus/StatusController.cs
-  artifactKey: Guid(8f5e0956d41654247b20d3ec936b87ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/Others/CharacterStatus/StatusController.cs using Guid(8f5e0956d41654247b20d3ec936b87ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3172294bc79c02b004a6d2f5683ed94f') in 0.003298 seconds
-  Import took 0.007528 seconds .
+Received Prepare
+Refreshing native plugins compatible for Editor in 1.92 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 8 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 110.4 MB.
+System memory in use after: 110.5 MB.
 
-========================================================================
-Received Import Request.
-  Time since last request: 0.005106 seconds.
-  path: Assets/Resources/Others/CharacterStatus/StatusController.cs
-  artifactKey: Guid(8f5e0956d41654247b20d3ec936b87ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Resources/Others/CharacterStatus/StatusController.cs using Guid(8f5e0956d41654247b20d3ec936b87ac) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3172294bc79c02b004a6d2f5683ed94f') in 0.002792 seconds
-  Import took 0.005546 seconds .
+Unloading 8 unused Assets to reduce memory usage. Loaded Objects now: 1800.
+Total: 5.279200 ms (FindLiveObjects: 0.203300 ms CreateObjectMapping: 0.048200 ms MarkObjects: 4.909300 ms  DeleteObjects: 0.097800 ms)
 
 ========================================================================
 Received Prepare
 Registering precompiled user dll's ...
-Registered in 0.002381 seconds.
+Registered in 0.002957 seconds.
 Begin MonoManager ReloadAssembly
 Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.25 ms, found 0 plugins.
+Refreshing native plugins compatible for Editor in 0.26 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Invoked RoslynAnalysisRunner static constructor.
 RoslynAnalysisRunner will not be running.
 RoslynAnalysisRunner has terminated.
 Mono: successfully reloaded assembly
-- Completed reload, in  0.858 seconds
+- Completed reload, in  0.924 seconds
 Platform modules already initialized, skipping
-Refreshing native plugins compatible for Editor in 0.30 ms, found 0 plugins.
+Refreshing native plugins compatible for Editor in 0.32 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Unloading 1336 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 137.2 MB.
-System memory in use after: 137.3 MB.
+System memory in use before: 138.2 MB.
+System memory in use after: 138.3 MB.
 
 Unloading 10 unused Assets to reduce memory usage. Loaded Objects now: 1802.
-Total: 3.148700 ms (FindLiveObjects: 0.338900 ms CreateObjectMapping: 0.144000 ms MarkObjects: 2.589000 ms  DeleteObjects: 0.075400 ms)
+Total: 2.414700 ms (FindLiveObjects: 0.173400 ms CreateObjectMapping: 0.053400 ms MarkObjects: 2.097800 ms  DeleteObjects: 0.088100 ms)
 

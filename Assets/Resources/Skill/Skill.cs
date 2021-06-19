@@ -6,6 +6,7 @@ public abstract class Skill : MonoBehaviour {
     [SerializeField] Sprite icon;
     [SerializeField] string text;
     [SerializeField] int range;
+    [SerializeField] int energy;
     [SerializeField] string animation = "Attack";
 
     public int GetRange() {
@@ -31,6 +32,11 @@ public abstract class Skill : MonoBehaviour {
     public abstract bool TargetSelf();
 
     public abstract bool Play(CharacterController target);
+
+    public virtual bool IsVisible() {
+        CharacterController caster = GetComponent<CharacterController>();
+        return ClientManager.instance.IsTurn() && caster.GetEnergy() >= energy;
+    }
 
     /// <summary>
     /// Get list of targeteable character ids for this skill casted by specified character

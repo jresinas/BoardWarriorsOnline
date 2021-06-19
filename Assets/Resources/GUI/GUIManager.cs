@@ -34,8 +34,12 @@ public class GUIManager : NetworkBehaviour {
 
     [ClientRpc]
     void StartTurnHandler(object source, int characterId) {
-        characterData.SelectCharacter(characterId);
+        characterData.SetCharacter(characterId);
+        CharacterManager.instance.Get(characterId).OnChangeEnergy += ChangeEnergyHandler;
+        // Unselect all skills
         SelectSkill();
+
+
     }
 
     void CharacterHoverEnterHandler(object sender, int characterId) {
@@ -48,7 +52,13 @@ public class GUIManager : NetworkBehaviour {
 
     [ClientRpc]
     void EndTurnHandler(object sender, EventArgs args) {
+        int selectedCharacterId = characterData.GetSelectedCharacter();
+        CharacterManager.instance.Get(selectedCharacterId).OnChangeEnergy -= ChangeEnergyHandler;
         dices.Hide();
+    }
+
+    void ChangeEnergyHandler(object source, int energy) {
+        ShowCharacter();
     }
 
     public void ClickSkipButton() {
@@ -65,11 +75,8 @@ public class GUIManager : NetworkBehaviour {
     /// <param name="skillIndex"></param>
     public void ClickSkill(int skillIndex) {
         if (ClientManager.instance.IsAvailableSkill()) {
-            if (skillSelected != skillIndex) {
-                SelectSkill(skillIndex);
-            } else {
-                SelectSkill();
-            }
+            if (skillSelected != skillIndex) SelectSkill(skillIndex);
+            else SelectSkill();
         }
     }
 
