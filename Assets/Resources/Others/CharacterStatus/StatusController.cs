@@ -10,13 +10,14 @@ public class StatusController : MonoBehaviour {
     [SerializeField] CharacterController character;
 
     void Awake() {
-        ChangeHealthHandler(null, character.GetHealth());
-        ChangeEnergyHandler(null, character.GetEnergy());
+        int characterId = character.GetId();
+        ChangeHealthHandler(characterId, character.GetHealth());
+        ChangeEnergyHandler(characterId, character.GetEnergy());
     }
 
     void Start() {
-        character.OnChangeHealth += ChangeHealthHandler;
-        character.OnChangeEnergy += ChangeEnergyHandler;
+        CharacterManager.instance.OnChangeHealth += ChangeHealthHandler;
+        CharacterManager.instance.OnChangeEnergy += ChangeEnergyHandler;
     }
 
     void Update() {
@@ -24,11 +25,13 @@ public class StatusController : MonoBehaviour {
         if (camera != null) transform.rotation = camera.transform.rotation;
     }
 
-    void ChangeHealthHandler(object source, int health) {
-        for (int i = 0; i < 10; i++) healthPoints[i].SetActive(i < health);
+    void ChangeHealthHandler(int characterId, int health) {
+        if (character.GetId() == characterId)
+            for (int i = 0; i < 10; i++) healthPoints[i].SetActive(i < health);
     }
 
-    void ChangeEnergyHandler(object source, int energy) {
-        for (int i = 0; i < 10; i++) energyPoints[i].SetActive(i < energy);
+    void ChangeEnergyHandler(int characterId, int energy) {
+        if (character.GetId() == characterId)
+            for (int i = 0; i < 10; i++) energyPoints[i].SetActive(i < energy);
     }
 }

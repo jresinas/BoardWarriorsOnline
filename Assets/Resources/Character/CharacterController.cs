@@ -6,9 +6,6 @@ using UnityEngine.EventSystems;
 using Mirror;
 
 public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPointerExitHandler {
-    public event EventHandler<int> OnChangeHealth;
-    public event EventHandler<int> OnChangeEnergy;
-
     [SerializeField] CharacterMove characterMove;
     [SerializeField] CharacterSkill characterSkill;
 
@@ -64,12 +61,12 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
 
     public void ChangeHealth(int value) {
         health = Mathf.Clamp(health+value, 0, maxHealth);
-        if (OnChangeHealth != null) OnChangeHealth(this, health);
+        CharacterManager.instance.ChangeHealth(id, health);
     }
 
     public void ChangeEnergy(int value) {
         energy = Mathf.Clamp(energy + value, 0, Const.MAX_ENERGY);
-        if (OnChangeEnergy != null) OnChangeEnergy(this, energy);
+        CharacterManager.instance.ChangeEnergy(id, energy);
     }
 
     public void SetPlayer(int player) {

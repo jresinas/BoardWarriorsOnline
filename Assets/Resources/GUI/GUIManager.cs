@@ -16,6 +16,7 @@ public class GUIManager : NetworkBehaviour {
     [SerializeField] ButtonsController buttons;
     [SerializeField] DicesController dices;
     int skillSelected = -1;
+    int hoverCharacter = -1;
 
     void Awake() {
         instance = this;
@@ -26,6 +27,7 @@ public class GUIManager : NetworkBehaviour {
         CharacterManager.instance.OnCharacterHoverEnter += CharacterHoverEnterHandler;
         CharacterManager.instance.OnCharacterHoverExit += CharacterHoverExitHandler;
         GameManager.instance.OnEndTurn += EndTurnHandler;
+        CharacterManager.instance.OnChangeEnergy += ChangeEnergyHandler;
     }
 
     public int GetSkillSelected() {
@@ -35,7 +37,7 @@ public class GUIManager : NetworkBehaviour {
     [ClientRpc]
     void StartTurnHandler(object source, int characterId) {
         characterData.SetCharacter(characterId);
-        CharacterManager.instance.Get(characterId).OnChangeEnergy += ChangeEnergyHandler;
+        //CharacterManager.instance.Get(characterId).OnChangeEnergy += ChangeEnergyHandler;
         // Unselect all skills
         SelectSkill();
 
@@ -43,22 +45,24 @@ public class GUIManager : NetworkBehaviour {
     }
 
     void CharacterHoverEnterHandler(object sender, int characterId) {
+        hoverCharacter = characterId;
         ShowCharacter(characterId);
     }
 
     void CharacterHoverExitHandler(object sender, int characterId) {
+        hoverCharacter = -1;
         ShowCharacter();
     }
 
     [ClientRpc]
     void EndTurnHandler(object sender, EventArgs args) {
         int selectedCharacterId = characterData.GetSelectedCharacter();
-        CharacterManager.instance.Get(selectedCharacterId).OnChangeEnergy -= ChangeEnergyHandler;
+        //CharacterManager.instance.Get(selectedCharacterId).OnChangeEnergy -= ChangeEnergyHandler;
         dices.Hide();
     }
 
-    void ChangeEnergyHandler(object source, int energy) {
-        ShowCharacter();
+    void ChangeEnergyHandler(int characterId, int energy) {
+        ShowCharacter(hoverCharacter);
     }
 
     public void ClickSkipButton() {

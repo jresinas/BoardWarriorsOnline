@@ -9,6 +9,8 @@ public class CharacterManager : NetworkBehaviour {
 
     public event EventHandler<int> OnCharacterHoverEnter;
     public event EventHandler<int> OnCharacterHoverExit;
+    public event Action<int, int> OnChangeHealth;
+    public event Action<int, int> OnChangeEnergy;
 
     public SyncList<Transform> characters = new SyncList<Transform>();
 
@@ -104,5 +106,13 @@ public class CharacterManager : NetworkBehaviour {
 
     public void ExitHover(int characterId) {
         if (OnCharacterHoverExit != null) OnCharacterHoverExit(this, characterId);
+    }
+
+    public void ChangeEnergy(int characterId, int energy) {
+        if (OnChangeEnergy != null) OnChangeEnergy(characterId, energy);
+    }
+
+    public void ChangeHealth(int characterId, int health) {
+        if (OnChangeHealth != null) OnChangeHealth(characterId, health);
     }
 }
