@@ -20,6 +20,7 @@ public class CharacterManager : NetworkBehaviour {
 
     void Start() {
         GameManager.instance.OnStartGame += StartGameHandler;
+        GameManager.instance.OnStartRound += StartRoundHandler;
         GameManager.instance.OnMove += MoveHandler;
         GameManager.instance.OnUseSkill += UseSkillHandler;
     }
@@ -80,11 +81,13 @@ public class CharacterManager : NetworkBehaviour {
         } else return false;
     }
 
-
     void StartGameHandler(object source, EventArgs args) {
-        for (int i = 0; i < Const.CHAR_NUMBER; i++) Get(i).LocateCharacter(); //Get(i).SetId(i);
+        for (int i = 0; i < Const.CHAR_NUMBER; i++) Get(i).LocateCharacter();
     }
 
+    void StartRoundHandler(object source, EventArgs args) {
+        for (int i = 0; i < Const.CHAR_NUMBER; i++) Get(i).ChangeEnergy(1);
+    }
 
     void MoveHandler(int characterId, Vector2Int destiny) {
         CharacterController character = Get(characterId);
@@ -108,10 +111,12 @@ public class CharacterManager : NetworkBehaviour {
         if (OnCharacterHoverExit != null) OnCharacterHoverExit(this, characterId);
     }
 
+    [ClientRpc]
     public void ChangeEnergy(int characterId, int energy) {
         if (OnChangeEnergy != null) OnChangeEnergy(characterId, energy);
     }
 
+    [ClientRpc]
     public void ChangeHealth(int characterId, int health) {
         if (OnChangeHealth != null) OnChangeHealth(characterId, health);
     }

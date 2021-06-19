@@ -8,6 +8,7 @@ public class GameManager : NetworkBehaviour {
     public static GameManager instance = null;
 
     public event EventHandler OnStartGame;
+    public event EventHandler OnStartRound;
     public event Action<NetworkConnection, int> OnStartTurn;
     public event EventHandler OnEndTurn;
     public event Action<int, Vector2Int> OnMove;
@@ -56,6 +57,7 @@ public class GameManager : NetworkBehaviour {
     }
 
     void StartRound() {
+        if (OnStartRound != null) OnStartRound(this, EventArgs.Empty);
         for (int i = 0; i < Const.CHAR_NUMBER * 2; i++) charactersOrder[i] = i < Const.CHAR_NUMBER ? charactersPriority[i] : -1;
         turn = 0;
         NextCharacter();
@@ -148,6 +150,7 @@ public class GameManager : NetworkBehaviour {
     #endregion
 
     //* TESTING *//
+    /*
     private void Update() {
         if (Input.GetButtonDown("Jump")) {
             //RollDices();
@@ -163,4 +166,5 @@ public class GameManager : NetworkBehaviour {
     void RollDices() {
         GUIManager.instance.RollDices(3, 2);
     }
+    */
 }
