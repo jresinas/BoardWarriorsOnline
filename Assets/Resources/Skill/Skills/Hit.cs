@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hit : Skill {
+public class Hit : SkillNormal {
     [SerializeField] int dicesNumber;
 
     public override bool Play(CharacterController target) {

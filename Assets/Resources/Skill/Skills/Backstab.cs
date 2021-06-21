@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Backstab : Skill {
+public class Backstab : SkillNormal {
     public override bool Play(CharacterController target) {
         int dices = (AlliesAdjacent(target) > 0) ? 8 : 4;
         int targetArmor = target.GetArmor();

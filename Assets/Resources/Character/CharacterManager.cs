@@ -85,7 +85,7 @@ public class CharacterManager : NetworkBehaviour {
         bool result = false;
         CharacterController target = Get(targetId);
         for (int i = 0; i < Const.SKILL_NUMBER; i++) {
-            if (target.GetSkill(i).IsSkillResponse()) result = true;
+            if (target.GetSkill(i) is SkillResponse) result = true;
         }
         return result;
     }

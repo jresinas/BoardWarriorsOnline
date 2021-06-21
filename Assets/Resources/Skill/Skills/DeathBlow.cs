@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DeathBlow : Skill {
+public class DeathBlow : SkillNormal {
     public override bool Play(CharacterController target) {
         int targetArmor = target.GetArmor();
         int damage = GUIManager.instance.RollDices(10, targetArmor + 1);

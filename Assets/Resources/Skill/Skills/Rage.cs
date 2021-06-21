@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rage : Skill {
+public class Rage : SkillNormal {
     public override bool Play(CharacterController target) {
         return true;
     }

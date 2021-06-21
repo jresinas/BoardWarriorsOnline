@@ -40,11 +40,7 @@ public abstract class Skill : MonoBehaviour {
 
     public virtual bool IsVisible() {
         CharacterController caster = GetComponent<CharacterController>();
-        return ClientManager.instance.IsAvailableSkill() && caster.GetEnergy() >= energy;
-    }
-
-    public virtual bool IsSkillResponse() {
-        return false;
+        return caster.GetEnergy() >= energy;
     }
 
     /// <summary>

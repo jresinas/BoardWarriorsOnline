@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Charge : Skill {
+public class Charge : SkillNormal {
     public override bool Play(CharacterController target) {
         return true;
     }

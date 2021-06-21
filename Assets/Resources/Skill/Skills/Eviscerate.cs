@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Eviscerate : Skill {
+public class Eviscerate : SkillNormal {
     public override bool Play(CharacterController target) {
         int targetArmor = target.GetArmor();
         int damage = GUIManager.instance.RollDices(2, targetArmor + 1);
