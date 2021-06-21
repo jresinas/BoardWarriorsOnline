@@ -7,6 +7,14 @@ public class ButtonsController : MonoBehaviour {
     [SerializeField] Button endTurn;
     [SerializeField] Button skip;
 
+    public void ShowButtons() {
+        gameObject.SetActive(true);
+    }
+
+    public void HideButtons() {
+        gameObject.SetActive(false);
+    }
+
     public void EnableSkip() {
         skip.interactable = true;
     }

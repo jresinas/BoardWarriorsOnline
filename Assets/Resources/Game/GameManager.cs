@@ -4,6 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
+public class WaitingResponse {
+    public int casterId;
+    public int skillIndex;
+    public int targetId;
+
+    public WaitingResponse(int casterId, int skillIndex, int targetId) {
+        this.casterId = casterId;
+        this.skillIndex = skillIndex;
+        this.targetId = targetId;
+    }
+}
+
 public class GameManager : NetworkBehaviour {
     public static GameManager instance = null;
 
@@ -13,6 +25,8 @@ public class GameManager : NetworkBehaviour {
     public event EventHandler OnEndTurn;
     public event Action<int, Vector2Int> OnMove;
     public event Action<int, int, int> OnUseSkill;
+    public event Action<NetworkConnection, int, int, int> OnRequestResponseSkill;
+    public event Action<NetworkConnection, bool> OnWaitingResponseSkill;
     public event EventHandler OnEndActions;
 
     int turn;
@@ -21,6 +35,8 @@ public class GameManager : NetworkBehaviour {
     public int[] charactersOrder = new int[Const.CHAR_NUMBER * 2];
     int activeCharacter;
     int actions = 1;
+    // store data for current action waiting response
+    WaitingResponse waitingResponse = null;
 
     void Awake() {
         instance = this;    
@@ -29,9 +45,11 @@ public class GameManager : NetworkBehaviour {
     void Start() {
         ClientManager.instance.OnRequestMove += RequestMoveHandler;
         ClientManager.instance.OnRequestUseSkill += RequestUseSkillHandler;
+        ClientManager.instance.OnSendResponseSkill += SendResponseSkillHandler;
         GUIManager.instance.OnRequestEndTurn += RequestEndTurnHandler;
         GUIManager.instance.OnRequestSkip += RequestSkipHandler;
     }
+
 
     #region SetupGame
     public void PlayersReady(GameObject[] players) {
@@ -43,12 +61,12 @@ public class GameManager : NetworkBehaviour {
         StartCoroutine(SetupGame(players));
     }
 
-
     IEnumerator SetupGame(GameObject[] players) {
         yield return new WaitForSeconds(2);
         StartGame();
     }
     #endregion
+
 
     #region GameFlow
     void StartGame() {
@@ -94,7 +112,10 @@ public class GameManager : NetworkBehaviour {
     }
     #endregion
 
+
     #region GameEvents
+
+    #region Move
     void RequestMoveHandler(Vector2Int destiny) {
         CmdMove(destiny);
     }
@@ -107,25 +128,54 @@ public class GameManager : NetworkBehaviour {
             if (OnMove != null) OnMove(activeCharacter, destiny);
         }
     }
+    #endregion
 
+    #region UseSkill
     void RequestUseSkillHandler(int skillIndex, Vector2Int destiny) {
         CmdUseSkill(skillIndex, destiny);
     }
 
     [Command(requiresAuthority = false)]
     void CmdUseSkill(int skillIndex, Vector2Int destiny, NetworkConnectionToClient sender = null) {
-        Debug.Log("This is a command send by" + netIdentity + " who wants to use a skill");
         int targetId = CharacterManager.instance.GetId(destiny);
+        UseSkill(skillIndex, targetId, sender);
+    }
+
+    void UseSkill(int skillIndex, int targetId, NetworkConnection sender, bool isResponse = false) {
         if (IsUserTurn(sender) && actions > 0 && CharacterManager.instance.AllowUseSkill(activeCharacter, skillIndex, targetId)) {
+            if (!isResponse && CharacterManager.instance.CanResponse(activeCharacter, skillIndex, targetId)) {
+                NetworkConnection targetOwner = CharacterManager.instance.GetOwner(targetId);
+                if (OnRequestResponseSkill != null) OnRequestResponseSkill(targetOwner, activeCharacter, skillIndex, targetId);
+                if (OnWaitingResponseSkill != null) OnWaitingResponseSkill(sender, true);
+                waitingResponse = new WaitingResponse(activeCharacter, skillIndex, targetId);
+                return;
+            }
             ChangeActions(-1);
             if (OnUseSkill != null) OnUseSkill(activeCharacter, skillIndex, targetId);
+        }
+    }
+    #endregion
+
+    #region UseSkillResponse
+    void SendResponseSkillHandler(int skillIndex) {
+        CmdSendResponseSkillHandler(skillIndex);
+    }
+
+    [Command(requiresAuthority = false)]
+    void CmdSendResponseSkillHandler(int skillIndex, NetworkConnectionToClient sender = null) {
+        if (waitingResponse != null && CharacterManager.instance.GetOwner(waitingResponse.targetId) == sender) {
+            UseSkill(waitingResponse.skillIndex, waitingResponse.targetId, CharacterManager.instance.GetOwner(waitingResponse.casterId), true);
+            if (OnWaitingResponseSkill != null) OnWaitingResponseSkill(CharacterManager.instance.GetOwner(waitingResponse.casterId), false);
+            waitingResponse = null;
         }
     }
 
     void RequestEndTurnHandler(object source, EventArgs args) {
         CmdEndTurn();
     }
+    #endregion
 
+    #region Buttons
     [Command(requiresAuthority = false)]
     void CmdEndTurn(NetworkConnectionToClient sender = null) {
         Debug.Log("This is a command send by" + netIdentity + " who wants to finish turn");
@@ -141,13 +191,17 @@ public class GameManager : NetworkBehaviour {
         Debug.Log("This is a command send by" + netIdentity + " who wants to skip turn");
         if (IsUserTurn(sender) && actions > 0) SkipTurn();
     }
+    #endregion
+
+    #endregion
+
 
     bool IsUserTurn(NetworkConnection conn) {
         CharacterController character = CharacterManager.instance.Get(activeCharacter);
         Debug.Log("Actual character selected is " + activeCharacter + "who is owned by" + character.netIdentity.connectionToClient);
         return character.netIdentity.connectionToClient == conn;
     }
-    #endregion
+
 
     //* TESTING *//
     /*

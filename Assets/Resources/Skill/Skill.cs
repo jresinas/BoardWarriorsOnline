@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Skill : MonoBehaviour {
+    [SerializeField] string title;
     [SerializeField] Sprite icon;
     [SerializeField] string text;
-    [SerializeField] int range;
-    [SerializeField] int energy;
     [SerializeField] string animation = "Attack";
+    [SerializeField] protected int range;
+    [SerializeField] protected int energy;
 
     public int GetRange() {
         return range;
@@ -15,6 +16,10 @@ public abstract class Skill : MonoBehaviour {
 
     public Sprite GetIcon() {
         return icon;
+    }
+
+    public string GetTitle() {
+        return title;
     }
 
     public string GetText() {
@@ -35,7 +40,11 @@ public abstract class Skill : MonoBehaviour {
 
     public virtual bool IsVisible() {
         CharacterController caster = GetComponent<CharacterController>();
-        return ClientManager.instance.IsTurn() && caster.GetEnergy() >= energy;
+        return ClientManager.instance.IsAvailableSkill() && caster.GetEnergy() >= energy;
+    }
+
+    public virtual bool IsSkillResponse() {
+        return false;
     }
 
     /// <summary>
@@ -43,7 +52,7 @@ public abstract class Skill : MonoBehaviour {
     /// </summary>
     /// <param name="caster"></param>
     /// <returns></returns>
-    public List<int> GetTargetList(CharacterController caster) {
+    public virtual List<int> GetTargetList(CharacterController caster) {
         List<int> targetIds = new List<int>();
         int alliesPlayer = caster.GetPlayer();
         int enemiesPlayer = ((alliesPlayer + 1) % 2);

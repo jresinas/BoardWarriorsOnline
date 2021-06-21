@@ -81,6 +81,15 @@ public class CharacterManager : NetworkBehaviour {
         } else return false;
     }
 
+    public bool CanResponse(int casterId, int skillIndex, int targetId) {
+        bool result = false;
+        CharacterController target = Get(targetId);
+        for (int i = 0; i < Const.SKILL_NUMBER; i++) {
+            if (target.GetSkill(i).IsSkillResponse()) result = true;
+        }
+        return result;
+    }
+
     void StartGameHandler(object source, EventArgs args) {
         for (int i = 0; i < Const.CHAR_NUMBER; i++) Get(i).LocateCharacter();
     }

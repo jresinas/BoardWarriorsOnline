@@ -21,6 +21,7 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
     }
 
     public void SetSkill(Skill skill) {
+        selected = false;
         selectedCharacterSkill = skill;
     }
 
@@ -70,6 +71,7 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
 
     public void OnPointerClick(PointerEventData eventData) {
         if (IsEnabled()) GUIManager.instance.ClickSkill(index);
+        //Check not is waiting
     }
     #endregion
 

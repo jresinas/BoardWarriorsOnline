@@ -34,7 +34,7 @@ public class CharacterDataController : MonoBehaviour {
     /// <param name="characterId">Character id to show. If empty, selected character will be shown</param>
     public void ShowCharacter(int characterId = -1) {
         characterId = (characterId < 0) ? selectedCharacterId : characterId;
-        bool isSelectedCharacter = (characterId == selectedCharacterId) && ClientManager.instance.IsAvailableSkill();
+        bool isSelectedCharacter = characterId == selectedCharacterId;
         CharacterController character = CharacterManager.instance.Get(characterId);
         if (character != null) {
             characterName.text = character.name;

@@ -14,12 +14,20 @@ public class GUIManager : NetworkBehaviour {
 
     [SerializeField] CharacterDataController characterData;
     [SerializeField] ButtonsController buttons;
+    [SerializeField] ButtonsResponseController buttonsResponse;
     [SerializeField] DicesController dices;
+    // index of current skill selected of the active character
     int skillSelected = -1;
+    // id of character under cursor
     int hoverCharacter = -1;
+    // id of character in turn
+    int turnCharacter = -1; // replace with activeCharacter from GameManager?
+
 
     void Awake() {
         instance = this;
+        buttons.ShowButtons();
+        buttonsResponse.HideButtons();
     }
 
     void Start() {
@@ -28,20 +36,54 @@ public class GUIManager : NetworkBehaviour {
         CharacterManager.instance.OnCharacterHoverExit += CharacterHoverExitHandler;
         GameManager.instance.OnEndTurn += EndTurnHandler;
         CharacterManager.instance.OnChangeEnergy += ChangeEnergyHandler;
+        GameManager.instance.OnRequestResponseSkill += RequestResponseSkillHandler;
+        ClientManager.instance.OnSendResponseSkill += SendResponseSkillHandler;
+        GameManager.instance.OnWaitingResponseSkill += WaitingResponseSkillHandler;
     }
 
-    public int GetSkillSelected() {
-        return skillSelected;
+    #region GameEvents
+    [TargetRpc]
+    void WaitingResponseSkillHandler(NetworkConnection userConnection, bool status) {
+        if (status) {
+            buttons.HideButtons();
+            Debug.Log("Waiting for opponent response");
+        } else buttons.ShowButtons();
+    }
+
+    [TargetRpc]
+    void RequestResponseSkillHandler(NetworkConnection userConnection, int casterId, int skillIndex, int targetId) {
+        CharacterController caster = CharacterManager.instance.Get(casterId);
+        Skill skill = caster.GetSkill(skillIndex);
+        CharacterController target = CharacterManager.instance.Get(targetId);
+        Debug.Log(caster.name + " has used " + skill.GetTitle() + " against " + target + ". Do you want to response?");
+        characterData.SetCharacter(targetId);
+        buttons.HideButtons();
+        buttonsResponse.ShowButtons();
+    }
+
+    void SendResponseSkillHandler(int skillIndex) {
+        characterData.SetCharacter(turnCharacter);
+        buttons.ShowButtons();
+        buttonsResponse.HideButtons();
     }
 
     [ClientRpc]
     void StartTurnHandler(object source, int characterId) {
+        turnCharacter = characterId;
         characterData.SetCharacter(characterId);
-        //CharacterManager.instance.Get(characterId).OnChangeEnergy += ChangeEnergyHandler;
         // Unselect all skills
         SelectSkill();
+    }
 
+    [ClientRpc]
+    void EndTurnHandler(object sender, EventArgs args) {
+        dices.Hide();
+    }
+    #endregion
 
+    #region CharacterData
+    public int GetSkillSelected() {
+        return skillSelected;
     }
 
     void CharacterHoverEnterHandler(object sender, int characterId) {
@@ -54,23 +96,8 @@ public class GUIManager : NetworkBehaviour {
         ShowCharacter();
     }
 
-    [ClientRpc]
-    void EndTurnHandler(object sender, EventArgs args) {
-        int selectedCharacterId = characterData.GetSelectedCharacter();
-        //CharacterManager.instance.Get(selectedCharacterId).OnChangeEnergy -= ChangeEnergyHandler;
-        dices.Hide();
-    }
-
     void ChangeEnergyHandler(int characterId, int energy) {
         ShowCharacter(hoverCharacter);
-    }
-
-    public void ClickSkipButton() {
-        if (OnRequestSkip != null) OnRequestSkip(this, EventArgs.Empty);
-    }
-
-    public void ClickEndTurnButton() {
-        if (OnRequestEndTurn != null) OnRequestEndTurn(this, EventArgs.Empty);
     }
 
     /// <summary>
@@ -78,9 +105,13 @@ public class GUIManager : NetworkBehaviour {
     /// </summary>
     /// <param name="skillIndex"></param>
     public void ClickSkill(int skillIndex) {
-        if (ClientManager.instance.IsAvailableSkill()) {
-            if (skillSelected != skillIndex) SelectSkill(skillIndex);
-            else SelectSkill();
+        int selectedCharacterId = characterData.GetSelectedCharacter();
+        if (selectedCharacterId >= 0) {
+            Skill skill = CharacterManager.instance.Get(selectedCharacterId).GetSkill(skillIndex);
+            if (skill.IsVisible()) {
+                if (skillSelected != skillIndex) SelectSkill(skillIndex);
+                else SelectSkill();
+            }
         }
     }
 
@@ -104,6 +135,20 @@ public class GUIManager : NetworkBehaviour {
     public void ShowCharacter(int characterId = -1) {
         characterData.ShowCharacter(characterId);
     }
+    #endregion
+
+    #region Buttons
+    public void ClickSkipButton() {
+        if (OnRequestSkip != null) OnRequestSkip(this, EventArgs.Empty);
+    }
+
+    public void ClickEndTurnButton() {
+        if (OnRequestEndTurn != null) OnRequestEndTurn(this, EventArgs.Empty);
+    }
+
+    public void ClickSendResponseButton() {
+        ClientManager.instance.SendResponseSkill(skillSelected);
+    }
 
     public void EnableButtons(bool skip = false, bool endTurn = false) {
         if (skip || (!skip && !endTurn)) buttons.EnableSkip();
@@ -114,13 +159,9 @@ public class GUIManager : NetworkBehaviour {
         if (skip || (!skip && !endTurn)) buttons.DisableSkip();
         if (endTurn || (!skip && !endTurn)) buttons.DisableEndTurn();
     }
+    #endregion
 
-    /*
-    public int RollDices(int dicesNumber, int minRequired) {
-        return dices.Roll(dicesNumber, minRequired);
-    }
-    */
-
+    #region Dices
     [Server]
     public int RollDices(int dicesNumber, int minRequired) {
         int[] results = dices.Roll(dicesNumber, minRequired);
@@ -132,10 +173,5 @@ public class GUIManager : NetworkBehaviour {
     void ShowDices(int[] results, int minRequired) {
         dices.Show(results, minRequired);
     }
-
-    /*
-    public void ResetDices() {
-        dices.Reset();
-    }
-    */
+    #endregion
 }
