@@ -11,7 +11,7 @@ public class ClientManager : NetworkBehaviour {
     [SerializeField] Camera[] cameras = new Camera[2];
 
     public event Action<Vector2Int> OnRequestMove;
-    public event Action<int, Vector2Int> OnRequestUseSkill;
+    public event Action<int, int> OnRequestUseSkill;
     public event Action<int> OnSendResponseSkill;
 
     bool isTurn = false;
@@ -103,8 +103,10 @@ public class ClientManager : NetworkBehaviour {
         GUIManager.instance.DisableButtons();
     }
     void ClickTileHandler(object source, Vector2Int destiny) {
-        if (IsAvailableSkill() && GUIManager.instance.IsSkillSelected() && OnRequestUseSkill != null) OnRequestUseSkill(GUIManager.instance.GetSkillSelected(), destiny);
-        else if (IsAvailableMove() && OnRequestMove != null) OnRequestMove(destiny);
+        if (IsAvailableSkill() && GUIManager.instance.IsSkillSelected()) {
+            int targetId = CharacterManager.instance.GetId(destiny);
+            if (targetId >= 0 && OnRequestUseSkill != null) OnRequestUseSkill(GUIManager.instance.GetSkillSelected(), targetId);
+        } else if (IsAvailableMove() && OnRequestMove != null) OnRequestMove(destiny);
     }
     #endregion
 

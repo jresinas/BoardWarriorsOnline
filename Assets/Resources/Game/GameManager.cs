@@ -131,14 +131,13 @@ public class GameManager : NetworkBehaviour {
     #endregion
 
     #region UseSkill
-    void RequestUseSkillHandler(int skillIndex, Vector2Int destiny) {
-        CmdUseSkill(skillIndex, destiny);
+    void RequestUseSkillHandler(int skillIndex, int targetId) {
+        CmdUseSkill(skillIndex, targetId);
     }
 
     [Command(requiresAuthority = false)]
-    void CmdUseSkill(int skillIndex, Vector2Int destiny, NetworkConnectionToClient sender = null) {
-        int targetId = CharacterManager.instance.GetId(destiny);
-        UseSkill(skillIndex, targetId, sender);
+    void CmdUseSkill(int skillIndex, int targetId, NetworkConnectionToClient sender = null) {
+        if (skillIndex >= 0 && targetId >= 0) UseSkill(skillIndex, targetId, sender);
     }
 
     void UseSkill(int skillIndex, int targetId, NetworkConnection sender, bool isResponse = false) {

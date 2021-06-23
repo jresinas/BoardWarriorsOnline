@@ -71,13 +71,15 @@ public class CharacterManager : NetworkBehaviour {
         return BoardUtils.Distance(character.GetPosition(), position) <= character.GetMovement();
     }
 
-    // TODO
     public bool AllowUseSkill(int casterId, int skillIndex, int targetId) {
         CharacterController caster = Get(casterId);
         CharacterController target = Get(targetId);
         if (caster != null && target != null) {
             Skill skill = caster.GetSkill(skillIndex);
-            return true;
+            List<int> targetIds = skill.GetTargetList(caster);
+            // distance between caster and target is <= skill range and target targetable by the skill
+            return (BoardUtils.Distance(caster.GetPosition(), target.GetPosition()) <= skill.GetRange()) &&
+                (targetIds.Count != 0 && targetIds.Contains(targetId));
         } else return false;
     }
 
