@@ -124,6 +124,6 @@ public class ClientManager : NetworkBehaviour {
     }
 
     public bool IsAvailableSkill() {
-        return IsTurn() && isAvailableSkill;
+        return IsTurn() && isAvailableSkill && !IsResponding();
     }
 }
