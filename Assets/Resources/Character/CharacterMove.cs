@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.AI;
 
 public class CharacterMove : MonoBehaviour {
-    float OFFSET = 0.05f;
     int player = 0;
     float animationTime = 1f;
 
@@ -55,7 +54,7 @@ public class CharacterMove : MonoBehaviour {
         if (path.Length != 0 && destPoint < path.Length) {
             time = 0;
             originPosition = transform.position;
-            targetPosition = BoardManager.instance.GetTile(path[destPoint]).transform.position + Vector3.up * OFFSET;
+            targetPosition = BoardManager.instance.GetTile(path[destPoint]).transform.position + Vector3.up * Const.CHAR_OFFSET;
 
             transform.LookAt(targetPosition);
             anim.SetBool("Walk", true);

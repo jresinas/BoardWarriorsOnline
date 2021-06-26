@@ -86,7 +86,7 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
 
     [ClientRpc]
     public void LocateCharacter() {
-        transform.position = BoardManager.instance.GetTile(position).transform.position;
+        transform.position = BoardManager.instance.GetTile(position).transform.position + Vector3.up * Const.CHAR_OFFSET;
         characterMove.StartCharacterMove(player, animationTime);
     }
 

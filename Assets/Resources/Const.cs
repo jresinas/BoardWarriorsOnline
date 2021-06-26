@@ -7,4 +7,6 @@ public static class Const {
 
     public static int SKILL_NUMBER = 4;
     public static int MAX_ENERGY = 10;
+
+    public static float CHAR_OFFSET = 0.05f;
 }
