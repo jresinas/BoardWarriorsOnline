@@ -9,6 +9,11 @@ public abstract class Skill : MonoBehaviour {
     [SerializeField] string animation = "Attack";
     [SerializeField] protected int range;
     [SerializeField] protected int energy;
+    protected CharacterController self;
+
+    public void Start() {
+        self = GetComponent<CharacterController>();
+    }
 
     public int GetRange() {
         return range;

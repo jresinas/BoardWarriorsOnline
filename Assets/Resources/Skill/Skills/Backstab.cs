@@ -16,8 +16,7 @@ public class Backstab : SkillNormal {
 
     int AlliesAdjacent(CharacterController target) {
         int alliesAdjacent = 0;
-        CharacterController caster = GetComponent<CharacterController>();
-        List<int> allies = CharacterManager.instance.GetPlayerCharacters(caster.GetPlayer());
+        List<int> allies = CharacterManager.instance.GetPlayerCharacters(self.GetPlayer());
         Vector2Int position = target.GetPosition();
         Vector2Int[] adjacentVectors = { Vector2Int.left, Vector2Int.up, Vector2Int.right, Vector2Int.down };
         foreach (Vector2Int adjacentVector in adjacentVectors) {
