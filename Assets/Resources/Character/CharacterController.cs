@@ -18,8 +18,9 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     [SerializeField] int armor;
     [SerializeField] Skill[] skills = new Skill[Const.SKILL_NUMBER];
     [SerializeField] int maxHealth;
-    int health;
-    int energy;
+
+    [SyncVar] int health;
+    [SyncVar] int energy;
 
     void Awake() {
         health = maxHealth;
