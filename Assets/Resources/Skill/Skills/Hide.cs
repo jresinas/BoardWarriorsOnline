@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hide : SkillResponse {
+public class Hide : SkillNormal {
     public override bool Play(CharacterController target) {
         return true;
     }

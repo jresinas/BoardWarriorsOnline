@@ -11,7 +11,7 @@ public class Hit : SkillNormal {
         return damage > 0;
     }
 
-    public override bool TargetAllies() { return false; }
+    public override bool TargetAllies() { return true; }
     public override bool TargetEnemies() {return true; }
     public override bool TargetSelf() { return false; }
 }

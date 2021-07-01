@@ -609,8 +609,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  charactersPriority: 00000000010000000200000003000000
-  charactersOrder: 0000000000000000000000000000000000000000000000000000000000000000
+  charactersPriority: 000000000300000001000000040000000200000005000000
+  charactersOrder: 000000000000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 --- !u!114 &254287095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1792,9 +1792,10 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs:
+  - {fileID: 1028650800999987807, guid: a4245b8976eca40458a08795f1cbdcb4, type: 3}
   - {fileID: 1875824042707688256, guid: 5a522f5ff033fa043933005d5592e74f, type: 3}
   - {fileID: 8203605810467984145, guid: 856952541ecae9446ba7b65be6a65e18, type: 3}
-  - {fileID: 1028650800999987807, guid: a4245b8976eca40458a08795f1cbdcb4, type: 3}
+  - {fileID: 2711368057433987598, guid: f11a5ea7776fbc44a908490101e6c0a4, type: 3}
 --- !u!4 &888869949
 Transform:
   m_ObjectHideFlags: 0
