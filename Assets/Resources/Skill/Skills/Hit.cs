@@ -7,7 +7,7 @@ public class Hit : SkillNormal {
 
     public override bool Play(CharacterController target) {
         int targetArmor = target.GetArmor();
-        int damage = GUIManager.instance.RollDices(dicesNumber, targetArmor+1);
+        int damage = DiceManager.instance.RollDices(dicesNumber, targetArmor+1);
         return damage > 0;
     }
 

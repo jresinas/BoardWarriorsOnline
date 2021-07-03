@@ -15,7 +15,7 @@ public class GUIManager : NetworkBehaviour {
     [SerializeField] CharacterDataController characterData;
     [SerializeField] ButtonsController buttons;
     [SerializeField] ButtonsResponseController buttonsResponse;
-    [SerializeField] DicesController dices;
+
     // index of current skill selected of the active character
     int skillSelected = -1;
     // id of character under cursor
@@ -34,7 +34,6 @@ public class GUIManager : NetworkBehaviour {
         GameManager.instance.OnStartTurn += StartTurnHandler;
         CharacterManager.instance.OnCharacterHoverEnter += CharacterHoverEnterHandler;
         CharacterManager.instance.OnCharacterHoverExit += CharacterHoverExitHandler;
-        GameManager.instance.OnEndTurn += EndTurnHandler;
         CharacterManager.instance.OnChangeEnergy += ChangeEnergyHandler;
         GameManager.instance.OnRequestResponseSkill += RequestResponseSkillHandler;
         ClientManager.instance.OnSendResponseSkill += SendResponseSkillHandler;
@@ -73,11 +72,6 @@ public class GUIManager : NetworkBehaviour {
         characterData.SetCharacter(characterId);
         // Unselect all skills
         SelectSkill();
-    }
-
-    [ClientRpc]
-    void EndTurnHandler(object sender, EventArgs args) {
-        dices.Hide();
     }
     #endregion
 
@@ -158,20 +152,6 @@ public class GUIManager : NetworkBehaviour {
     public void DisableButtons(bool skip = false, bool endTurn = false) {
         if (skip || (!skip && !endTurn)) buttons.DisableSkip();
         if (endTurn || (!skip && !endTurn)) buttons.DisableEndTurn();
-    }
-    #endregion
-
-    #region Dices
-    [Server]
-    public int RollDices(int dicesNumber, int minRequired) {
-        int[] results = dices.Roll(dicesNumber, minRequired);
-        ShowDices(results, minRequired);
-        return dices.GetResult(results, minRequired);
-    }
-
-    [ClientRpc]
-    void ShowDices(int[] results, int minRequired) {
-        dices.Show(results, minRequired);
     }
     #endregion
 }

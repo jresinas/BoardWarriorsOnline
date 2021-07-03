@@ -1534,7 +1534,6 @@ MonoBehaviour:
   characterData: {fileID: 515787570043926267}
   buttons: {fileID: 515787568602247095}
   buttonsResponse: {fileID: 980763774}
-  dices: {fileID: 515787568384997228}
 --- !u!114 &781103049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4377,33 +4376,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 515787568384997226}
-  - component: {fileID: 515787568384997228}
   m_Layer: 5
-  m_Name: Dices
+  m_Name: DicesView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &515787568384997228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 515787568384997227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79e54a203d018ff4aa7b2c25b1a7ff61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dices:
-  - {fileID: 1615405358}
-  - {fileID: 202882471}
-  - {fileID: 175444580}
-  - {fileID: 197615918}
-  - {fileID: 2052149860}
-  dicesView: {fileID: 515787568367476755}
 --- !u!114 &515787568394054960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5434,6 +5413,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6095665279752781040}
+  - component: {fileID: 6095665279752781044}
   m_Layer: 6
   m_Name: Dices
   m_TagString: Untagged
@@ -5441,6 +5421,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6095665279752781044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6095665279752781043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79e54a203d018ff4aa7b2c25b1a7ff61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dices:
+  - {fileID: 1615405358}
+  - {fileID: 202882471}
+  - {fileID: 175444580}
+  - {fileID: 197615918}
+  - {fileID: 2052149860}
+  dicesView: {fileID: 515787568367476755}
 --- !u!1 &6095665279931307040
 GameObject:
   m_ObjectHideFlags: 0
@@ -5450,8 +5449,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6095665279931307041}
+  - component: {fileID: 6095665279931307043}
+  - component: {fileID: 6095665279931307042}
   m_Layer: 0
-  m_Name: DicesView
+  m_Name: Dices
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5475,6 +5476,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6095665279931307042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6095665279931307040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e3ca2e54d4e1ed48882811ff24ce41b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  dices: {fileID: 6095665279752781044}
+--- !u!114 &6095665279931307043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6095665279931307040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 1842982957
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 
+  hasSpawned: 0
 --- !u!108 &6095665280421039664
 Light:
   m_ObjectHideFlags: 0

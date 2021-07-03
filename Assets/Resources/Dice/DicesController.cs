@@ -21,9 +21,9 @@ public class DicesController : MonoBehaviour {
     }
     */
 
-    public int[] Roll(int dicesNumber, int minRequired) {
+    public int[] Roll(int dicesNumber) {
         int[] results = new int[dicesNumber];
-        for (int i = 0; i < dicesNumber; i++) results[i] = dices[i].Roll(minRequired);
+        for (int i = 0; i < dicesNumber; i++) results[i] = dices[i].Roll();
         return results;
     }
 

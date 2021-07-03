@@ -9,7 +9,7 @@ public class Dice : MonoBehaviour {
     public GameObject lightPoint;
     bool success = false;
 
-    public int Roll(int required) {
+    public int Roll() {
         int result = Random.Range(1, 7);
         return result;
     }
