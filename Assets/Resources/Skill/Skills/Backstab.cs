@@ -6,7 +6,7 @@ public class Backstab : SkillNormal {
     public override bool Play(CharacterController target) {
         int dices = (AlliesAdjacent(target) > 0) ? 8 : 4;
         int targetArmor = target.GetArmor();
-        int damage = DiceManager.instance.RollDices(dices, targetArmor);
+        int damage = RollDices(dices, targetArmor);
         return damage > 0;
     }
 

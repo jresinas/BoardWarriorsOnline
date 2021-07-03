@@ -5,7 +5,7 @@ using UnityEngine;
 public class DeathBlow : SkillNormal {
     public override bool Play(CharacterController target) {
         int targetArmor = target.GetArmor();
-        int damage = DiceManager.instance.RollDices(10, targetArmor + 1);
+        int damage = RollDices(10, targetArmor + 1);
         return damage > 0;
     }
 

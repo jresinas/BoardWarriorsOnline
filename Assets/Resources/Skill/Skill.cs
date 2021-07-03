@@ -44,8 +44,7 @@ public abstract class Skill : MonoBehaviour {
     public abstract bool Play(CharacterController target);
 
     public virtual bool IsVisible() {
-        CharacterController caster = GetComponent<CharacterController>();
-        return caster.GetEnergy() >= energy;
+        return self.GetEnergy() >= energy;
     }
 
     /// <summary>
@@ -62,5 +61,9 @@ public abstract class Skill : MonoBehaviour {
         if (TargetSelf()) targetIds.Add(caster.GetId());
         else targetIds.Remove(caster.GetId());
         return targetIds;
+    }
+
+    protected int RollDices(int dices, int targetArmor) {
+        return DiceManager.instance.RollDices(dices, targetArmor);
     }
 }

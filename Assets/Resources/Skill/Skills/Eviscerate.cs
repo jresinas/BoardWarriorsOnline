@@ -5,7 +5,7 @@ using UnityEngine;
 public class Eviscerate : SkillNormal {
     public override bool Play(CharacterController target) {
         int targetArmor = target.GetArmor();
-        int damage = DiceManager.instance.RollDices(2, targetArmor + 1);
+        int damage = RollDices(2, targetArmor + 1);
         return damage > 0;
     }
 
