@@ -23,6 +23,8 @@ public class CharacterManager : NetworkBehaviour {
         GameManager.instance.OnStartRound += StartRoundHandler;
         GameManager.instance.OnMove += MoveHandler;
         GameManager.instance.OnUseSkill += UseSkillHandler;
+        GameManager.instance.OnUseResponseSkillPre += UseResponseSkillPreHandler;
+        GameManager.instance.OnUseResponseSkillPost += UseResponseSkillPostHandler;
     }
 
     //public void AddCharacter(CharacterController character, Vector2Int position, int player) {
@@ -66,11 +68,13 @@ public class CharacterManager : NetworkBehaviour {
         } else return null;
     }
 
+    [Server]
     public bool AllowMove(int characterId, Vector2Int position) {
         CharacterController character = Get(characterId);
         return BoardUtils.Distance(character.GetPosition(), position) <= character.GetMovement();
     }
 
+    [Server]
     public bool AllowUseSkill(int casterId, int skillIndex, int targetId) {
         CharacterController caster = Get(casterId);
         CharacterController target = Get(targetId);
@@ -83,6 +87,7 @@ public class CharacterManager : NetworkBehaviour {
         } else return false;
     }
 
+    [Server]
     public bool CanResponse(int casterId, int skillIndex, int targetId) {
         bool result = false;
         CharacterController target = Get(targetId);
@@ -100,6 +105,7 @@ public class CharacterManager : NetworkBehaviour {
         for (int i = 0; i < Const.CHAR_NUMBER; i++) Get(i).ChangeEnergy(1);
     }
 
+    [Server]
     void MoveHandler(int characterId, Vector2Int destiny) {
         CharacterController character = Get(characterId);
         Vector2Int currentPosition = character.GetPosition();
@@ -108,11 +114,23 @@ public class CharacterManager : NetworkBehaviour {
         //Get(characterId).transform.position = BoardManager.instance.GetTile(position).transform.position;
     }
 
+    [Server]
     void UseSkillHandler(int casterId, int skillIndex, int targetId) {
         CharacterController caster = Get(casterId);
         bool success = caster.UseSkill(skillIndex, targetId);
         caster.UseSkillAnimation(skillIndex, targetId, success);
     }
+
+    [Server]
+    void UseResponseSkillPreHandler(int casterId, int skillIndex, int targetId) {
+        Debug.Log("ResponseSkillPre");
+    }
+
+    [Server]
+    void UseResponseSkillPostHandler(int casterId, int skillIndex, int targetId, int result, int[] results) {
+        Debug.Log("ResponseSkillPost");
+    }
+
 
     public void EnterHover(int characterId) {
         if (OnCharacterHoverEnter!= null) OnCharacterHoverEnter(this, characterId);

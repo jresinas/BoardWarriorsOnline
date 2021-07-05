@@ -8,6 +8,8 @@ public class WaitingResponse {
     public int casterId;
     public int skillIndex;
     public int targetId;
+    public int result;
+    public int[] results;
 
     public WaitingResponse(int casterId, int skillIndex, int targetId) {
         this.casterId = casterId;
@@ -25,6 +27,8 @@ public class GameManager : NetworkBehaviour {
     public event EventHandler OnEndTurn;
     public event Action<int, Vector2Int> OnMove;
     public event Action<int, int, int> OnUseSkill;
+    public event Action<int, int, int> OnUseResponseSkillPre;
+    public event Action<int, int, int, int, int[]> OnUseResponseSkillPost;
     public event Action<NetworkConnection, int, int, int> OnRequestResponseSkill;
     public event Action<NetworkConnection, bool> OnWaitingResponseSkill;
     public event EventHandler OnEndActions;
@@ -48,6 +52,7 @@ public class GameManager : NetworkBehaviour {
         ClientManager.instance.OnSendResponseSkill += SendResponseSkillHandler;
         GUIManager.instance.OnRequestEndTurn += RequestEndTurnHandler;
         GUIManager.instance.OnRequestSkip += RequestSkipHandler;
+        DiceManager.instance.OnRollDices += RollDicesHandler;
     }
 
 
@@ -81,7 +86,8 @@ public class GameManager : NetworkBehaviour {
         NextCharacter();
     }
     void NextCharacter() {
-        while (turn < Const.CHAR_NUMBER*2 && charactersOrder[turn] < 0) turn++;
+        while (turn < Const.CHAR_NUMBER * 2 && charactersOrder[turn] < 0) turn++;
+
         if (turn >= Const.CHAR_NUMBER * 2) StartRound();
         else {
             activeCharacter = charactersOrder[turn];
@@ -131,6 +137,13 @@ public class GameManager : NetworkBehaviour {
     #endregion
 
     #region UseSkill
+    void RollDicesHandler(int result, int[] results) {
+        if (waitingResponse != null) {
+            waitingResponse.result = result;
+            waitingResponse.results = results;
+        }
+    }
+
     void RequestUseSkillHandler(int skillIndex, int targetId) {
         CmdUseSkill(skillIndex, targetId);
     }
@@ -143,15 +156,19 @@ public class GameManager : NetworkBehaviour {
     void UseSkill(int skillIndex, int targetId, NetworkConnection sender, bool isResponse = false) {
         if (IsUserTurn(sender) && actions > 0 && CharacterManager.instance.AllowUseSkill(activeCharacter, skillIndex, targetId)) {
             if (!isResponse && CharacterManager.instance.CanResponse(activeCharacter, skillIndex, targetId)) {
-                NetworkConnection targetOwner = CharacterManager.instance.GetOwner(targetId);
-                if (OnRequestResponseSkill != null) OnRequestResponseSkill(targetOwner, activeCharacter, skillIndex, targetId);
-                if (OnWaitingResponseSkill != null) OnWaitingResponseSkill(sender, true);
-                waitingResponse = new WaitingResponse(activeCharacter, skillIndex, targetId);
+                WaitingForResponse(skillIndex, targetId, sender);
                 return;
             }
             ChangeActions(-1);
             if (OnUseSkill != null) OnUseSkill(activeCharacter, skillIndex, targetId);
         }
+    }
+
+    void WaitingForResponse(int skillIndex, int targetId, NetworkConnection sender) {
+        NetworkConnection targetOwner = CharacterManager.instance.GetOwner(targetId);
+        if (OnRequestResponseSkill != null) OnRequestResponseSkill(targetOwner, activeCharacter, skillIndex, targetId);
+        if (OnWaitingResponseSkill != null) OnWaitingResponseSkill(sender, true);
+        waitingResponse = new WaitingResponse(activeCharacter, skillIndex, targetId);
     }
     #endregion
 
@@ -162,9 +179,11 @@ public class GameManager : NetworkBehaviour {
 
     [Command(requiresAuthority = false)]
     void CmdSendResponseSkillHandler(int skillIndex, NetworkConnectionToClient sender = null) {
-        if (waitingResponse != null && CharacterManager.instance.GetOwner(waitingResponse.targetId) == sender) {
+        if (waitingResponse != null && CharacterManager.instance.GetOwner(waitingResponse.targetId) == sender && (skillIndex < 0 || CharacterManager.instance.AllowUseSkill(waitingResponse.targetId, skillIndex, waitingResponse.targetId))) {
+            if (OnUseResponseSkillPre != null) OnUseResponseSkillPre(waitingResponse.targetId, skillIndex, waitingResponse.casterId);
             UseSkill(waitingResponse.skillIndex, waitingResponse.targetId, CharacterManager.instance.GetOwner(waitingResponse.casterId), true);
             if (OnWaitingResponseSkill != null) OnWaitingResponseSkill(CharacterManager.instance.GetOwner(waitingResponse.casterId), false);
+            if (OnUseResponseSkillPost != null) OnUseResponseSkillPost(waitingResponse.targetId, skillIndex, waitingResponse.casterId, waitingResponse.result, waitingResponse.results);
             waitingResponse = null;
         }
     }
