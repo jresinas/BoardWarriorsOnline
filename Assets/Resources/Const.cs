@@ -9,4 +9,5 @@ public static class Const {
     public static int MAX_ENERGY = 10;
 
     public static float CHAR_OFFSET = 0.05f;
+    public static float WAIT_AFTER_SKILL_ANIM = 1.5f;
 }

@@ -13,6 +13,7 @@ public class CharacterManager : NetworkBehaviour {
     public event Action<int, int> OnChangeEnergy;
 
     public SyncList<Transform> characters = new SyncList<Transform>();
+    int characterWaitingAnimation = -1;
 
     void Awake() {
         instance = this;
@@ -81,7 +82,7 @@ public class CharacterManager : NetworkBehaviour {
         if (caster != null && target != null) {
             Skill skill = caster.GetSkill(skillIndex);
             List<int> targetIds = skill.GetTargetList(caster);
-            // distance between caster and target is <= skill range and target targetable by the skill
+            // distance between caster and target is <= skill range and target is targetable by the skill
             return (BoardUtils.Distance(caster.GetPosition(), target.GetPosition()) <= skill.GetRange()) &&
                 (targetIds.Count != 0 && targetIds.Contains(targetId));
         } else return false;
@@ -148,5 +149,24 @@ public class CharacterManager : NetworkBehaviour {
     [ClientRpc]
     public void ChangeHealth(int characterId, int health) {
         if (OnChangeHealth != null) OnChangeHealth(characterId, health);
+    }
+
+
+
+    public void EndSkillAnimation(int characterId) {
+        if (characterWaitingAnimation != characterId) {
+            if (characterWaitingAnimation < 0) characterWaitingAnimation = characterId;
+            else StartCoroutine(EndAnimation(new int[] { characterWaitingAnimation, characterId }));
+        }
+    }
+
+    IEnumerator EndAnimation(int[] characters) {
+        // Delay after last character end animation
+        yield return new WaitForSeconds(Const.WAIT_AFTER_SKILL_ANIM);
+        for (int i = 0; i < characters.Length; i++) {
+            CharacterController character = Get(characters[i]);
+            character.EndAnimation();
+        }
+        characterWaitingAnimation = -1;
     }
 }

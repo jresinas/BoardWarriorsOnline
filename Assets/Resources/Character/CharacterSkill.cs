@@ -8,8 +8,8 @@ public class CharacterSkill : MonoBehaviour {
     Skill skill;
     bool success;
 
-    public void StartPlay(Skill skill, CharacterController character, bool success) {
-        targetCharacter = character;
+    public void StartPlay(Skill skill, CharacterController targetCharacter, bool success) {
+        this.targetCharacter = targetCharacter;
         this.skill = skill;
         this.success = success;
         StartAnimation();
@@ -50,5 +50,9 @@ public class CharacterSkill : MonoBehaviour {
 
     public void DodgeAttack() {
         anim.SetTrigger("Dodge");
+    }
+
+    public void EndAnimation() {
+        anim.SetTrigger("EndAnimation");
     }
 }

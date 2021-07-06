@@ -138,4 +138,8 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
         characterSkill.DodgeAttack();
     }
     #endregion
+
+    public void EndAnimation() {
+        characterSkill.EndAnimation();
+    }
 }
