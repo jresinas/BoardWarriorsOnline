@@ -25,7 +25,7 @@ public class TileController : NetworkBehaviour, IPointerClickHandler {
         mr.material.color = new Color32(125, 200, 125, 255);
     }
 
-    public void ShowTargetMark() {
+    public void ShowSkillMark() {
         MeshRenderer mr = GetComponent<MeshRenderer>();
         mr.material.color = new Color32(200, 125, 125, 255);
     }

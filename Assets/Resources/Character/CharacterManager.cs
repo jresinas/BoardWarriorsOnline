@@ -80,21 +80,8 @@ public class CharacterManager : NetworkBehaviour {
         CharacterController caster = Get(casterId);
         if (caster != null && skillIndex >= 0) {
             Skill skill = caster.GetSkill(skillIndex);
-            if (skill.TargetCharacter()) {
-                int targetId = GetId(destiny);
-                CharacterController target = Get(targetId);
-                if (target != null) {
-                    List<int> targetIds = skill.GetTargetList(caster);
-                    // distance between caster and target is <= skill range and target is targetable by the skill
-                    return (BoardUtils.Distance(caster.GetPosition(), target.GetPosition()) <= skill.GetRange()) &&
-                        (targetIds.Count != 0 && targetIds.Contains(targetId));
-                }
-            } else if (skill.TargetTile()) {
-                return (BoardUtils.Distance(caster.GetPosition(), destiny) <= skill.GetRange());
-            }
-        }
-
-        return false;
+            return skill.AllowTarget(destiny);
+        } else return false;
     }
 
     [Server]

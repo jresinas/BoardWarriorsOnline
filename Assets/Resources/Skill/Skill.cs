@@ -62,12 +62,28 @@ public abstract class Skill : MonoBehaviour {
         return !TargetCharacter();
     }
 
+    public virtual bool AllowTarget(Vector2Int destiny) {
+        if (TargetCharacter()) {
+            int targetId = CharacterManager.instance.GetId(destiny);
+            CharacterController target = CharacterManager.instance.Get(targetId);
+            if (target != null) {
+                List<int> targetableIds = GetTargetableCharacters(self);
+                // distance between caster and target is <= skill range and target is targetable by the skill
+                return (BoardUtils.Distance(self.GetPosition(), target.GetPosition()) <= GetRange()) &&
+                    (targetableIds.Count != 0 && targetableIds.Contains(targetId));
+            }
+        } else if (TargetTile()) {
+            return BoardUtils.Distance(self.GetPosition(), destiny) <= GetRange() && self.GetPosition() != destiny;
+        }
+        return false;
+    }
+
     /// <summary>
     /// Get list of targeteable character ids for this skill casted by specified character
     /// </summary>
     /// <param name="caster"></param>
     /// <returns></returns>
-    public virtual List<int> GetTargetList(CharacterController caster) {
+    public virtual List<int> GetTargetableCharacters(CharacterController caster) {
         List<int> targetIds = new List<int>();
         int alliesPlayer = caster.GetPlayer();
         int enemiesPlayer = ((alliesPlayer + 1) % 2);

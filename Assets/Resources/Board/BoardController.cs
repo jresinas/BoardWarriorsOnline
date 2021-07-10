@@ -39,16 +39,11 @@ public class BoardController : MonoBehaviour {
         }
     }
 
-    public void ShowTargetMarks(Vector2Int position, int range, List<int> targetIds, bool targetCharacter) {
+    public void ShowSkillMarks(Skill skill) {
         for (int i = 0; i < Const.BOARD_ROWS; i++) {
             for (int j = 0; j < Const.BOARD_COLS; j++) {
-                int characterId;
                 Vector2Int targetPosition = new Vector2Int(j, i);
-                // Distance between current position and target position <= range AND
-                // skill isn't targeting a character and target position != current position OR there is a character in target position and it's included in targetable ids
-                if (BoardUtils.Distance(position, targetPosition) <= range && ((!targetCharacter && position != targetPosition) || (characterId = tiles[i][j].GetCharacter()) >= 0 && targetIds.Contains(characterId))) {
-                    tiles[i][j].ShowTargetMark();
-                }
+                if (skill.AllowTarget(targetPosition)) tiles[i][j].ShowSkillMark();
             }
         }
     }
