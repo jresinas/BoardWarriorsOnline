@@ -4,22 +4,29 @@ using UnityEngine;
 
 public class CharacterSkill : MonoBehaviour {
     [SerializeField] Animator anim;
-    CharacterController targetCharacter;
+    [SerializeField] CharacterController self;
+    List<CharacterController> targetCharacters;
     Skill skill;
     bool success;
 
-    public void StartPlay(Skill skill, CharacterController targetCharacter, bool success) {
-        this.targetCharacter = targetCharacter;
+    //public void StartPlay(Skill skill, CharacterController targetCharacter, bool success) {
+    public void StartPlay(Skill skill, int[] targetIds, bool success) {
+        this.targetCharacters = CharacterManager.instance.Get(targetIds);
         this.skill = skill;
         this.success = success;
+        List<int> characterIds = new List<int>(targetIds);
+        characterIds.Add(self.GetId());
+        SkillManager.instance.StartAnimation(characterIds);
         StartAnimation();
     }
 
     void StartAnimation() {
-        transform.LookAt(targetCharacter.transform);
-        targetCharacter.transform.LookAt(transform);
+        if (targetCharacters.Count > 0) transform.LookAt(targetCharacters[0].transform);
         Waiting();
-        targetCharacter.Waiting();
+        foreach (CharacterController targetCharacter in targetCharacters) {
+            targetCharacter.transform.LookAt(transform);
+            targetCharacter.Waiting();
+        }
         StartCoroutine(WaitDiceRoll());
     }
 
@@ -30,11 +37,14 @@ public class CharacterSkill : MonoBehaviour {
 
     // Attacking character 
     void Impact() {
-        //skill.Play(targetCharacter);
-        if (success) targetCharacter.ReceiveDamage();
-        else targetCharacter.DodgeAttack();
+        foreach (CharacterController targetCharacter in targetCharacters) {
+            if (targetCharacter != self) {
+                if (success) targetCharacter.ReceiveDamage();
+                else targetCharacter.DodgeAttack();
+            }
+        }
 
-        targetCharacter = null;
+        targetCharacters = null;
         skill = null;
     }
 

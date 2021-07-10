@@ -6,7 +6,7 @@ public class Bandage : SkillNormal {
     public override SkillResult Play(Vector2Int destiny) {
         CharacterController target = GetTarget(destiny);
         target.ChangeHealth(2);
-        return new SkillResult(target.id, true);
+        return new SkillResult(new int[] { target.id }, true);
     }
 
     //public override bool TargetAllies() { return true; }

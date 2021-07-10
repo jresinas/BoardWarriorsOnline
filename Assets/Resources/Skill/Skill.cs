@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class SkillResult{
     public bool success;
-    public int target;
+    public int[] targets;
 
-    public SkillResult(int target, bool success) {
-        this.target = target;
+    public SkillResult(int[] targets, bool success) {
+        this.targets = targets;
         this.success = success;
     }
 }

@@ -7,7 +7,7 @@ public class EndAnimation : StateMachineBehaviour {
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         CharacterController cc = animator.gameObject.GetComponent<CharacterController>();
-        if (cc != null) CharacterManager.instance.EndSkillAnimation(cc.GetId());
+        if (cc != null) SkillManager.instance.EndSkillAnimation(cc.GetId());
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

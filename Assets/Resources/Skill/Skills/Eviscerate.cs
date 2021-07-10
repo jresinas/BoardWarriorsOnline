@@ -7,7 +7,7 @@ public class Eviscerate : SkillNormal {
         CharacterController target = GetTarget(destiny);
         int targetArmor = target.GetArmor();
         int damage = RollDices(2, targetArmor + 1);
-        return new SkillResult(target.id, damage > 0);
+        return new SkillResult(new int[] { target.id }, damage > 0);
     }
 
     //public override bool TargetAllies() { return false; }

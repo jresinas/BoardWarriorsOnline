@@ -13,7 +13,6 @@ public class CharacterManager : NetworkBehaviour {
     public event Action<int, int> OnChangeEnergy;
 
     public SyncList<Transform> characters = new SyncList<Transform>();
-    int characterWaitingAnimation = -1;
 
     void Awake() {
         instance = this;
@@ -42,6 +41,15 @@ public class CharacterManager : NetworkBehaviour {
             CharacterController character = characters[id].GetComponent<CharacterController>();
             return character;
         } else return null;
+    }
+
+    public List<CharacterController> Get(int[] ids) {
+        List<CharacterController> targets = new List<CharacterController>();
+        foreach (int id in ids) {
+            CharacterController target = CharacterManager.instance.Get(id);
+            if (target != null) targets.Add(target);
+        }
+        return targets;
     }
 
     public int GetId(Vector2Int position) {
@@ -124,7 +132,7 @@ public class CharacterManager : NetworkBehaviour {
     void UseSkillHandler(int casterId, int skillIndex, Vector2Int destiny) {
         CharacterController caster = Get(casterId);
         SkillResult result = caster.UseSkill(skillIndex, destiny);
-        caster.UseSkillAnimation(skillIndex, result.target, result.success);
+        caster.UseSkillAnimation(skillIndex, result.targets, result.success);
     }
 
     [Server]
@@ -154,24 +162,5 @@ public class CharacterManager : NetworkBehaviour {
     [ClientRpc]
     public void ChangeHealth(int characterId, int health) {
         if (OnChangeHealth != null) OnChangeHealth(characterId, health);
-    }
-
-
-
-    public void EndSkillAnimation(int characterId) {
-        if (characterWaitingAnimation != characterId) {
-            if (characterWaitingAnimation < 0) characterWaitingAnimation = characterId;
-            else StartCoroutine(EndAnimation(new int[] { characterWaitingAnimation, characterId }));
-        }
-    }
-
-    IEnumerator EndAnimation(int[] characters) {
-        // Delay after last character end animation
-        yield return new WaitForSeconds(Const.WAIT_AFTER_SKILL_ANIM);
-        for (int i = 0; i < characters.Length; i++) {
-            CharacterController character = Get(characters[i]);
-            character.EndAnimation();
-        }
-        characterWaitingAnimation = -1;
     }
 }

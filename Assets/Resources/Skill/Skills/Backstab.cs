@@ -8,7 +8,7 @@ public class Backstab : SkillNormal {
         int dices = (AlliesAdjacent(target) > 0) ? 8 : 4;
         int targetArmor = target.GetArmor();
         int damage = RollDices(dices, targetArmor);
-        return new SkillResult(target.id, damage > 0);
+        return new SkillResult(new int[] { target.id }, damage > 0);
     }
 
     //public override bool TargetAllies() { return false; }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Charge : SkillNormal {
     public override SkillResult Play(Vector2Int destiny) {
-        return new SkillResult(-1, true);
+        return new SkillResult(new int[] { }, true);
     }
 
     //public override bool TargetAllies() { return false; }

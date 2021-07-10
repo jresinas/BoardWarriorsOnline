@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rage : SkillNormal {
     public override SkillResult Play(Vector2Int destiny) {
-        return new SkillResult(self.id, true);
+        return new SkillResult(new int[]{ self.id }, true);
     }
 
     //public override bool TargetAllies() { return false; }

@@ -614,6 +614,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 5162172454058531712}
+  self: {fileID: 4107072779529713061}
 --- !u!114 &6969040465130457712
 MonoBehaviour:
   m_ObjectHideFlags: 0

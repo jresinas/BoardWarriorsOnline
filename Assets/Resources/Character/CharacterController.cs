@@ -111,10 +111,9 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     }
 
     [ClientRpc]
-    public void UseSkillAnimation(int skillIndex, int targetId, bool success) {
+    public void UseSkillAnimation(int skillIndex, int[] targetIds, bool success) {
         Skill skill = GetSkill(skillIndex);
-        CharacterController target = CharacterManager.instance.Get(targetId);
-        characterSkill.StartPlay(skill, target, success);
+        characterSkill.StartPlay(skill, targetIds, success);
     }
 
     public void OnPointerEnter(PointerEventData eventData) {

@@ -2325,6 +2325,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 3202882307661485009}
+  self: {fileID: 2060469218482784611}
 --- !u!114 &-3521657275299189209
 MonoBehaviour:
   m_ObjectHideFlags: 0
