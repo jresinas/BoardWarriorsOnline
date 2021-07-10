@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Backstab : SkillNormal {
-    public override bool Play(CharacterController target) {
+    public override SkillResult Play(Vector2Int destiny) {
+        CharacterController target = GetTarget(destiny);
         int dices = (AlliesAdjacent(target) > 0) ? 8 : 4;
         int targetArmor = target.GetArmor();
         int damage = RollDices(dices, targetArmor);
-        return damage > 0;
+        return new SkillResult(target.id, damage > 0);
     }
 
-    public override bool TargetAllies() { return false; }
-    public override bool TargetEnemies() { return true; }
-    public override bool TargetSelf() { return false; }
+    //public override bool TargetAllies() { return false; }
+    //public override bool TargetEnemies() { return true; }
+    //public override bool TargetSelf() { return false; }
 
     int AlliesAdjacent(CharacterController target) {
         int alliesAdjacent = 0;

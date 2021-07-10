@@ -2,6 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public class SkillResult{
+    public bool success;
+    public int target;
+
+    public SkillResult(int target, bool success) {
+        this.target = target;
+        this.success = success;
+    }
+}
+
 public abstract class Skill : MonoBehaviour {
     [SerializeField] string title;
     [SerializeField] Sprite icon;
@@ -9,6 +19,9 @@ public abstract class Skill : MonoBehaviour {
     [SerializeField] string animation = "Attack";
     [SerializeField] protected int range;
     [SerializeField] protected int energy;
+    [SerializeField] bool targetEnemies;
+    [SerializeField] bool targetAllies;
+    [SerializeField] bool targetSelf;
     protected CharacterController self;
 
     public void Start() {
@@ -35,16 +48,18 @@ public abstract class Skill : MonoBehaviour {
         return animation;
     }
 
-    public abstract bool TargetEnemies();
-
-    public abstract bool TargetAllies();
-
-    public abstract bool TargetSelf();
-
-    public abstract bool Play(CharacterController target);
+    public abstract SkillResult Play(Vector2Int destiny);
 
     public virtual bool IsVisible() {
         return self.GetEnergy() >= energy;
+    }
+
+    public bool TargetCharacter() {
+        return targetEnemies || targetAllies || targetSelf;
+    }
+
+    public bool TargetTile() {
+        return !TargetCharacter();
     }
 
     /// <summary>
@@ -56,14 +71,20 @@ public abstract class Skill : MonoBehaviour {
         List<int> targetIds = new List<int>();
         int alliesPlayer = caster.GetPlayer();
         int enemiesPlayer = ((alliesPlayer + 1) % 2);
-        if (TargetAllies()) targetIds.AddRange(CharacterManager.instance.GetPlayerCharacters(alliesPlayer));
-        if (TargetEnemies()) targetIds.AddRange(CharacterManager.instance.GetPlayerCharacters(enemiesPlayer));
-        if (TargetSelf()) targetIds.Add(caster.GetId());
+        if (targetAllies) targetIds.AddRange(CharacterManager.instance.GetPlayerCharacters(alliesPlayer));
+        if (targetEnemies) targetIds.AddRange(CharacterManager.instance.GetPlayerCharacters(enemiesPlayer));
+        if (targetSelf) targetIds.Add(caster.GetId());
         else targetIds.Remove(caster.GetId());
         return targetIds;
     }
 
     protected int RollDices(int dices, int targetArmor) {
         return DiceManager.instance.RollDices(dices, targetArmor);
+    }
+
+    protected CharacterController GetTarget(Vector2Int destiny) {
+        int targetId = CharacterManager.instance.GetId(destiny);
+        if (targetId >= 0) return CharacterManager.instance.Get(targetId);
+        else return null;
     }
 }

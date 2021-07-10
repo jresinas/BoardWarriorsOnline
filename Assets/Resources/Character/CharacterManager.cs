@@ -38,7 +38,7 @@ public class CharacterManager : NetworkBehaviour {
     }
 
     public CharacterController Get(int id) {
-        if (id < Const.CHAR_NUMBER) {
+        if (id < Const.CHAR_NUMBER && id >= 0) {
             CharacterController character = characters[id].GetComponent<CharacterController>();
             return character;
         } else return null;
@@ -76,24 +76,42 @@ public class CharacterManager : NetworkBehaviour {
     }
 
     [Server]
-    public bool AllowUseSkill(int casterId, int skillIndex, int targetId) {
+    public bool AllowUseSkill(int casterId, int skillIndex, Vector2Int destiny) {
         CharacterController caster = Get(casterId);
-        CharacterController target = Get(targetId);
-        if (caster != null && target != null) {
+        if (caster != null && skillIndex >= 0) {
             Skill skill = caster.GetSkill(skillIndex);
-            List<int> targetIds = skill.GetTargetList(caster);
-            // distance between caster and target is <= skill range and target is targetable by the skill
-            return (BoardUtils.Distance(caster.GetPosition(), target.GetPosition()) <= skill.GetRange()) &&
-                (targetIds.Count != 0 && targetIds.Contains(targetId));
-        } else return false;
+            if (skill.TargetCharacter()) {
+                int targetId = GetId(destiny);
+                CharacterController target = Get(targetId);
+                if (target != null) {
+                    List<int> targetIds = skill.GetTargetList(caster);
+                    // distance between caster and target is <= skill range and target is targetable by the skill
+                    return (BoardUtils.Distance(caster.GetPosition(), target.GetPosition()) <= skill.GetRange()) &&
+                        (targetIds.Count != 0 && targetIds.Contains(targetId));
+                }
+            } else if (skill.TargetTile()) {
+                return (BoardUtils.Distance(caster.GetPosition(), destiny) <= skill.GetRange());
+            }
+        }
+
+        return false;
     }
 
     [Server]
-    public bool CanResponse(int casterId, int skillIndex, int targetId) {
+    public bool CanResponse(int casterId, int skillIndex, Vector2Int destiny) {
         bool result = false;
-        CharacterController target = Get(targetId);
-        for (int i = 0; i < Const.SKILL_NUMBER; i++) {
-            if (target.GetSkill(i) is SkillResponse) result = true;
+        CharacterController caster = Get(casterId);
+        if (caster != null) {
+            Skill skill = caster.GetSkill(skillIndex);
+            if (skill.TargetCharacter()) {
+                int targetId = GetId(destiny);
+                CharacterController target = Get(targetId);
+                if (target != null) {
+                    for (int i = 0; i < Const.SKILL_NUMBER; i++) {
+                        if (target.GetSkill(i) is SkillResponse) result = true;
+                    }
+                }
+            }
         }
         return result;
     }
@@ -116,10 +134,10 @@ public class CharacterManager : NetworkBehaviour {
     }
 
     [Server]
-    void UseSkillHandler(int casterId, int skillIndex, int targetId) {
+    void UseSkillHandler(int casterId, int skillIndex, Vector2Int destiny) {
         CharacterController caster = Get(casterId);
-        bool success = caster.UseSkill(skillIndex, targetId);
-        caster.UseSkillAnimation(skillIndex, targetId, success);
+        SkillResult result = caster.UseSkill(skillIndex, destiny);
+        caster.UseSkillAnimation(skillIndex, result.target, result.success);
     }
 
     [Server]

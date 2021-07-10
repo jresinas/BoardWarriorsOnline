@@ -632,6 +632,9 @@ MonoBehaviour:
   animation: Attack
   range: 1
   energy: 0
+  targetEnemies: 1
+  targetAllies: 0
+  targetSelf: 0
   dicesNumber: 5
 --- !u!114 &-7763561353965280845
 MonoBehaviour:
@@ -651,6 +654,9 @@ MonoBehaviour:
   animation: Attack
   range: 1
   energy: 3
+  targetEnemies: 1
+  targetAllies: 0
+  targetSelf: 0
 --- !u!114 &-5569749395958243429
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -669,6 +675,9 @@ MonoBehaviour:
   animation: Attack
   range: 0
   energy: 5
+  targetEnemies: 0
+  targetAllies: 0
+  targetSelf: 1
 --- !u!114 &-6384361421745248098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -687,6 +696,9 @@ MonoBehaviour:
   animation: Attack
   range: 1
   energy: 10
+  targetEnemies: 1
+  targetAllies: 0
+  targetSelf: 0
 --- !u!1 &2307039325581341530
 GameObject:
   m_ObjectHideFlags: 0

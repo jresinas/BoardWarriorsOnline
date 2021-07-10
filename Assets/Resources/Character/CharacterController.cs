@@ -104,10 +104,10 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     }
 
     [Server]
-    public bool UseSkill(int skillIndex, int targetId) {
+    public SkillResult UseSkill(int skillIndex, Vector2Int destiny) {
         Skill skill = GetSkill(skillIndex);
-        CharacterController target = CharacterManager.instance.Get(targetId);
-        return skill.Play(target);
+        //CharacterController target = CharacterManager.instance.Get(targetId);
+        return skill.Play(destiny);
     }
 
     [ClientRpc]

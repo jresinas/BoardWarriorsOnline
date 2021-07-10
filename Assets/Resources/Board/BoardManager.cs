@@ -69,6 +69,6 @@ public class BoardManager : NetworkBehaviour {
         Vector2Int origin = character.GetPosition();
         int range = skill.GetRange();
         List<int> targetIds = skill.GetTargetList(character);
-        board.ShowTargetMarks(origin, range, targetIds);
+        board.ShowTargetMarks(origin, range, targetIds, skill.TargetCharacter());
     }   
 }

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Bandage : SkillNormal {
-    public override bool Play(CharacterController target) {
+    public override SkillResult Play(Vector2Int destiny) {
+        CharacterController target = GetTarget(destiny);
         target.ChangeHealth(2);
-        return true;
+        return new SkillResult(target.id, true);
     }
 
-    public override bool TargetAllies() { return true; }
-    public override bool TargetEnemies() { return false; }
-    public override bool TargetSelf() { return true; }
+    //public override bool TargetAllies() { return true; }
+    //public override bool TargetEnemies() { return false; }
+    //public override bool TargetSelf() { return true; }
 }
