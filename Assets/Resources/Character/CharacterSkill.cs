@@ -38,10 +38,7 @@ public class CharacterSkill : MonoBehaviour {
     // Attacking character 
     void Impact() {
         foreach (CharacterController targetCharacter in targetCharacters) {
-            if (targetCharacter != self) {
-                if (success) targetCharacter.ReceiveDamage();
-                else targetCharacter.DodgeAttack();
-            }
+            if (targetCharacter != self) targetCharacter.ReceiveImpact(success);
         }
 
         targetCharacters = null;
@@ -53,16 +50,14 @@ public class CharacterSkill : MonoBehaviour {
         anim.SetTrigger("Waiting");
     }
 
-    // Target character has been damaged
-    public void ReceiveDamage() {
-        anim.SetTrigger("Damage");
-    }
-
-    public void DodgeAttack() {
-        anim.SetTrigger("Dodge");
+    public void ReceiveImpact(bool success) {
+        if (success) {
+            if (self.GetHealth() > 0) anim.SetTrigger("Damage");
+            else anim.SetBool("Death", true);
+        } else anim.SetTrigger("Dodge");
     }
 
     public void EndAnimation() {
-        anim.SetTrigger("EndAnimation");
+        if (!anim.GetBool("Death")) anim.SetTrigger("EndAnimation");
     }
 }

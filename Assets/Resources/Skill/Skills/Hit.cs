@@ -9,6 +9,7 @@ public class Hit : SkillNormal {
         CharacterController target = GetTarget(destiny);
         int targetArmor = target.GetArmor();
         int damage = RollDices(dicesNumber, targetArmor+1);
+        target.ChangeHealth(-damage);
         return new SkillResult(new int[] { target.id }, damage > 0);
     }
 

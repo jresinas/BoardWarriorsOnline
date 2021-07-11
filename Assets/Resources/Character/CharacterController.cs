@@ -124,21 +124,17 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
         CharacterManager.instance.ExitHover(id);
     }
 
-    #region AnimationCallbacks
+    #region Animations
     public void Waiting() {
         characterSkill.Waiting();
     }
 
-    public void ReceiveDamage() {
-        characterSkill.ReceiveDamage();
+    public void ReceiveImpact(bool success) {
+        characterSkill.ReceiveImpact(success);
     }
-
-    public void DodgeAttack() {
-        characterSkill.DodgeAttack();
-    }
-    #endregion
 
     public void EndAnimation() {
         characterSkill.EndAnimation();
     }
+    #endregion
 }

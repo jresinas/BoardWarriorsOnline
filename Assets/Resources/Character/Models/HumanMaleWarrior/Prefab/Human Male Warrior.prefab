@@ -639,13 +639,13 @@ MonoBehaviour:
   position: {x: 0, y: 0}
   animationTime: 1
   movement: 2
-  armor: 5
+  armor: 2
   skills:
   - {fileID: 4482454264383577022}
   - {fileID: 4943359797614711333}
   - {fileID: 95568550017484503}
   - {fileID: 3001247557368821874}
-  maxHealth: 8
+  maxHealth: 4
 --- !u!114 &7351193204919807862
 MonoBehaviour:
   m_ObjectHideFlags: 0
