@@ -38,6 +38,7 @@ public class CharacterSkill : MonoBehaviour {
     // Attacking character 
     void Impact() {
         foreach (CharacterController targetCharacter in targetCharacters) {
+            targetCharacter.RefreshHealth();
             if (targetCharacter != self) targetCharacter.ReceiveImpact(success);
         }
 

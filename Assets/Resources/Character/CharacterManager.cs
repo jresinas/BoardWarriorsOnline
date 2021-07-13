@@ -155,12 +155,12 @@ public class CharacterManager : NetworkBehaviour {
     }
 
     [ClientRpc]
-    public void ChangeEnergy(int characterId, int energy) {
+    public void RefreshEnergy(int characterId, int energy) {
         if (OnChangeEnergy != null) OnChangeEnergy(characterId, energy);
     }
 
-    [ClientRpc]
-    public void ChangeHealth(int characterId, int health) {
+    //[ClientRpc]
+    public void RefreshHealth(int characterId, int health) {
         if (OnChangeHealth != null) OnChangeHealth(characterId, health);
     }
 }

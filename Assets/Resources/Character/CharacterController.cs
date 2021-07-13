@@ -62,12 +62,15 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
 
     public void ChangeHealth(int value) {
         health = Mathf.Clamp(health+value, 0, maxHealth);
-        CharacterManager.instance.ChangeHealth(id, health);
     }
 
     public void ChangeEnergy(int value) {
         energy = Mathf.Clamp(energy + value, 0, Const.MAX_ENERGY);
-        CharacterManager.instance.ChangeEnergy(id, energy);
+        CharacterManager.instance.RefreshEnergy(id, energy);
+    }
+
+    public void RefreshHealth() {
+        CharacterManager.instance.RefreshHealth(id, health);
     }
 
     public void SetPlayer(int player) {
