@@ -639,13 +639,13 @@ MonoBehaviour:
   position: {x: 0, y: 0}
   animationTime: 1
   movement: 2
-  armor: 2
+  armor: 0
   skills:
   - {fileID: 4482454264383577022}
   - {fileID: 4943359797614711333}
   - {fileID: 95568550017484503}
   - {fileID: 3001247557368821874}
-  maxHealth: 4
+  maxHealth: 2
 --- !u!114 &7351193204919807862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -673,6 +673,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 8650089534068628174}
   self: {fileID: 470737390838893953}
+  dissolveMaterial: {fileID: 2100000, guid: a90299535309c3a4bbd4bb61df2c8175, type: 2}
 --- !u!114 &4482454264383577022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -869,7 +870,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 06257ad6e8b26da41bf8e2da53e3b453, type: 2}
+  - {fileID: 2100000, guid: bfbdf2f75ead81442a2d9ff2880b2ed9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1537,7 +1538,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 06257ad6e8b26da41bf8e2da53e3b453, type: 2}
+  - {fileID: 2100000, guid: bfbdf2f75ead81442a2d9ff2880b2ed9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1808,7 +1809,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 06257ad6e8b26da41bf8e2da53e3b453, type: 2}
+  - {fileID: 2100000, guid: bfbdf2f75ead81442a2d9ff2880b2ed9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2203,7 +2204,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 06257ad6e8b26da41bf8e2da53e3b453, type: 2}
+  - {fileID: 2100000, guid: bfbdf2f75ead81442a2d9ff2880b2ed9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

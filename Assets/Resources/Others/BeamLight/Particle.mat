@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Health 4
+  m_Name: Particle
   m_Shader: {fileID: 4800000, guid: a79c4cbe14bee6a4b831366040ac6177, type: 3}
   m_ShaderKeywords: _ALPHAMODULATE_ON _BLENDMODE_BLEND
   m_LightmapFlags: 0

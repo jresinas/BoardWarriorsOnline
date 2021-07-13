@@ -60,4 +60,34 @@ public class CharacterSkill : MonoBehaviour {
     public void EndAnimation() {
         if (!anim.GetBool("Death")) anim.SetTrigger("EndAnimation");
     }
+
+    public void DeathFadeOut() {
+        Renderer[] renders = GetComponentsInChildren<SkinnedMeshRenderer>();
+        //Renderer[] renders = GetComponentsInChildren<Renderer>();
+        foreach (Renderer render in renders) {
+            render.material.ToFadeMode();
+            StartCoroutine(FadeOut(render));
+        }
+    }
+    
+    IEnumerator FadeOut(Renderer render) {
+        Color color = render.material.color;
+        for (float f = 0; f <= Const.FADE_OUT_SECONDS; f += Time.deltaTime) {
+            color.a = Mathf.Lerp(1f, 0f, f);
+            render.material.color = color;
+            yield return null;
+        }
+        gameObject.SetActive(false);
+    }
+
+    /*
+    IEnumerator FadeOut(Renderer render, float amount = 0f) {
+        if (amount > 1f) gameObject.SetActive(false);
+        yield return new WaitForEndOfFrame();
+        Color color = render.material.color;
+        color.a = 1f - amount;
+        render.material.color = color;
+        StartCoroutine(FadeOut(render, amount + Time.deltaTime * 1/Const.FADE_OUT_SECONDS));
+    }
+    */
 }

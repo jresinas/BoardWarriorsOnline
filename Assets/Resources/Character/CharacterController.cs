@@ -136,5 +136,9 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     public void EndAnimation() {
         characterSkill.EndAnimation();
     }
+
+    public void DeathFadeOut() {
+        characterSkill.DeathFadeOut();
+    }
     #endregion
 }
