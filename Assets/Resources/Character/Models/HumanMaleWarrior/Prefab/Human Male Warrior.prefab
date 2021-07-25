@@ -685,7 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1972e57bb90336946ac9d5d7556fc04e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
+  title: Hit
   icon: {fileID: 21300000, guid: a15930a92eb98dd48b03d872a7f1a27f, type: 3}
   text: 
   animation: Attack
@@ -707,8 +707,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d990ecfcf088694ca8a1709316409f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  icon: {fileID: 21300000, guid: 7b29a86f3ab291646a0071db11b6fbc1, type: 3}
+  title: Shield
+  icon: {fileID: 21300000, guid: bb8ccd8e8384b6b479b34b7c21a88416, type: 3}
   text: 
   animation: Attack
   range: 0
@@ -728,8 +728,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eaf71f5559b6ee146ba99c828ad636c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  icon: {fileID: 21300000, guid: 7b29a86f3ab291646a0071db11b6fbc1, type: 3}
+  title: Bandage
+  icon: {fileID: 21300000, guid: da04a5d8b8f7a9d46b821831cc26ed13, type: 3}
   text: 
   animation: Attack
   range: 1
@@ -749,8 +749,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36f57a409d614dc44a176e265080b245, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
-  icon: {fileID: 21300000, guid: 7b29a86f3ab291646a0071db11b6fbc1, type: 3}
+  title: Whirlwind
+  icon: {fileID: 21300000, guid: cc1e6c5a10b637040ba4a0ddf244cad0, type: 3}
   text: 
   animation: Attack
   range: 0
