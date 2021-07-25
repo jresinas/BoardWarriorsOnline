@@ -133,6 +133,7 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     }
 
     public void ReceiveImpact(bool success) {
+        RefreshHealth();
         characterSkill.ReceiveImpact(success);
     }
 

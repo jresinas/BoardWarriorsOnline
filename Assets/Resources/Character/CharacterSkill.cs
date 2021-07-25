@@ -38,12 +38,8 @@ public class CharacterSkill : MonoBehaviour {
     // Attacking character 
     void Impact() {
         foreach (CharacterController targetCharacter in targetCharacters) {
-            targetCharacter.RefreshHealth();
             if (targetCharacter != self) targetCharacter.ReceiveImpact(success);
         }
-
-        targetCharacters = null;
-        skill = null;
     }
 
     // During attack, waiting dice roll
@@ -60,6 +56,8 @@ public class CharacterSkill : MonoBehaviour {
 
     public void EndAnimation() {
         if (!anim.GetBool("Death")) anim.SetTrigger("EndAnimation");
+        targetCharacters = null;
+        skill = null;
     }
 
     public void DeathFadeOut() {
