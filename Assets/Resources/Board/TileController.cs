@@ -17,7 +17,9 @@ public class TileController : NetworkBehaviour, IPointerClickHandler {
 
     public void HideMark() {
         MeshRenderer mr = GetComponent<MeshRenderer>();
-        mr.material.color = new Color32(255, 255, 255, 255);
+        //mr.material.color = new Color32(255, 255, 255, 255);
+        //mr.material.color = new Color32(178, 178, 178, 255);
+        mr.material.color = new Color32(154, 154, 154, 255);
     }
 
     public void ShowMoveMark() {
