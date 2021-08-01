@@ -39,6 +39,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1424048764119600482}
+  - component: {fileID: 7199432748136780197}
   m_Layer: 7
   m_Name: arissa:Hips
   m_TagString: Untagged
@@ -63,6 +64,19 @@ Transform:
   m_Father: {fileID: 8197443161354253540}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7199432748136780197
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 613629467685659777}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.30244878, y: 1.1017089, z: 0.15651602}
+  m_Center: {x: -0.013572052, y: -0.041653693, z: -0.01595658}
 --- !u!1 &723640577322472601
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,6 +476,36 @@ Transform:
   - {fileID: 8490383263179567784}
   m_Father: {fileID: 4517767474207151498}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2135714213619369263
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 365635311551308443}
+  m_Layer: 7
+  m_Name: Grip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &365635311551308443
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2135714213619369263}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.089, y: 0.011, z: 0.026}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4929263659186418094}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2330094370431963328
 GameObject:
@@ -1409,6 +1453,7 @@ Transform:
   - {fileID: 5237797051674687291}
   - {fileID: 5824709616909225829}
   - {fileID: 4631767836691945401}
+  - {fileID: 365635311551308443}
   m_Father: {fileID: 6258960803955101227}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2566,8 +2611,8 @@ GameObject:
   - component: {fileID: 317646578236723729}
   - component: {fileID: -5174482603915282880}
   - component: {fileID: 3377208043326526694}
+  - component: {fileID: 966771677262918522}
   - component: {fileID: 3735111252896116246}
-  - component: {fileID: 2599267435026079155}
   - component: {fileID: 7320743002806489274}
   m_Layer: 7
   m_Name: Human Female Archer
@@ -2621,7 +2666,7 @@ BoxCollider:
   m_GameObject: {fileID: 8829583815816638046}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.63888717, y: 1.1850163, z: 0.40322745}
   m_Center: {x: -0.014202729, y: 0.5102888, z: 0.024736822}
@@ -2665,10 +2710,13 @@ MonoBehaviour:
   armor: 0
   skills:
   - {fileID: 3377208043326526694}
+  - {fileID: 966771677262918522}
   - {fileID: 3735111252896116246}
-  - {fileID: 2599267435026079155}
   - {fileID: 7320743002806489274}
   maxHealth: 2
+  leftHand: {fileID: 365635311551308443}
+  rightHand: {fileID: 7424182928324106894}
+  body: {fileID: 0}
 --- !u!114 &317646578236723729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2717,6 +2765,42 @@ MonoBehaviour:
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
+  effects: []
+  dicesNumber: 2
+--- !u!114 &966771677262918522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8829583815816638046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b09d0f9feedb46645bce0297ad9044b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  title: Fire Arrow
+  icon: {fileID: 21300000, guid: 0dcbe68dccddb464abcb5e45adc5cf62, type: 3}
+  text: 
+  animation: Attack
+  range: 4
+  energy: 1
+  targetEnemies: 1
+  targetAllies: 0
+  targetSelf: 0
+  effects:
+  - prefab: {fileID: 1073966096503554, guid: c7fe976ed81c17344a6900638fbfee3c, type: 3}
+    position: {fileID: 365635311551308443}
+    rotation: {fileID: 8197443161354253540}
+    time: 10
+  - prefab: {fileID: 1009251677468738, guid: 8a4e14e135f4a7441b19120ba2145b8f, type: 3}
+    position: {fileID: 365635311551308443}
+    rotation: {fileID: 8197443161354253540}
+    time: 10
+  - prefab: {fileID: 1831572337280484, guid: 707df8d100dbcaa478b622668869bbe8, type: 3}
+    position: {fileID: 365635311551308443}
+    rotation: {fileID: 8197443161354253540}
+    time: 10
   dicesNumber: 2
 --- !u!114 &3735111252896116246
 MonoBehaviour:
@@ -2739,28 +2823,7 @@ MonoBehaviour:
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
-  dicesNumber: 1
---- !u!114 &2599267435026079155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8829583815816638046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1972e57bb90336946ac9d5d7556fc04e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  title: Poison Arrow
-  icon: {fileID: 21300000, guid: ad070a5a7182deb49be5e2a693cc8206, type: 3}
-  text: 
-  animation: Attack
-  range: 4
-  energy: 1
-  targetEnemies: 1
-  targetAllies: 0
-  targetSelf: 0
+  effects: []
   dicesNumber: 1
 --- !u!114 &7320743002806489274
 MonoBehaviour:
@@ -2783,6 +2846,7 @@ MonoBehaviour:
   targetEnemies: 0
   targetAllies: 0
   targetSelf: 1
+  effects: []
 --- !u!1 &8833594144473223375
 GameObject:
   m_ObjectHideFlags: 0

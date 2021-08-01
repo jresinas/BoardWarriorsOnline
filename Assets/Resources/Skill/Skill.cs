@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,6 +13,14 @@ public class SkillResult{
     }
 }
 
+[Serializable]
+public class SkillEffect {
+    public GameObject prefab;
+    public Transform position;
+    public Transform rotation;
+    public float time;
+}
+
 public abstract class Skill : MonoBehaviour {
     [SerializeField] string title;
     [SerializeField] Sprite icon;
@@ -22,6 +31,9 @@ public abstract class Skill : MonoBehaviour {
     [SerializeField] bool targetEnemies;
     [SerializeField] bool targetAllies;
     [SerializeField] bool targetSelf;
+    //[SerializeField] GameObject projectile;
+    [SerializeField] protected SkillEffect[] effects;
+
     protected CharacterController self;
 
     public void Start() {
@@ -102,5 +114,20 @@ public abstract class Skill : MonoBehaviour {
         int targetId = CharacterManager.instance.GetId(destiny);
         if (targetId >= 0) return CharacterManager.instance.Get(targetId);
         else return null;
+    }
+
+    public virtual void AnimationEffect(int number) {
+        if (effects.Length > number) {
+            SkillEffect effect = effects[number];
+
+            if (effect != null) {
+                GameObject effectInstance = Instantiate(effect.prefab, effect.position.position, effect.rotation.rotation);
+                //GameObject effectInstance = Instantiate(effect, self.leftHand.position, self.transform.rotation);
+                //GameObject effectInstance = Instantiate(effect, self.leftHand.position, self.leftHand.rotation);
+                Destroy(effectInstance, effect.time);
+                ProjectileController pc = effectInstance.GetComponentInChildren<ProjectileController>();
+                if (pc != null) pc.StartProjectile(self);
+            }
+        }
     }
 }

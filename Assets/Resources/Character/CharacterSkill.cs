@@ -9,6 +9,14 @@ public class CharacterSkill : MonoBehaviour {
     Skill skill;
     bool success;
 
+    public List<CharacterController> GetTargets() {
+        return targetCharacters;
+    }
+
+    public bool GetSuccess() {
+        return success;
+    }
+
     //public void StartPlay(Skill skill, CharacterController targetCharacter, bool success) {
     public void StartPlay(Skill skill, int[] targetIds, bool success) {
         this.targetCharacters = CharacterManager.instance.Get(targetIds);
@@ -42,12 +50,17 @@ public class CharacterSkill : MonoBehaviour {
         }
     }
 
+    void Effect(int number) {
+        skill.AnimationEffect(number);
+    }
+
     // During attack, waiting dice roll
     public void Waiting() {
         anim.SetTrigger("Waiting");
     }
 
     public void ReceiveImpact(bool success) {
+        Debug.Log("CharacterSkill - ReceiveImpact "+success);
         if (success) {
             if (self.GetHealth() > 0) anim.SetTrigger("Damage");
             else anim.SetBool("Death", true);
@@ -64,29 +77,18 @@ public class CharacterSkill : MonoBehaviour {
         Renderer[] renders = GetComponentsInChildren<SkinnedMeshRenderer>();
         //Renderer[] renders = GetComponentsInChildren<Renderer>();
         foreach (Renderer render in renders) {
-            render.material.ToFadeMode();
             StartCoroutine(FadeOut(render));
         }
     }
     
     IEnumerator FadeOut(Renderer render) {
+        render.material.ToFadeMode();
         Color color = render.material.color;
-        for (float f = 0; f <= Const.FADE_OUT_SECONDS; f += Time.deltaTime) {
-            color.a = Mathf.Lerp(1f, 0f, f);
+        for (float f = 0; f <= Const.CHAR_FADE_OUT_SECONDS; f += Time.deltaTime) {
+            color.a = Mathf.Lerp(1f, 0f, f/Const.CHAR_FADE_OUT_SECONDS);
             render.material.color = color;
             yield return null;
         }
         gameObject.SetActive(false);
     }
-
-    /*
-    IEnumerator FadeOut(Renderer render, float amount = 0f) {
-        if (amount > 1f) gameObject.SetActive(false);
-        yield return new WaitForEndOfFrame();
-        Color color = render.material.color;
-        color.a = 1f - amount;
-        render.material.color = color;
-        StartCoroutine(FadeOut(render, amount + Time.deltaTime * 1/Const.FADE_OUT_SECONDS));
-    }
-    */
 }

@@ -22,6 +22,10 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     [SyncVar] int health;
     [SyncVar] int energy;
 
+    public Transform leftHand;
+    public Transform rightHand;
+    public Transform body;
+
     void Awake() {
         health = maxHealth;
         energy = 0;
@@ -133,6 +137,7 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     }
 
     public void ReceiveImpact(bool success) {
+        Debug.Log("CharacterController - ReceiveImpact");
         RefreshHealth();
         characterSkill.ReceiveImpact(success);
     }
