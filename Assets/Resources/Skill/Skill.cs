@@ -127,6 +127,8 @@ public abstract class Skill : MonoBehaviour {
                 Destroy(effectInstance, effect.time);
                 ProjectileController pc = effectInstance.GetComponentInChildren<ProjectileController>();
                 if (pc != null) pc.StartProjectile(self);
+                AE_SetMeshToEffect smte = effectInstance.GetComponentInChildren<AE_SetMeshToEffect>();
+                if (smte != null) smte.Mesh = effect.position.gameObject;
             }
         }
     }
