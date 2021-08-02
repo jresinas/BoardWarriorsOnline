@@ -11,6 +11,7 @@ public class CharacterManager : NetworkBehaviour {
     public event EventHandler<int> OnCharacterHoverExit;
     public event Action<int, int> OnChangeHealth;
     public event Action<int, int> OnChangeEnergy;
+    public event EventHandler<int> OnDeath;
 
     public SyncList<Transform> characters = new SyncList<Transform>();
 
@@ -39,14 +40,15 @@ public class CharacterManager : NetworkBehaviour {
     public CharacterController Get(int id) {
         if (id < Const.CHAR_NUMBER && id >= 0) {
             CharacterController character = characters[id].GetComponent<CharacterController>();
-            return character;
-        } else return null;
+            if (character.gameObject.activeSelf) return character;
+        }
+        return null;
     }
 
     public List<CharacterController> Get(int[] ids) {
         List<CharacterController> targets = new List<CharacterController>();
         foreach (int id in ids) {
-            CharacterController target = CharacterManager.instance.Get(id);
+            CharacterController target = Get(id);
             if (target != null) targets.Add(target);
         }
         return targets;
@@ -55,7 +57,7 @@ public class CharacterManager : NetworkBehaviour {
     public int GetId(Vector2Int position) {
         for (int i = 0; i < Const.CHAR_NUMBER; i++) {
             CharacterController character = Get(i);
-            if (character.GetPosition() == position) return i;
+            if (character != null && character.GetPosition() == position) return i;
         }
         return -1;
     }
@@ -64,7 +66,7 @@ public class CharacterManager : NetworkBehaviour {
         List<int> characters = new List<int>();
         for (int i = 0; i < Const.CHAR_NUMBER; i++) {
             CharacterController character = Get(i);
-            if (character.GetPlayer() == player) characters.Add(i);
+            if (character != null && character.GetPlayer() == player) characters.Add(i);
         }
         return characters;
     }
@@ -112,11 +114,13 @@ public class CharacterManager : NetworkBehaviour {
     }
 
     void StartGameHandler(object source, EventArgs args) {
-        for (int i = 0; i < Const.CHAR_NUMBER; i++) Get(i).LocateCharacter();
+        CharacterController character;
+        for (int i = 0; i < Const.CHAR_NUMBER; i++) if ((character = Get(i)) != null) character.LocateCharacter();
     }
 
     void StartRoundHandler(object source, EventArgs args) {
-        for (int i = 0; i < Const.CHAR_NUMBER; i++) Get(i).ChangeEnergy(1);
+        CharacterController character;
+        for (int i = 0; i < Const.CHAR_NUMBER; i++) if ((character = Get(i)) != null) character.ChangeEnergy(1);
     }
 
     [Server]
@@ -162,5 +166,10 @@ public class CharacterManager : NetworkBehaviour {
     //[ClientRpc]
     public void RefreshHealth(int characterId, int health) {
         if (OnChangeHealth != null) OnChangeHealth(characterId, health);
+    }
+
+    [Server]
+    public void Death(int characterId) {
+        if (OnDeath != null) OnDeath(this, characterId);
     }
 }

@@ -56,6 +56,7 @@ public class GameManager : NetworkBehaviour {
         GUIManager.instance.OnRequestEndTurn += RequestEndTurnHandler;
         GUIManager.instance.OnRequestSkip += RequestSkipHandler;
         DiceManager.instance.OnRollDices += RollDicesHandler;
+        CharacterManager.instance.OnDeath += DeathHandler;
     }
 
 
@@ -84,14 +85,14 @@ public class GameManager : NetworkBehaviour {
 
     void StartRound() {
         if (OnStartRound != null) OnStartRound(this, EventArgs.Empty);
-        for (int i = 0; i < Const.CHAR_NUMBER * 2; i++) charactersOrder[i] = i < Const.CHAR_NUMBER ? charactersPriority[i] : -1;
+        for (int i = 0; i < charactersOrder.Length ; i++) charactersOrder[i] = i < charactersPriority.Length ? charactersPriority[i] : -1;
         turn = 0;
         NextCharacter();
     }
     void NextCharacter() {
-        while (turn < Const.CHAR_NUMBER * 2 && charactersOrder[turn] < 0) turn++;
+        while (turn < charactersOrder.Length && charactersOrder[turn] < 0) turn++;
 
-        if (turn >= Const.CHAR_NUMBER * 2) StartRound();
+        if (turn >= charactersOrder.Length) StartRound();
         else {
             activeCharacter = charactersOrder[turn];
             NetworkConnection owner = CharacterManager.instance.GetOwner(activeCharacter);
@@ -212,6 +213,31 @@ public class GameManager : NetworkBehaviour {
     void CmdSkip(NetworkConnectionToClient sender = null) {
         Debug.Log("This is a command send by" + netIdentity + " who wants to skip turn");
         if (IsUserTurn(sender) && actions > 0) SkipTurn();
+    }
+    #endregion
+
+    #region Death
+    void DeathHandler(object source, int characterId) {
+        int[] newCharactersPriority;
+        int[] newCharactersOrder;
+        newCharactersPriority = new int[charactersPriority.Length-1];
+        newCharactersOrder = new int[charactersOrder.Length-2];
+        int j = 0;
+        for (int i = 0; i < charactersPriority.Length; i++) {
+            if (charactersPriority[i] != characterId) {
+                newCharactersPriority[j] = charactersPriority[i];
+                j++;
+            }
+        }
+        j = 0;
+        for (int i = 0; i < charactersOrder.Length; i++) {
+            if (i < newCharactersOrder.Length && charactersOrder[i] != characterId) {
+                newCharactersOrder[j] = charactersOrder[i];
+                j++;
+            }
+        }
+        charactersPriority = newCharactersPriority;
+        charactersOrder = newCharactersOrder;
     }
     #endregion
 

@@ -66,6 +66,7 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
 
     public void ChangeHealth(int value) {
         health = Mathf.Clamp(health+value, 0, maxHealth);
+        if (health <= 0) CharacterManager.instance.Death(id);
     }
 
     public void ChangeEnergy(int value) {
