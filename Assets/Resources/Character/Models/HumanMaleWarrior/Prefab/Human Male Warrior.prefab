@@ -534,7 +534,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3380908427848040628}
   - component: {fileID: 8650089534068628174}
-  - component: {fileID: 2859381615714866974}
   - component: {fileID: 1502020285412848137}
   - component: {fileID: 470737390838893953}
   - component: {fileID: 7351193204919807862}
@@ -590,19 +589,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!65 &2859381615714866974
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2711368057433987598}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.63888717, y: 1.1850163, z: 0.40322745}
-  m_Center: {x: -0.014202729, y: 0.5102888, z: 0.024736822}
 --- !u!114 &1502020285412848137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1951,6 +1937,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3356175544997218237}
+  - component: {fileID: 6855651111474569014}
   m_Layer: 7
   m_Name: Hips
   m_TagString: Untagged
@@ -1975,6 +1962,19 @@ Transform:
   m_Father: {fileID: 3380908427848040628}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &6855651111474569014
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6004066266884198286}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.63888717, y: 1.1850163, z: 0.17210937}
+  m_Center: {x: -0.014202714, y: -6.4693947e-16, z: -0.010389049}
 --- !u!1 &6437931803328951081
 GameObject:
   m_ObjectHideFlags: 0
