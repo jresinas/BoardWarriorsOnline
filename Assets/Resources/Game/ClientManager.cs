@@ -26,7 +26,7 @@ public class ClientManager : NetworkBehaviour {
 
     void Start()     {
         GameManager.instance.OnStartTurn += TargetStartTurnHandler;
-        GameManager.instance.OnEndTurn += EndTurnHandler;
+        GameManager.instance.OnEndOfTurn += EndOfTurnHandler;
         GameManager.instance.OnEndActions += EndActionsHandler;
         BoardManager.instance.OnClickTile += ClickTileHandler;
         GameManager.instance.OnRequestResponseSkill += RequestResponseSkillHandler;
@@ -72,12 +72,12 @@ public class ClientManager : NetworkBehaviour {
 
     #region GameEvents
     [TargetRpc]
-    void TargetStartTurnHandler(NetworkConnection userConnection, int characterId) {
-        StartTurn();
+    void TargetStartTurnHandler(NetworkConnection userConnection, int characterId, bool canSkip) {
+        StartTurn(canSkip);
     }
 
     [ClientRpc]
-    void EndTurnHandler(object source, EventArgs args) {
+    void EndOfTurnHandler(object source, EventArgs args) {
         EndTurn();
     }
 
@@ -89,11 +89,11 @@ public class ClientManager : NetworkBehaviour {
         GUIManager.instance.ShowCharacter();
     }
 
-    void StartTurn() {
+    void StartTurn(bool canSkip) {
         isTurn = true;
         isAvailableMove = true;
         isAvailableSkill = true;
-        GUIManager.instance.EnableButtons();
+        GUIManager.instance.EnableButtons(endTurn: true, skip: canSkip);
     }
 
     void EndTurn() {

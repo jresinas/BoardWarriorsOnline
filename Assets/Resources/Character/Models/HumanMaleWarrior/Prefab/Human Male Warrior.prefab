@@ -633,6 +633,7 @@ MonoBehaviour:
   - {fileID: 95568550017484503}
   - {fileID: 3001247557368821874}
   maxHealth: 2
+  portrait: {fileID: 21300000, guid: d5efbe453075a864c9b59a7463e5799c, type: 3}
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
   body: {fileID: 0}

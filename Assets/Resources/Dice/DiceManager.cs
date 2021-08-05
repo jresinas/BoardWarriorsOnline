@@ -16,11 +16,11 @@ public class DiceManager : NetworkBehaviour {
     }
 
     void Start() {
-        GameManager.instance.OnEndTurn += EndTurnHandler;
+        GameManager.instance.OnEndOfTurn += EndOfTurnHandler;
     }
 
     [ClientRpc]
-    void EndTurnHandler(object sender, EventArgs args) {
+    void EndOfTurnHandler(object sender, EventArgs args) {
         dices.Hide();
     }
 

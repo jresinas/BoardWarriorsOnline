@@ -67,7 +67,7 @@ public class GUIManager : NetworkBehaviour {
     }
 
     [ClientRpc]
-    void StartTurnHandler(object source, int characterId) {
+    void StartTurnHandler(object source, int characterId, bool canSkip) {
         turnCharacter = characterId;
         characterData.SetCharacter(characterId);
         // Unselect all skills

@@ -18,7 +18,7 @@ public class BoardManager : NetworkBehaviour {
     void Start() {
         GUIManager.instance.OnSelectSkill += SelectSkillHandler;
         GUIManager.instance.OnUnselectSkill += UnselectSkillHandler;
-        GameManager.instance.OnEndTurn += EndTurnHandler;
+        GameManager.instance.OnEndOfTurn += EndOfTurnHandler;
         GameManager.instance.OnMove += MoveHandler;
 
         board.LoadTiles();
@@ -33,7 +33,7 @@ public class BoardManager : NetworkBehaviour {
     }
 
     [ClientRpc]
-    void EndTurnHandler(object source, EventArgs args) {
+    void EndOfTurnHandler(object source, EventArgs args) {
         board.HideMarks();
     }
 

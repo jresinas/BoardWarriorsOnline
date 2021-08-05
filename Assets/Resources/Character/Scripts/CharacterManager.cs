@@ -22,6 +22,7 @@ public class CharacterManager : NetworkBehaviour {
     void Start() {
         GameManager.instance.OnStartGame += StartGameHandler;
         GameManager.instance.OnStartRound += StartRoundHandler;
+        GameManager.instance.OnEndTurn += EndTurndHandler;
         GameManager.instance.OnMove += MoveHandler;
         GameManager.instance.OnUseSkill += UseSkillHandler;
         GameManager.instance.OnUseResponseSkillPre += UseResponseSkillPreHandler;
@@ -121,6 +122,14 @@ public class CharacterManager : NetworkBehaviour {
     void StartRoundHandler(object source, EventArgs args) {
         CharacterController character;
         for (int i = 0; i < Const.CHAR_NUMBER; i++) if ((character = Get(i)) != null) character.ChangeEnergy(1);
+    }
+
+    [ClientRpc]
+    private void EndTurndHandler(object source, EventArgs args) {
+        foreach (Transform character in characters) {
+            CharacterController cc = character.GetComponent<CharacterController>();
+            if (cc != null) cc.RefreshHealth();
+        }
     }
 
     [Server]

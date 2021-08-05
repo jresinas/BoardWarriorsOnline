@@ -21,7 +21,7 @@ public class BeamLightController : NetworkBehaviour {
     }
 
     [ClientRpc]
-    void StartTurnHandler(object userConnection, int characterId) {
+    void StartTurnHandler(object userConnection, int characterId, bool canSkip) {
         Debug.Log("Change Beam of Light");
         CharacterController character = CharacterManager.instance.Get(characterId);
         transform.SetParent(character.transform);
