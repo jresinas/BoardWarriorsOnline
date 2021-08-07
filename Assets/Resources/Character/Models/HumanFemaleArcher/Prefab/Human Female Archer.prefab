@@ -2701,6 +2701,7 @@ MonoBehaviour:
   - {fileID: 3735111252896116246}
   - {fileID: 7320743002806489274}
   maxHealth: 2
+  portrait: {fileID: 0}
   leftHand: {fileID: 365635311551308443}
   rightHand: {fileID: 7424182928324106894}
   body: {fileID: 0}
@@ -2783,7 +2784,7 @@ MonoBehaviour:
   - prefab: {fileID: 1009251677468738, guid: 8a4e14e135f4a7441b19120ba2145b8f, type: 3}
     position: {fileID: 365635311551308443}
     rotation: {fileID: 8197443161354253540}
-    time: 5
+    time: 10
   - prefab: {fileID: 1831572337280484, guid: 707df8d100dbcaa478b622668869bbe8, type: 3}
     position: {fileID: 365635311551308443}
     rotation: {fileID: 8197443161354253540}
