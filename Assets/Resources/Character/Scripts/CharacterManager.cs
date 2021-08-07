@@ -83,7 +83,8 @@ public class CharacterManager : NetworkBehaviour {
     [Server]
     public bool AllowMove(int characterId, Vector2Int position) {
         CharacterController character = Get(characterId);
-        return BoardUtils.Distance(character.GetPosition(), position) <= character.GetMovement();
+        // return BoardUtils.Distance(character.GetPosition(), position) <= character.GetMovement();
+        return BoardUtils.Reach(character.GetPosition(), position, character.GetMovement());
     }
 
     [Server]

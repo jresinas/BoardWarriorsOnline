@@ -5,6 +5,10 @@ using UnityEngine;
 using Mirror;
 
 public class BoardManager : NetworkBehaviour {
+    //public Vector2Int start;
+    //public Vector2Int end;
+    //public List<Vector2Int> path;
+
     public static BoardManager instance = null;
 
     public event EventHandler<Vector2Int> OnClickTile;
@@ -23,6 +27,14 @@ public class BoardManager : NetworkBehaviour {
 
         board.LoadTiles();
     }
+
+    //void Update() {
+    //    if (Input.GetKeyDown("space")) {
+    //        List<Vector2Int>? pathi = BoardUtils.GetPath(start, end, 0);
+    //        if (pathi != null) path = pathi;
+    //        else Debug.Log("Path null");
+    //    }
+    //}
 
     public void ClickTile(Vector2Int position) {
         if (OnClickTile != null) OnClickTile(this, position);

@@ -108,7 +108,7 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     [ClientRpc]
     public void MoveAnimation(Vector2Int origin, Vector2Int destiny) {
         //GetComponent<Animator>().SetBool("Walk", true);
-        Vector2Int[] path = BoardUtils.GetPath(origin, destiny);
+        List<Vector2Int> path = BoardUtils.GetPath(origin, destiny, player);
         characterMove.StartMove(path);
     }
 

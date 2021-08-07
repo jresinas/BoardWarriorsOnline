@@ -81,11 +81,13 @@ public abstract class Skill : MonoBehaviour {
             if (target != null) {
                 List<int> targetableIds = GetTargetableCharacters(self);
                 // distance between caster and target is <= skill range and target is targetable by the skill
-                return (BoardUtils.Distance(self.GetPosition(), target.GetPosition()) <= GetRange()) &&
-                    (targetableIds.Count != 0 && targetableIds.Contains(targetId));
+                // return (BoardUtils.Distance(self.GetPosition(), target.GetPosition()) <= GetRange()) &&
+                return (BoardUtils.Reach(self.GetPosition(), target.GetPosition(), GetRange()) &&
+                    targetableIds.Count != 0 && targetableIds.Contains(targetId));
             }
         } else if (TargetTile()) {
-            return BoardUtils.Distance(self.GetPosition(), destiny) <= GetRange() && self.GetPosition() != destiny;
+            // return BoardUtils.Distance(self.GetPosition(), destiny) <= GetRange() && self.GetPosition() != destiny;
+            return BoardUtils.Reach(self.GetPosition(), destiny, GetRange()) && self.GetPosition() != destiny;
         }
         return false;
     }

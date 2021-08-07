@@ -8,7 +8,8 @@ public class CharacterMove : MonoBehaviour {
     float animationTime = 1f;
 
     int destPoint;
-    Vector2Int[] path;
+    //Vector2Int[] path;
+    List<Vector2Int> path;
 
     Vector3 originPosition;
     Vector3 targetPosition;
@@ -40,9 +41,11 @@ public class CharacterMove : MonoBehaviour {
 
     }
 
-    public bool StartMove(Vector2Int[] path) {
-        if (!animating && path.Length > 0) {
-            destPoint = 0;
+    //public bool StartMove(Vector2Int[] path) {
+    public bool StartMove(List<Vector2Int> path) {
+        //if (!animating && path.Length > 0) {
+        if (!animating && path.Count > 0) {
+                destPoint = 0;
             this.path = path;
             Step();
             return true;
@@ -51,7 +54,8 @@ public class CharacterMove : MonoBehaviour {
     }
 
     void Step() {
-        if (path.Length != 0 && destPoint < path.Length) {
+        //if (path.Length != 0 && destPoint < path.Length) {
+        if (path.Count != 0 && destPoint < path.Count) {
             time = 0;
             originPosition = transform.position;
             targetPosition = BoardManager.instance.GetTile(path[destPoint]).transform.position + Vector3.up * Const.CHAR_OFFSET;
