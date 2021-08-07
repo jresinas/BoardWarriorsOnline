@@ -8,22 +8,24 @@ public static class BoardUtils {
     }
 
     public static bool Reach(Vector2Int p1, Vector2Int p2, int range) {
-        return Distance(p1, p2) <= range;
-        /*
         if (Distance(p1, p2) > range) return false;
         else {
             CharacterController character = null;
             int characterId = CharacterManager.instance.GetId(p1);
             if (characterId >= 0) character = CharacterManager.instance.Get(characterId);
-            if (character != null) return GetPath(p1, p2, character.GetPlayer()).Count > 0 && GetPath(p1, p2, character.GetPlayer()).Count <= range + 1;
+            if (character != null) return GetPath(p1, p2, character.GetPlayer()).Count > 0 && GetPath(p1, p2, character.GetPlayer()).Count <= range;
             else return false;
         }
-        */
     }
 
     public static List<Vector2Int> GetPath(Vector2Int origin, Vector2Int destiny, int player) {
-        return new List<Vector2Int>(new Vector2Int[] { origin, destiny});
-        //return AStar.GetPath(origin, destiny, player) ?? new List<Vector2Int>();
+        List<Vector2Int> path = AStar.GetPath(origin, destiny, player);
+        if (path != null) {
+            path.Remove(origin);
+            return path;
+        } else {
+            return new List<Vector2Int>();
+        }
     }
 }
 
@@ -45,7 +47,6 @@ public static class AStar {
     }
 
     public static List<Vector2Int>? GetPath(Vector2Int start, Vector2Int end, int player) {
-        Debug.Log("Start Pathfind: " + Time.time);
         Dictionary<Vector2Int, NodeData> open = new Dictionary<Vector2Int, NodeData>();
         open.Add(start, new NodeData(start, end));
 
@@ -56,10 +57,7 @@ public static class AStar {
         while (open.Count > 0) {
             current = GetLowerCostNode(open) ?? default(Vector2Int);
             currentData = open[current];
-            if (current == end) {
-                Debug.Log("End Pathfind: "+Time.time);
-                return currentData.path;
-            }
+            if (current == end) return currentData.path;
             open.Remove(current);
             closed.Add(current, currentData);
             Dictionary<Vector2Int, NodeData> successors = GetSuccessor(current, end, currentData, player);
@@ -73,7 +71,6 @@ public static class AStar {
                 }
             }
         }
-        Debug.Log("End Pathfind: " + Time.time);
         return null;
     }
 
@@ -82,7 +79,10 @@ public static class AStar {
         int minValue = 99999;
         if (nodes.Count > 0) {
             foreach (Vector2Int position in nodes.Keys) {
-                if (nodes[position].f < minValue) node = position;
+                if (nodes[position].f < minValue) {
+                    node = position;
+                    minValue = nodes[position].f;
+                }
             }
         } else return null;
         return node;
