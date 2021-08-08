@@ -31,6 +31,7 @@ public abstract class Skill : MonoBehaviour {
     [SerializeField] bool targetEnemies;
     [SerializeField] bool targetAllies;
     [SerializeField] bool targetSelf;
+    [SerializeField] bool lineOfSight;
     //[SerializeField] GameObject projectile;
     [SerializeField] protected SkillEffect[] effects;
 
@@ -80,10 +81,11 @@ public abstract class Skill : MonoBehaviour {
             CharacterController target = CharacterManager.instance.Get(targetId);
             if (target != null) {
                 List<int> targetableIds = GetTargetableCharacters(self);
-                // distance between caster and target is <= skill range and target is targetable by the skill
+                // distance between caster and target is <= skill range and target is targetable by the skill and there is line of sight (if needed)
                 // return (BoardUtils.Distance(self.GetPosition(), target.GetPosition()) <= GetRange()) &&
                 return (BoardUtils.Reach(self.GetPosition(), target.GetPosition(), GetRange()) &&
-                    targetableIds.Count != 0 && targetableIds.Contains(targetId));
+                    targetableIds.Count != 0 && targetableIds.Contains(targetId) &&
+                    (LineOfSight(self, target) || !lineOfSight));
             }
         } else if (TargetTile()) {
             // return BoardUtils.Distance(self.GetPosition(), destiny) <= GetRange() && self.GetPosition() != destiny;
@@ -91,6 +93,20 @@ public abstract class Skill : MonoBehaviour {
         }
         return false;
     }
+
+    
+    bool LineOfSight(CharacterController caster, CharacterController target) {
+        Vector3 direction = (target.transform.position + Vector3.up * 0.5f - caster.transform.position + Vector3.up * 0.5f).normalized;
+        RaycastHit[] allHits;
+        allHits = Physics.RaycastAll(caster.transform.position, direction, 10);
+        foreach (var hit in allHits) {
+            CharacterController nextCharacter = hit.collider.GetComponentInParent<CharacterController>();
+            if (nextCharacter == target) return true;
+            if (nextCharacter.GetPlayer() != caster.GetPlayer()) return false;
+        }
+        return false;
+    }
+    
 
     /// <summary>
     /// Get list of targeteable character ids for this skill casted by specified character
