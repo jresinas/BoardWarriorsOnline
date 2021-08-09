@@ -2693,6 +2693,7 @@ MonoBehaviour:
   id: 0
   position: {x: 0, y: 0}
   animationTime: 1
+  name: Human Archer
   movement: 2
   armor: 0
   skills:
@@ -2753,6 +2754,7 @@ MonoBehaviour:
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
+  lineOfSight: 0
   effects: []
   dicesNumber: 2
 --- !u!114 &966771677262918522
@@ -2776,6 +2778,7 @@ MonoBehaviour:
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
+  lineOfSight: 0
   effects:
   - prefab: {fileID: 1073966096503554, guid: c7fe976ed81c17344a6900638fbfee3c, type: 3}
     position: {fileID: 365635311551308443}
@@ -2811,6 +2814,7 @@ MonoBehaviour:
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
+  lineOfSight: 0
   effects: []
   dicesNumber: 1
 --- !u!114 &7320743002806489274
@@ -2834,6 +2838,7 @@ MonoBehaviour:
   targetEnemies: 0
   targetAllies: 0
   targetSelf: 1
+  lineOfSight: 0
   effects: []
 --- !u!1 &8833594144473223375
 GameObject:

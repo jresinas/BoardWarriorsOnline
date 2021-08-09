@@ -564,6 +564,7 @@ MonoBehaviour:
   id: 0
   position: {x: 0, y: 0}
   animationTime: 1
+  name: Human Barbarian
   movement: 2
   armor: 2
   skills:
@@ -572,6 +573,7 @@ MonoBehaviour:
   - {fileID: -5569749395958243429}
   - {fileID: -6384361421745248098}
   maxHealth: 10
+  portrait: {fileID: 0}
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
   body: {fileID: 0}
@@ -631,15 +633,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1972e57bb90336946ac9d5d7556fc04e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
+  title: Hit
   icon: {fileID: 21300000, guid: a15930a92eb98dd48b03d872a7f1a27f, type: 3}
-  text: 
+  text: Roll 5 attack dices
   animation: Attack
   range: 1
   energy: 0
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
+  lineOfSight: 0
   effects: []
   dicesNumber: 5
 --- !u!114 &-7763561353965280845
@@ -654,15 +657,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d79a5d2bdf4d4ae4bada29317c2d03a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
+  title: Charge
   icon: {fileID: 21300000, guid: 7599f616c5ad72f46bd5807d4647deb2, type: 3}
-  text: 
+  text: Active after move. Push an enemy
   animation: Attack
   range: 1
   energy: 3
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
+  lineOfSight: 0
   effects: []
 --- !u!114 &-5569749395958243429
 MonoBehaviour:
@@ -676,15 +680,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a688d76d2a6f6c49a2a092f572d5ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
+  title: Rage
   icon: {fileID: 21300000, guid: 9e9c3f678ae196e47b9a4c0424c0e565, type: 3}
-  text: 
+  text: Add +1 to this character dices for this turn. You can use another action.
   animation: Attack
   range: 0
   energy: 5
   targetEnemies: 0
   targetAllies: 0
   targetSelf: 1
+  lineOfSight: 0
   effects: []
 --- !u!114 &-6384361421745248098
 MonoBehaviour:
@@ -698,15 +703,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e7a3f802e4beb0408954d5547a60168, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  title: 
+  title: Death Blow
   icon: {fileID: 21300000, guid: 024b7201ad9313e458cdbff494d22b5e, type: 3}
-  text: 
+  text: Roll 10 attack dices
   animation: Attack
   range: 1
-  energy: 10
+  energy: 3
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
+  lineOfSight: 0
   effects: []
 --- !u!1 &2307039325581341530
 GameObject:

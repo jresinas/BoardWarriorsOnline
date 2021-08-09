@@ -12,6 +12,10 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
     [SerializeField] Image icon;
     [SerializeField] Image textWrap;
     [SerializeField] TextMeshProUGUI text;
+    [SerializeField] Image energy;
+    [SerializeField] TextMeshProUGUI energyValue;
+    [SerializeField] Image range;
+    [SerializeField] TextMeshProUGUI rangeValue;
 
     bool selected = false;
     Skill selectedCharacterSkill;
@@ -33,6 +37,8 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
     public void ShowSkill(Skill skill, bool isSelectedCharacter = false) {
         icon.sprite = skill.GetIcon();
         text.text = skill.GetText();
+        energyValue.text = skill.GetEnergy().ToString();
+        rangeValue.text = skill.GetRange().ToString();
         if (isSelectedCharacter && IsEnabled()) {
             if (selected) SelectedStyle();
             else EnableStyle();
@@ -85,6 +91,8 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
     void EnableStyle() {
         iconWrap.color = Color.white;
         icon.color = Color.white;
+        energy.color = Color.white;
+        range.color = Color.white;
         textWrap.color = COLOR_ENABLE;
         text.color = Color.white;
     }
@@ -92,6 +100,8 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
     void DisableStyle() {
         iconWrap.color = Color.grey;
         icon.color = Color.grey;
+        energy.color = Color.grey;
+        range.color = Color.grey;
         textWrap.color = COLOR_DISABLE;
         text.color = Color.grey;
     }
@@ -99,6 +109,8 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
     void HoverStyle() {
         iconWrap.color = Color.white;
         icon.color = Color.white;
+        energy.color = Color.white;
+        range.color = Color.white;
         textWrap.color = COLOR_HOVER;
         text.color = Color.black;
     }
@@ -106,6 +118,8 @@ public class SkillDataController : MonoBehaviour, IPointerEnterHandler, IPointer
     void SelectedStyle() {
         iconWrap.color = Color.white;
         icon.color = Color.white;
+        energy.color = Color.white;
+        range.color = Color.white;
         textWrap.color = COLOR_SELECT;
         text.color = Color.white;
     }

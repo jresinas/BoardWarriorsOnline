@@ -37,7 +37,7 @@ public class CharacterDataController : MonoBehaviour {
         bool isSelectedCharacter = characterId == selectedCharacterId;
         CharacterController character = CharacterManager.instance.Get(characterId);
         if (character != null) {
-            characterName.text = character.name;
+            characterName.text = character.GetName();
             for (int i = 0; i < Const.SKILL_NUMBER; i++) {
                 characterSkills[i].ShowSkill(character.GetSkill(i), isSelectedCharacter);
             }

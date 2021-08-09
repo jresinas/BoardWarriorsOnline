@@ -2275,6 +2275,7 @@ MonoBehaviour:
   id: 0
   position: {x: 0, y: 0}
   animationTime: 0.5
+  name: Drow Assassin
   movement: 3
   armor: 2
   skills:
@@ -2283,6 +2284,7 @@ MonoBehaviour:
   - {fileID: -6560378582427464376}
   - {fileID: 6792802613616083025}
   maxHealth: 6
+  portrait: {fileID: 0}
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
   body: {fileID: 0}
@@ -2351,6 +2353,7 @@ MonoBehaviour:
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
+  lineOfSight: 0
   effects: []
   dicesNumber: 3
 --- !u!114 &5228802640969546255
@@ -2374,6 +2377,7 @@ MonoBehaviour:
   targetEnemies: 0
   targetAllies: 0
   targetSelf: 1
+  lineOfSight: 0
   effects: []
 --- !u!114 &-6560378582427464376
 MonoBehaviour:
@@ -2396,6 +2400,7 @@ MonoBehaviour:
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
+  lineOfSight: 0
   effects: []
 --- !u!114 &6792802613616083025
 MonoBehaviour:
@@ -2418,6 +2423,7 @@ MonoBehaviour:
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
+  lineOfSight: 0
   effects: []
 --- !u!1 &8222861846909530186
 GameObject:

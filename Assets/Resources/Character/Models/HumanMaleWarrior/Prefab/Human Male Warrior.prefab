@@ -625,6 +625,7 @@ MonoBehaviour:
   id: 0
   position: {x: 0, y: 0}
   animationTime: 1
+  name: Human Warrior
   movement: 2
   armor: 0
   skills:
@@ -685,6 +686,7 @@ MonoBehaviour:
   targetEnemies: 1
   targetAllies: 0
   targetSelf: 0
+  lineOfSight: 0
   effects: []
   dicesNumber: 4
 --- !u!114 &4943359797614711333
@@ -708,6 +710,7 @@ MonoBehaviour:
   targetEnemies: 0
   targetAllies: 0
   targetSelf: 1
+  lineOfSight: 0
   effects: []
 --- !u!114 &95568550017484503
 MonoBehaviour:
@@ -730,6 +733,7 @@ MonoBehaviour:
   targetEnemies: 0
   targetAllies: 1
   targetSelf: 1
+  lineOfSight: 0
   effects: []
 --- !u!114 &3001247557368821874
 MonoBehaviour:
@@ -752,6 +756,7 @@ MonoBehaviour:
   targetEnemies: 0
   targetAllies: 0
   targetSelf: 1
+  lineOfSight: 0
   effects: []
 --- !u!1 &2726970348020328448
 GameObject:

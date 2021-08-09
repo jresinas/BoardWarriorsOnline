@@ -45,6 +45,10 @@ public abstract class Skill : MonoBehaviour {
         return range;
     }
 
+    public int GetEnergy() {
+        return energy;
+    }
+
     public Sprite GetIcon() {
         return icon;
     }
