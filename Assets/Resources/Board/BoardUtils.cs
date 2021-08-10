@@ -8,6 +8,7 @@ public static class BoardUtils {
     }
 
     public static bool Reach(Vector2Int p1, Vector2Int p2, int range) {
+        if (p1 == p2) return true;
         if (Distance(p1, p2) > range) return false;
         else {
             CharacterController character = null;
