@@ -15,6 +15,7 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
 
     [SerializeField] float animationTime;
     [SerializeField] string name;
+    [SerializeField] string surname;
     [SerializeField] int movement;
     [SerializeField] int armor;
     [SerializeField] Skill[] skills = new Skill[Const.SKILL_NUMBER];
@@ -68,6 +69,10 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
 
     public string GetName() {
         return name;
+    }
+
+    public string GetSurname() {
+        return surname;
     }
 
     public void ChangeHealth(int value) {

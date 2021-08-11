@@ -564,7 +564,8 @@ MonoBehaviour:
   id: 0
   position: {x: 0, y: 0}
   animationTime: 1
-  name: Human Barbarian
+  name: Skarl
+  surname: Human Barbarian
   movement: 2
   armor: 2
   skills:

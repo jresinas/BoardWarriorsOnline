@@ -5,6 +5,7 @@ using TMPro;
 
 public class CharacterDataController : MonoBehaviour {
     public TextMeshProUGUI characterName;
+    public TextMeshProUGUI characterSurname;
     public SkillDataController[] characterSkills = new SkillDataController[Const.SKILL_NUMBER];
     int selectedCharacterId;
 
@@ -38,6 +39,7 @@ public class CharacterDataController : MonoBehaviour {
         CharacterController character = CharacterManager.instance.Get(characterId);
         if (character != null) {
             characterName.text = character.GetName();
+            characterSurname.text = character.GetSurname();
             for (int i = 0; i < Const.SKILL_NUMBER; i++) {
                 characterSkills[i].ShowSkill(character.GetSkill(i), isSelectedCharacter);
             }

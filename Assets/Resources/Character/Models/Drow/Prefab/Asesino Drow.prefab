@@ -2275,7 +2275,8 @@ MonoBehaviour:
   id: 0
   position: {x: 0, y: 0}
   animationTime: 0.5
-  name: Drow Assassin
+  name: Elre Iarwarin
+  surname: Elve Assassin
   movement: 3
   armor: 2
   skills:

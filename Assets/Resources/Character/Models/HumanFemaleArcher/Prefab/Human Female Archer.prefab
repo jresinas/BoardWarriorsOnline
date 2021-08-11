@@ -2693,7 +2693,8 @@ MonoBehaviour:
   id: 0
   position: {x: 0, y: 0}
   animationTime: 1
-  name: Human Archer
+  name: Arissa
+  surname: Human Archer
   movement: 2
   armor: 0
   skills:
