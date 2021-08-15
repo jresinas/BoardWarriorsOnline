@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PortraitController : MonoBehaviour {
-    public bool change = false;
-    bool changing = false;
+    //public bool change = false;
+    //bool changing = false;
     [SerializeField] Image image;
     [SerializeField] Image crystal;
     public int characterId;
@@ -36,7 +36,7 @@ public class PortraitController : MonoBehaviour {
     }
 
     IEnumerator ResizeAnim(float startSize, float endSize, float time) {
-        changing = true;
+        //changing = true;
         float size = startSize;
         for (float f = 0; f <= time; f += Time.deltaTime) {
             size = Mathf.Lerp(startSize, endSize, f / time);
@@ -47,7 +47,7 @@ public class PortraitController : MonoBehaviour {
     }
 
     IEnumerator MoveAnim(float startPosition, float endPosition, float time) {
-        changing = true;
+        //changing = true;
         float position = startPosition;
         for (float f = 0; f <= time; f += Time.deltaTime) {
             position = Mathf.Lerp(startPosition, endPosition, f / time);

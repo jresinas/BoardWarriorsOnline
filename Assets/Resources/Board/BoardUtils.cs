@@ -28,6 +28,10 @@ public static class BoardUtils {
             return new List<Vector2Int>();
         }
     }
+
+    public static Vector2Int GetShoveDestiny(Vector2Int position, Vector2Int origin) {
+        return position - (origin - position);
+    }
 }
 
 public static class AStar {

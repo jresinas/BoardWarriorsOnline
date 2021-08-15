@@ -538,6 +538,7 @@ GameObject:
   - component: {fileID: 470737390838893953}
   - component: {fileID: 7351193204919807862}
   - component: {fileID: 4856626022840889354}
+  - component: {fileID: 6277354686977857196}
   - component: {fileID: 4482454264383577022}
   - component: {fileID: 4943359797614711333}
   - component: {fileID: 95568550017484503}
@@ -622,6 +623,7 @@ MonoBehaviour:
   syncInterval: 0.1
   characterMove: {fileID: 7351193204919807862}
   characterSkill: {fileID: 4856626022840889354}
+  characterShove: {fileID: 6277354686977857196}
   id: 0
   position: {x: 0, y: 0}
   animationTime: 1
@@ -652,6 +654,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 8650089534068628174}
+  self: {fileID: 470737390838893953}
 --- !u!114 &4856626022840889354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,6 +669,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 8650089534068628174}
   self: {fileID: 470737390838893953}
+--- !u!114 &6277354686977857196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2711368057433987598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481d77642b8b80649a1c1078ca789ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 8650089534068628174}
+  self: {fileID: 470737390838893953}
+  origin: {x: 0, y: 0}
 --- !u!114 &4482454264383577022
 MonoBehaviour:
   m_ObjectHideFlags: 0

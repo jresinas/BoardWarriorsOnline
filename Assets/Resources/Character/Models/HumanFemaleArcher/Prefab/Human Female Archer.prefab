@@ -2609,6 +2609,7 @@ GameObject:
   - component: {fileID: -4995975760832362927}
   - component: {fileID: 317646578236723729}
   - component: {fileID: -5174482603915282880}
+  - component: {fileID: -205074404755259135}
   - component: {fileID: 3377208043326526694}
   - component: {fileID: 966771677262918522}
   - component: {fileID: 3735111252896116246}
@@ -2690,19 +2691,20 @@ MonoBehaviour:
   syncInterval: 0.1
   characterMove: {fileID: 317646578236723729}
   characterSkill: {fileID: -5174482603915282880}
+  characterShove: {fileID: -205074404755259135}
   id: 0
   position: {x: 0, y: 0}
   animationTime: 1
   name: Arissa
   surname: Human Archer
-  movement: 2
+  movement: 6
   armor: 0
   skills:
   - {fileID: 3377208043326526694}
   - {fileID: 966771677262918522}
   - {fileID: 3735111252896116246}
   - {fileID: 7320743002806489274}
-  maxHealth: 2
+  maxHealth: 5
   portrait: {fileID: 0}
   leftHand: {fileID: 365635311551308443}
   rightHand: {fileID: 7424182928324106894}
@@ -2720,6 +2722,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 2820106360518373022}
+  self: {fileID: -4995975760832362927}
 --- !u!114 &-5174482603915282880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2734,6 +2737,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 2820106360518373022}
   self: {fileID: -4995975760832362927}
+--- !u!114 &-205074404755259135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8829583815816638046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481d77642b8b80649a1c1078ca789ae6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 2820106360518373022}
+  self: {fileID: -4995975760832362927}
+  origin: {x: 0, y: 0}
 --- !u!114 &3377208043326526694
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -146,7 +146,7 @@ public class CharacterManager : NetworkBehaviour {
     void UseSkillHandler(int casterId, int skillIndex, Vector2Int destiny) {
         CharacterController caster = Get(casterId);
         SkillResult result = caster.UseSkill(skillIndex, destiny);
-        caster.UseSkillAnimation(skillIndex, result.targets, result.success);
+        caster.UseSkillAnimation(skillIndex, result.targets, result.success, result.observers);
     }
 
     [Server]

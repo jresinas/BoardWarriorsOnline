@@ -6,8 +6,14 @@ public class CharacterSkill : MonoBehaviour {
     [SerializeField] Animator anim;
     [SerializeField] CharacterController self;
     List<CharacterController> targetCharacters;
+    List<CharacterController> observerCharacters;
     Skill skill;
     bool success;
+
+    /*
+    public bool shove = false;
+    public Vector2Int shoveOrigin;
+    */
 
     public List<CharacterController> GetTargets() {
         return targetCharacters;
@@ -18,7 +24,7 @@ public class CharacterSkill : MonoBehaviour {
     }
 
     //public void StartPlay(Skill skill, CharacterController targetCharacter, bool success) {
-    public void StartPlay(Skill skill, int[] targetIds, bool success) {
+    public void StartPlay(Skill skill, int[] targetIds, bool success, int[] observerIds) {
         this.targetCharacters = CharacterManager.instance.Get(targetIds);
         this.skill = skill;
         this.success = success;
@@ -44,33 +50,69 @@ public class CharacterSkill : MonoBehaviour {
     }
 
     // Attacking character 
-    void Impact() {
-        foreach (CharacterController targetCharacter in targetCharacters) {
-            if (targetCharacter != self) targetCharacter.ReceiveImpact(success);
-        }
-    }
-
-    void Effect(int number) {
-        skill.AnimationEffect(number);
-    }
+    //void Impact() {
+    //    foreach (CharacterController targetCharacter in targetCharacters) {
+    //        if (targetCharacter != self) targetCharacter.ReceiveImpact(success);
+    //    }
+    //}
 
     // During attack, waiting dice roll
     public void Waiting() {
         anim.SetTrigger("Waiting");
     }
 
+    public void Impact(string type = "Damage") {
+        foreach (CharacterController targetCharacter in targetCharacters) {
+            if (targetCharacter != self) {
+                if (!success) targetCharacter.Dodge();
+                else {
+                    if (targetCharacter.GetHealth() <= 0) targetCharacter.Death();
+                    switch (type) {
+                        case "Damage":
+                            targetCharacter.ReceiveDamage();
+                            break;
+                        case "Shove":
+                            targetCharacter.ReceiveShove(self.position);
+                            break;
+                        default:
+                            Debug.LogError("Invalid type of impact");
+                            break;
+                    }
+                }
+            }
+        }
+    }   
+
+    /*
     public void ReceiveImpact(bool success) {
-        Debug.Log("CharacterSkill - ReceiveImpact "+success);
         if (success) {
-            if (self.GetHealth() > 0) anim.SetTrigger("Damage");
-            else anim.SetBool("Death", true);
+            if (self.GetHealth() <= 0) anim.SetBool("Death", true);
+            //else if (shove) self.ShoveAnimation(shoveOrigin);
+            else anim.SetTrigger("Damage");
         } else anim.SetTrigger("Dodge");
+    }
+    */
+
+    public void Damage() {
+        anim.SetTrigger("Damage");
+    }
+
+    public void Dodge() {
+        anim.SetTrigger("Dodge");
+    }
+
+    public void Death() {
+        anim.SetBool("Death", true);
     }
 
     public void EndAnimation() {
         if (!anim.GetBool("Death")) anim.SetTrigger("EndAnimation");
         targetCharacters = null;
         skill = null;
+    }
+
+    void Effect(int number) {
+        skill.AnimationEffect(number);
     }
 
     public void DeathFadeOut() {

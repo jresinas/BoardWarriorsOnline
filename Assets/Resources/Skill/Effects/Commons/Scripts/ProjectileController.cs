@@ -23,7 +23,8 @@ public class ProjectileController : MonoBehaviour {
         if (!success) {
             CharacterController cc = other.GetComponentInParent<CharacterController>();
             if (cc != null && cc == targets[0]) {
-                targets[0].ReceiveImpact(success);
+                //targets[0].ReceiveImpact(success);
+                targets[0].Dodge();
             }
         }
     }
@@ -59,7 +60,10 @@ public class ProjectileController : MonoBehaviour {
     private void CollisionEnter(object sender, AE_PhysicsMotion.AE_CollisionInfo e) {
         CharacterController targetController = (e.ContactPoint.otherCollider).GetComponentInParent<CharacterController>();
         if (success && targetController != null && targets.Count > 0 && targets.Contains(targetController)) {
-            targetController.ReceiveImpact(success);
+            //targetController.ReceiveImpact(success);
+            if (targetController.GetHealth() <= 0) targetController.Death();
+            else targetController.ReceiveDamage();
+
             Renderer[] renders = GetComponentsInChildren<MeshRenderer>();
             foreach (Renderer render in renders) StartCoroutine(FadeOut(render));
         }

@@ -79595,7 +79595,7 @@ AnimationClip:
   m_Events:
   - time: 0.78333336
     functionName: Impact
-    data: 
+    data: Damage
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0

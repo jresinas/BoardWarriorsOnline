@@ -6,10 +6,12 @@ using UnityEngine;
 public class SkillResult{
     public bool success;
     public int[] targets;
+    public int[] observers;
 
-    public SkillResult(int[] targets, bool success) {
+    public SkillResult(int[] targets, bool success, int[] observers = null) {
         this.targets = targets;
         this.success = success;
+        this.observers = (observers ??= new int[0]);
     }
 }
 
@@ -153,5 +155,27 @@ public abstract class Skill : MonoBehaviour {
                 if (smte != null) smte.Mesh = effect.position.gameObject;
             }
         }
+    }
+
+    protected CharacterController Shove(CharacterController target, Vector2Int origin) {
+        CharacterController collisionChar;
+        Vector2Int destiny = BoardUtils.GetShoveDestiny(target.position, origin);
+        if (destiny.x < 0 || destiny.y < 0 || destiny.x >= Const.BOARD_COLS || destiny.y >= Const.BOARD_ROWS) {
+            // Choca con limite del tablero
+            collisionChar = self;
+        } else {
+            int collisionId = CharacterManager.instance.GetId(destiny);
+            if (collisionId < 0) {
+                // Se le empuja correctamente
+                //self.SetPosition(destiny);
+                collisionChar = null;
+            } else {
+                // choca contra collisionId
+                collisionChar = CharacterManager.instance.Get(collisionId);
+            }
+        }
+
+        //target.PrepareShoveAnimation(origin);
+        return collisionChar;
     }
 }

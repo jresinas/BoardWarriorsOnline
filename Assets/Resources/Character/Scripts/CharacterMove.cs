@@ -16,6 +16,7 @@ public class CharacterMove : MonoBehaviour {
     bool animating = false;
     float time = 0;
     [SerializeField] Animator anim;
+    [SerializeField] CharacterController self;
 
     public void StartCharacterMove(int player, float animationTime) {
         this.player = player;
@@ -36,7 +37,7 @@ public class CharacterMove : MonoBehaviour {
 
     IEnumerator SetIdle() {
         yield return new WaitForFixedUpdate();
-        //transform.position = 
+        transform.position = BoardManager.instance.GetTile(self.position).transform.position + Vector3.up * Const.CHAR_OFFSET;
         transform.rotation = player == 0 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
 
     }
@@ -80,4 +81,34 @@ public class CharacterMove : MonoBehaviour {
 
         transform.position = Vector3.Lerp(originPosition, targetPosition, time / animationTime);
     }
+
+
+
+    /*
+    public void StartShove(Vector2Int origin, Vector2Int destiny) {
+        Vector3 currentPosition = transform.position;
+        Vector3 originPosition = BoardManager.instance.GetTile(origin).transform.position + Vector3.up * Const.CHAR_OFFSET;
+        Vector3 destinyPosition = BoardManager.instance.GetTile(destiny).transform.position + Vector3.up * Const.CHAR_OFFSET;
+        transform.LookAt(originPosition);
+        anim.SetBool("Shove", true);
+        animating = true;
+        StartCoroutine(Shove(currentPosition, destinyPosition));
+    }
+
+    void EndShove() {
+        Debug.Log("End Shove");
+        anim.SetBool("Shove", false);
+        animating = false;
+        Idle();
+    }
+
+
+    IEnumerator Shove(Vector3 originPosition, Vector3 targetPosition) {
+        for (float f = 0; f <= 0.8f; f += Time.deltaTime) {
+            transform.position = Vector3.Lerp(originPosition, targetPosition, f / 0.8f);
+            yield return null;
+        }
+        EndShove();
+    }
+    */
 }

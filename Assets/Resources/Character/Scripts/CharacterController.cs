@@ -8,6 +8,7 @@ using Mirror;
 public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPointerExitHandler {
     [SerializeField] CharacterMove characterMove;
     [SerializeField] CharacterSkill characterSkill;
+    [SerializeField] CharacterShove characterShove;
 
     [SyncVar] public int id;
     [SyncVar] public Vector2Int position;
@@ -122,6 +123,25 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
         characterMove.StartMove(path);
     }
 
+    /*
+    [Server]
+    public int Shove(Vector2Int origin) {
+        int collisionId;
+        Vector2Int destiny = BoardUtils.GetShoveDestiny(position, origin);
+        if (destiny.x < 0 || destiny.y < 0 || destiny.x >= Const.BOARD_COLS || destiny.y >= Const.BOARD_ROWS) {
+            collisionId = id;
+        } else {
+            collisionId = CharacterManager.instance.GetId(destiny);
+            if (collisionId < 0) {
+                SetPosition(destiny);
+            }
+        }
+       
+        PrepareShoveAnimation(origin);
+        return collisionId;
+    }
+    */
+
     [Server]
     public SkillResult UseSkill(int skillIndex, Vector2Int destiny) {
         Skill skill = GetSkill(skillIndex);
@@ -130,9 +150,9 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     }
 
     [ClientRpc]
-    public void UseSkillAnimation(int skillIndex, int[] targetIds, bool success) {
+    public void UseSkillAnimation(int skillIndex, int[] targetIds, bool success, int[] observerIds) {
         Skill skill = GetSkill(skillIndex);
-        characterSkill.StartPlay(skill, targetIds, success);
+        characterSkill.StartPlay(skill, targetIds, success, observerIds);
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
@@ -148,10 +168,49 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
         characterSkill.Waiting();
     }
 
+    /*
     public void ReceiveImpact(bool success) {
         Debug.Log("CharacterController - ReceiveImpact");
         RefreshHealth();
         characterSkill.ReceiveImpact(success);
+    }
+    
+
+    [ClientRpc]
+    public void PrepareShoveAnimation(Vector2Int origin) {
+        //characterSkill.shove = true;
+        //characterSkill.shoveOrigin = origin;
+        characterShove.origin = origin;
+    }
+
+
+    [Client]
+    public void ShoveAnimation(Vector2Int origin) {
+        //Vector2Int destiny = BoardUtils.GetShoveDestiny(position, origin);
+        characterShove.StartShove(origin, position);
+        //characterSkill.shove = false;
+    }
+    */
+
+
+    public void ReceiveDamage() {
+        RefreshHealth();
+        characterSkill.Damage();
+    }
+
+    public void ReceiveShove(Vector2Int origin) {
+        RefreshHealth();
+        characterShove.StartShove(origin);
+    }
+
+
+    public void Death() {
+        RefreshHealth();
+        characterSkill.Death();
+    }
+
+    public void Dodge() {
+        characterSkill.Dodge();
     }
 
     public void EndAnimation() {
