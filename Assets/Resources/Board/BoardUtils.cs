@@ -29,8 +29,8 @@ public static class BoardUtils {
         }
     }
 
-    public static Vector2Int GetShoveDestiny(Vector2Int position, Vector2Int origin) {
-        return position - (origin - position);
+    public static Vector2Int GetShoveDestiny(Vector2Int shovedTile, Vector2Int shoverTile) {
+        return shovedTile - (shoverTile - shovedTile);
     }
 }
 

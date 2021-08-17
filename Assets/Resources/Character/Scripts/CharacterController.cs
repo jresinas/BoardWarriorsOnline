@@ -23,7 +23,7 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     [SerializeField] int maxHealth;
     public Sprite portrait;
 
-    [SyncVar] int health;
+    [SyncVar] public int health;
     [SyncVar] int energy;
 
     public Transform leftHand;
@@ -150,9 +150,9 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     }
 
     [ClientRpc]
-    public void UseSkillAnimation(int skillIndex, int[] targetIds, bool success, int[] observerIds) {
+    public void UseSkillAnimation(int skillIndex, int[] targetIds, bool success, int[] observerIds, string data) {
         Skill skill = GetSkill(skillIndex);
-        characterSkill.StartPlay(skill, targetIds, success, observerIds);
+        characterSkill.StartPlay(skill, targetIds, success, observerIds, data);
     }
 
     public void OnPointerEnter(PointerEventData eventData) {
@@ -192,15 +192,20 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     }
     */
 
+    public void ReceiveImpact(string type = null) {
+        characterSkill.Impact(type);
+    }
 
     public void ReceiveDamage() {
         RefreshHealth();
         characterSkill.Damage();
+        if (health <= 0) Death();
     }
 
-    public void ReceiveShove(Vector2Int origin) {
+    public void ReceiveShove(string data) {
         RefreshHealth();
-        characterShove.StartShove(origin);
+        characterShove.StartShove(data);
+        if (health <= 0) Death();
     }
 
 

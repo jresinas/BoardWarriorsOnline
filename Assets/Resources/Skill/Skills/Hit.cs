@@ -27,27 +27,32 @@ public class Hit : SkillNormal {
 
                 return new SkillResult(targets.ToArray(), damage > 0);
         */
+
+        /*
         List<int> observers = new List<int>();
         List<CharacterController> shoveDamage = new List<CharacterController>();
-        CharacterController collisionCharacter = Shove(target, self.position);
+        CharacterController collisionCharacter = Shove2(target, self.position);
         if (collisionCharacter != null) {
-            if (collisionCharacter != self) {
+            if (collisionCharacter != target) {
                 observers.Add(collisionCharacter.id);
-                shoveDamage.Add(self);
+                shoveDamage.Add(target);
                 shoveDamage.Add(collisionCharacter);
             } else {
-                shoveDamage.Add(self);
+                shoveDamage.Add(target);
             }
             StartCoroutine(ShoveDamage(shoveDamage));
         }
+        */
 
-        return new SkillResult(new int[] { target.id }, damage > 0, observers.ToArray());
+        List<int> observers = new List<int>();
+        ShoveInfo shoveInfo = Shove(target, self.GetPosition());
+        if (shoveInfo.characterCollisionId >= 0) observers.Add(shoveInfo.characterCollisionId);
+        string shoveSerialized = JsonUtility.ToJson(shoveInfo);
+
+        return new SkillResult(new int[] { target.id }, damage > 0, observers: observers.ToArray(), data: shoveSerialized);
     }
 
-    IEnumerator ShoveDamage(List<CharacterController> characters) {
-        yield return new WaitForSeconds(2.5f);
-        foreach (CharacterController character in characters) character.ChangeHealth(-1);
-    }
+    
 
     //public override SkillResult Play(Vector2Int destiny) {
     //    CharacterController target = GetTarget(destiny);

@@ -7,11 +7,13 @@ public class SkillResult{
     public bool success;
     public int[] targets;
     public int[] observers;
+    public string data;
 
-    public SkillResult(int[] targets, bool success, int[] observers = null) {
+    public SkillResult(int[] targets, bool success, int[] observers = null, string data = null) {
         this.targets = targets;
         this.success = success;
         this.observers = (observers ??= new int[0]);
+        this.data = data;
     }
 }
 
@@ -157,9 +159,10 @@ public abstract class Skill : MonoBehaviour {
         }
     }
 
-    protected CharacterController Shove(CharacterController target, Vector2Int origin) {
+    /*
+    protected CharacterController Shove2(CharacterController shoved, Vector2Int shoverTile) {
         CharacterController collisionChar;
-        Vector2Int destiny = BoardUtils.GetShoveDestiny(target.position, origin);
+        Vector2Int destiny = BoardUtils.GetShoveDestiny(shoved.position, shoverTile);
         if (destiny.x < 0 || destiny.y < 0 || destiny.x >= Const.BOARD_COLS || destiny.y >= Const.BOARD_ROWS) {
             // Choca con limite del tablero
             collisionChar = self;
@@ -167,7 +170,7 @@ public abstract class Skill : MonoBehaviour {
             int collisionId = CharacterManager.instance.GetId(destiny);
             if (collisionId < 0) {
                 // Se le empuja correctamente
-                //self.SetPosition(destiny);
+                shoved.SetPosition(destiny);
                 collisionChar = null;
             } else {
                 // choca contra collisionId
@@ -177,5 +180,41 @@ public abstract class Skill : MonoBehaviour {
 
         //target.PrepareShoveAnimation(origin);
         return collisionChar;
+    }
+    */
+
+    protected ShoveInfo Shove(CharacterController shoved, Vector2Int shoverTile) {
+        List<CharacterController> shoveDamage = new List<CharacterController>();
+
+        int characterCollisionId = -1;
+        Vector2Int origin = shoved.GetPosition();
+        Vector2Int destiny;
+        Vector2Int prevDestiny = BoardUtils.GetShoveDestiny(origin, shoverTile);
+        if (prevDestiny.x < 0 || prevDestiny.y < 0 || prevDestiny.x >= Const.BOARD_COLS || prevDestiny.y >= Const.BOARD_ROWS) {
+            // Choca con limite del tablero
+            destiny = origin;
+            shoveDamage.Add(shoved);
+        } else {
+            characterCollisionId = CharacterManager.instance.GetId(prevDestiny);
+            if (characterCollisionId < 0) {
+                // Se le empuja correctamente
+                shoved.SetPosition(prevDestiny);
+                destiny = prevDestiny;
+            } else {
+                // choca contra collisionId
+                destiny = origin;
+                CharacterController characterCollision = CharacterManager.instance.Get(characterCollisionId);
+                shoveDamage.Add(shoved);
+                shoveDamage.Add(characterCollision);
+            }
+        }
+        StartCoroutine(ShoveDamage(shoveDamage));
+
+        return new ShoveInfo(origin, destiny, shoverTile, characterCollisionId);
+    }
+
+    IEnumerator ShoveDamage(List<CharacterController> characters) {
+        yield return new WaitForSeconds(2f);
+        foreach (CharacterController character in characters) character.ChangeHealth(-1);
     }
 }

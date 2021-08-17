@@ -2286,8 +2286,9 @@ MonoBehaviour:
   - {fileID: 5228802640969546255}
   - {fileID: -6560378582427464376}
   - {fileID: 6792802613616083025}
-  maxHealth: 6
+  maxHealth: 2
   portrait: {fileID: 0}
+  health: 0
   leftHand: {fileID: 0}
   rightHand: {fileID: 0}
   body: {fileID: 0}

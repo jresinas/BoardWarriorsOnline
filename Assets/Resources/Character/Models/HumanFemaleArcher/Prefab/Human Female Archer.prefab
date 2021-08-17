@@ -2704,8 +2704,9 @@ MonoBehaviour:
   - {fileID: 966771677262918522}
   - {fileID: 3735111252896116246}
   - {fileID: 7320743002806489274}
-  maxHealth: 5
+  maxHealth: 3
   portrait: {fileID: 0}
+  health: 0
   leftHand: {fileID: 365635311551308443}
   rightHand: {fileID: 7424182928324106894}
   body: {fileID: 0}
@@ -2751,7 +2752,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 2820106360518373022}
   self: {fileID: -4995975760832362927}
-  origin: {x: 0, y: 0}
 --- !u!114 &3377208043326526694
 MonoBehaviour:
   m_ObjectHideFlags: 0

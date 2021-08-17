@@ -9,6 +9,7 @@ public class CharacterSkill : MonoBehaviour {
     List<CharacterController> observerCharacters;
     Skill skill;
     bool success;
+    string data;
 
     /*
     public bool shove = false;
@@ -24,11 +25,15 @@ public class CharacterSkill : MonoBehaviour {
     }
 
     //public void StartPlay(Skill skill, CharacterController targetCharacter, bool success) {
-    public void StartPlay(Skill skill, int[] targetIds, bool success, int[] observerIds) {
+    public void StartPlay(Skill skill, int[] targetIds, bool success, int[] observerIds, string data) {
         this.targetCharacters = CharacterManager.instance.Get(targetIds);
+        this.observerCharacters = CharacterManager.instance.Get(observerIds);
         this.skill = skill;
         this.success = success;
-        List<int> characterIds = new List<int>(targetIds);
+        this.data = data;
+        List<int> characterIds = new List<int>();
+        characterIds.AddRange(targetIds);
+        characterIds.AddRange(observerIds);
         characterIds.Add(self.GetId());
         SkillManager.instance.StartAnimation(characterIds);
         StartAnimation();
@@ -40,6 +45,10 @@ public class CharacterSkill : MonoBehaviour {
         foreach (CharacterController targetCharacter in targetCharacters) {
             targetCharacter.transform.LookAt(transform);
             targetCharacter.Waiting();
+        }
+        foreach (CharacterController observerCharacter in observerCharacters) {
+            observerCharacter.transform.LookAt(transform);
+            observerCharacter.Waiting();
         }
         StartCoroutine(WaitDiceRoll());
     }
@@ -72,7 +81,7 @@ public class CharacterSkill : MonoBehaviour {
                             targetCharacter.ReceiveDamage();
                             break;
                         case "Shove":
-                            targetCharacter.ReceiveShove(self.position);
+                            targetCharacter.ReceiveShove(data);
                             break;
                         default:
                             Debug.LogError("Invalid type of impact");
