@@ -2704,7 +2704,7 @@ MonoBehaviour:
   - {fileID: 966771677262918522}
   - {fileID: 3735111252896116246}
   - {fileID: 7320743002806489274}
-  maxHealth: 3
+  maxHealth: 5
   portrait: {fileID: 0}
   health: 0
   leftHand: {fileID: 365635311551308443}

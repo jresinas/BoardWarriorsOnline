@@ -75,32 +75,28 @@ public class CharacterSkill : MonoBehaviour {
             if (targetCharacter != self) {
                 if (!success) targetCharacter.Dodge();
                 else {
-                    if (targetCharacter.GetHealth() <= 0) targetCharacter.Death();
-                    switch (type) {
-                        case "Damage":
-                            targetCharacter.ReceiveDamage();
-                            break;
-                        case "Shove":
-                            targetCharacter.ReceiveShove(data);
-                            break;
-                        default:
-                            Debug.LogError("Invalid type of impact");
-                            break;
-                    }
+                    ReceiveImpact(targetCharacter, type);
                 }
             }
         }
     }   
-
-    /*
-    public void ReceiveImpact(bool success) {
-        if (success) {
-            if (self.GetHealth() <= 0) anim.SetBool("Death", true);
-            //else if (shove) self.ShoveAnimation(shoveOrigin);
-            else anim.SetTrigger("Damage");
-        } else anim.SetTrigger("Dodge");
+    
+    public void ReceiveImpact(CharacterController targetCharacter, string type) {
+        if (targetCharacter.GetHealth() <= 0) targetCharacter.Death();
+        else {
+            switch (type) {
+                case "Damage":
+                    targetCharacter.ReceiveDamage();
+                    break;
+                case "Shove":
+                    targetCharacter.ReceiveShove(data);
+                    break;
+                default:
+                    Debug.LogError("Invalid type of impact");
+                    break;
+            }
+        }
     }
-    */
 
     public void Damage() {
         anim.SetTrigger("Damage");

@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class Charge : SkillNormal {
     public override SkillResult Play(Vector2Int destiny) {
-        return new SkillResult(new int[] { }, true);
+        CharacterController target = GetTarget(destiny);
+        List<int> observers = new List<int>();
+        ShoveInfo shoveInfo = Shove(target, self.GetPosition());
+        if (shoveInfo.characterCollisionId >= 0) observers.Add(shoveInfo.characterCollisionId);
+        string shoveSerialized = JsonUtility.ToJson(shoveInfo);
+
+        return new SkillResult(new int[] { target.id }, true, observers: observers.ToArray(), data: shoveSerialized);
     }
 
     //public override bool TargetAllies() { return false; }

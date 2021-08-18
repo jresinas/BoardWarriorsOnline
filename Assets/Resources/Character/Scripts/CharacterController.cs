@@ -193,19 +193,17 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     */
 
     public void ReceiveImpact(string type = null) {
-        characterSkill.Impact(type);
+        characterSkill.ReceiveImpact(this, type);
     }
 
     public void ReceiveDamage() {
         RefreshHealth();
         characterSkill.Damage();
-        if (health <= 0) Death();
     }
 
     public void ReceiveShove(string data) {
         RefreshHealth();
         characterShove.StartShove(data);
-        if (health <= 0) Death();
     }
 
 

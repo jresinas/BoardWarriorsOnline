@@ -44,12 +44,15 @@ public class Hit : SkillNormal {
         }
         */
 
-        List<int> observers = new List<int>();
-        ShoveInfo shoveInfo = Shove(target, self.GetPosition());
-        if (shoveInfo.characterCollisionId >= 0) observers.Add(shoveInfo.characterCollisionId);
-        string shoveSerialized = JsonUtility.ToJson(shoveInfo);
+        
+        if (target.GetHealth() > 0) {
+            List<int> observers = new List<int>();
+            ShoveInfo shoveInfo = Shove(target, self.GetPosition());
+            if (shoveInfo.characterCollisionId >= 0) observers.Add(shoveInfo.characterCollisionId);
+            string shoveSerialized = JsonUtility.ToJson(shoveInfo);
+            return new SkillResult(new int[] { target.id }, damage > 0, observers: observers.ToArray(), data: shoveSerialized);
+        } else return new SkillResult(new int[] { target.id }, damage > 0);
 
-        return new SkillResult(new int[] { target.id }, damage > 0, observers: observers.ToArray(), data: shoveSerialized);
     }
 
     
