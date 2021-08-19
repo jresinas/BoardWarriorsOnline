@@ -10,12 +10,15 @@ public static class Const {
     public static int SKILL_NUMBER = 4;
     public static int MAX_ENERGY = 10;
 
+    public static float BEAMLIGHT_OFFSET = 3f;
     public static float CHAR_OFFSET = 0.05f;
+    public static float PROJ_OFFSET = 0.7f;
     public static float DICE_ROLL_TIME = 1f;
     public static float WAIT_AFTER_SKILL_ANIM = 1.5f;
     public static float CHAR_FADE_OUT_SECONDS = 2f;
     public static float PROJ_FADE_OUT_SECONDS = 5f;
     public static float SHOVE_ANIM_TIME = 0.8f;
+    public static float SHOVE_COLLISION_TIME = 2f;
 
     public static float PORTRAIT_ENDTURN_TIME = 0.25f;
     public static float PORTRAIT_SKIPTURN_TIME = 0.5f;
@@ -30,5 +33,15 @@ public static class Const {
     public static Color32 TILE_DEFAULT = new Color32(154, 154, 154, 255);
     public static Color32 TILE_GREEN = new Color32(125, 200, 125, 255);
     public static Color32 TILE_RED = new Color32(200, 125, 125, 255);
+
+    //public static Color32 COLOR_PLAYER1 = new Color(255, 0, 0);
+    //public static Color32 COLOR_PLAYER1 = new Color32(255, 30, 30, 100);
+    public static Color32 COLOR_PLAYER1 = new Color32(255, 30, 30, 150);
+    //public static Color32 COLOR_PLAYER1 = new Color32(120, 15, 15, 150);
+    //public static Color32 COLOR_PLAYER2 = new Color(0, 125, 255);
+    //public static Color32 COLOR_PLAYER2 = new Color32(0, 180, 255, 100);
+    //public static Color32 COLOR_PLAYER2 = new Color32(0, 255, 255, 150);
+    public static Color32 COLOR_PLAYER2 = new Color32(0, 100, 255, 150);
+    //public static Color32 COLOR_PLAYER2 = new Color32(0, 44, 120, 150);
     #endregion
 }

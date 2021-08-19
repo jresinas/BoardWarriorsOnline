@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls when characters ending their skill animations (use skill, receive impact, etc) and sync them to finish at the same time
+/// </summary>
 public class SkillManager : MonoBehaviour {
     public static SkillManager instance;
 

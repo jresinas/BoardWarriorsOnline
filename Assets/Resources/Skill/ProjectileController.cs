@@ -4,13 +4,26 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ProjectileController : MonoBehaviour {
-    CharacterController caster;
     List<CharacterController> targets;
     bool success;
 
     void Start() {
         var tm = GetComponentInChildren<AE_PhysicsMotion>();
         if (tm != null) tm.CollisionEnter += CollisionEnter;
+    }
+
+    /// <summary>
+    /// Initialize projectile
+    /// </summary>
+    public void StartProjectile(CharacterController caster) {
+        CharacterSkill cs = caster.GetComponent<CharacterSkill>();
+        this.targets = cs.GetTargets();
+        this.success = cs.GetSuccess();
+        transform.LookAt(targets[0].transform.position + Vector3.up * Const.PROJ_OFFSET);
+
+        SphereCollider collider = GetComponentInChildren<SphereCollider>();
+        collider.isTrigger = true;
+        NextTarget();
     }
 
     // Projectile has passed non target character
@@ -23,13 +36,12 @@ public class ProjectileController : MonoBehaviour {
         if (!success) {
             CharacterController cc = other.GetComponentInParent<CharacterController>();
             if (cc != null && cc == targets[0]) {
-                //targets[0].ReceiveImpact(success);
                 targets[0].Dodge();
             }
         }
     }
 
-    // Determine need to collision (isTrigger = false) with next character
+    // Determine needs to collision (isTrigger = false) with next character
     void NextTarget() {
         SphereCollider collider = GetComponentInChildren<SphereCollider>();
         if (success && collider != null) {
@@ -44,19 +56,6 @@ public class ProjectileController : MonoBehaviour {
         }
     }
 
-    // Initialize projectile
-    public void StartProjectile(CharacterController caster) {
-        this.caster = caster;
-        CharacterSkill cs = caster.GetComponent<CharacterSkill>();
-        this.targets = cs.GetTargets();
-        this.success = cs.GetSuccess();
-        transform.LookAt(targets[0].transform.position+Vector3.up*0.7f);
-
-        SphereCollider collider = GetComponentInChildren<SphereCollider>();
-        collider.isTrigger = true;
-        NextTarget();
-    }
-
     private void CollisionEnter(object sender, AE_PhysicsMotion.AE_CollisionInfo e) {
         CharacterController targetController = (e.ContactPoint.otherCollider).GetComponentInParent<CharacterController>();
         if (success && targetController != null && targets.Count > 0 && targets.Contains(targetController)) {
@@ -69,12 +68,11 @@ public class ProjectileController : MonoBehaviour {
     }
 
     IEnumerator FadeOut(Renderer render) {
-        float num = 1f;
+        float num;
         for (float f = 0; f <= Const.PROJ_FADE_OUT_SECONDS; f += Time.deltaTime) {
             num = Mathf.Lerp(1f, 0f, f/Const.PROJ_FADE_OUT_SECONDS);
             render.material.SetFloat("_InvFade", num);
             yield return null;
         }
-        //Destroy(render.gameObject);
     }
 }

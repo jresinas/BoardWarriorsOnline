@@ -7,6 +7,9 @@ using Mirror;
 public class DiceManager : NetworkBehaviour {
     public static DiceManager instance = null;
 
+    // Event triggered on server when a dice roll is made
+    // * int: number of successful dices
+    // * int[]: results of dice roll
     public event Action<int, int[]> OnRollDices;
 
     [SerializeField] DicesController dices;
@@ -24,6 +27,12 @@ public class DiceManager : NetworkBehaviour {
         dices.Hide();
     }
 
+    /// <summary>
+    /// Make a dice roll
+    /// </summary>
+    /// <param name="dicesNumber">Number of dices to roll</param>
+    /// <param name="minRequired">Min dice value required to success</param>
+    /// <returns></returns>
     [Server]
     public int RollDices(int dicesNumber, int minRequired) {
         int[] results = dices.Roll(dicesNumber);

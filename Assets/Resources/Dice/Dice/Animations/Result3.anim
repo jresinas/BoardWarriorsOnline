@@ -252,7 +252,7 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 2
-    functionName: Success
+    functionName: EndRollAnimation
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

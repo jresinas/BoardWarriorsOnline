@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Class to retrieve skill results execution
+/// </summary>
 public class SkillResult{
     public bool success;
     public int[] targets;
@@ -32,11 +35,15 @@ public abstract class Skill : MonoBehaviour {
     [SerializeField] string animation = "Attack";
     [SerializeField] protected int range;
     [SerializeField] protected int energy;
+    // Skill can target caster's enemies
     [SerializeField] bool targetEnemies;
+    // Skill can target caster's allies
     [SerializeField] bool targetAllies;
+    // Skill can target to own caster
     [SerializeField] bool targetSelf;
+    // Skill target must be in line of sight from the caster
     [SerializeField] bool lineOfSight;
-    //[SerializeField] GameObject projectile;
+    // Effects and projectiles attached to the skill
     [SerializeField] protected SkillEffect[] effects;
 
     protected CharacterController self;
@@ -45,6 +52,7 @@ public abstract class Skill : MonoBehaviour {
         self = GetComponent<CharacterController>();
     }
 
+    #region Get&Set
     public int GetRange() {
         return range;
     }
@@ -68,21 +76,39 @@ public abstract class Skill : MonoBehaviour {
     public string GetAnimation() {
         return animation;
     }
+    #endregion
 
+    /// <summary>
+    /// Execute skill in server
+    /// </summary>
+    /// <param name="destiny">Skill target position</param>
+    /// <returns>Result after skill execution</returns>
     public abstract SkillResult Play(Vector2Int destiny);
 
+    /// <summary>
+    /// Determine if skill is usable in current context
+    /// </summary>
     public virtual bool IsVisible() {
         return self.GetEnergy() >= energy;
     }
 
+    /// <summary>
+    /// Determine if skill targets a character
+    /// </summary>
     public bool TargetCharacter() {
         return targetEnemies || targetAllies || targetSelf;
     }
 
+    /// <summary>
+    /// Determine if skill targets a tile (not a character)
+    /// </summary>
     public bool TargetTile() {
         return !TargetCharacter();
     }
 
+    /// <summary>
+    /// Determine if specified position is a valid target
+    /// </summary>
     public virtual bool AllowTarget(Vector2Int destiny) {
         if (TargetCharacter()) {
             int targetId = CharacterManager.instance.GetId(destiny);
@@ -100,27 +126,11 @@ public abstract class Skill : MonoBehaviour {
             return BoardUtils.Reach(self.GetPosition(), destiny, GetRange()) && self.GetPosition() != destiny;
         }
         return false;
-    }
-
-    
-    bool LineOfSight(CharacterController caster, CharacterController target) {
-        Vector3 direction = (target.transform.position + Vector3.up * 0.5f - caster.transform.position + Vector3.up * 0.5f).normalized;
-        RaycastHit[] allHits;
-        allHits = Physics.RaycastAll(caster.transform.position, direction, 10);
-        foreach (var hit in allHits) {
-            CharacterController nextCharacter = hit.collider.GetComponentInParent<CharacterController>();
-            if (nextCharacter == target) return true;
-            if (nextCharacter.GetPlayer() != caster.GetPlayer()) return false;
-        }
-        return false;
-    }
-    
+    }    
 
     /// <summary>
     /// Get list of targeteable character ids for this skill casted by specified character
     /// </summary>
-    /// <param name="caster"></param>
-    /// <returns></returns>
     public virtual List<int> GetTargetableCharacters(CharacterController caster) {
         List<int> targetIds = new List<int>();
         int alliesPlayer = caster.GetPlayer();
@@ -132,24 +142,15 @@ public abstract class Skill : MonoBehaviour {
         return targetIds;
     }
 
-    protected int RollDices(int dices, int targetArmor) {
-        return DiceManager.instance.RollDices(dices, targetArmor);
-    }
-
-    protected CharacterController GetTarget(Vector2Int destiny) {
-        int targetId = CharacterManager.instance.GetId(destiny);
-        if (targetId >= 0) return CharacterManager.instance.Get(targetId);
-        else return null;
-    }
-
-    public virtual void AnimationEffect(int number) {
-        if (effects.Length > number) {
-            SkillEffect effect = effects[number];
-
+    /// <summary>
+    /// Starts specified effect during skill using animation
+    /// </summary>
+    /// <param name="index">Skill effect index</param>
+    public virtual void AnimationEffect(int index) {
+        if (effects.Length > index) {
+            SkillEffect effect = effects[index];
             if (effect != null) {
                 GameObject effectInstance = Instantiate(effect.prefab, effect.position.position, effect.rotation.rotation);
-                //GameObject effectInstance = Instantiate(effect, self.leftHand.position, self.transform.rotation);
-                //GameObject effectInstance = Instantiate(effect, self.leftHand.position, self.leftHand.rotation);
                 Destroy(effectInstance, effect.time);
                 ProjectileController pc = effectInstance.GetComponentInChildren<ProjectileController>();
                 if (pc != null) pc.StartProjectile(self);
@@ -159,30 +160,34 @@ public abstract class Skill : MonoBehaviour {
         }
     }
 
-    /*
-    protected CharacterController Shove2(CharacterController shoved, Vector2Int shoverTile) {
-        CharacterController collisionChar;
-        Vector2Int destiny = BoardUtils.GetShoveDestiny(shoved.position, shoverTile);
-        if (destiny.x < 0 || destiny.y < 0 || destiny.x >= Const.BOARD_COLS || destiny.y >= Const.BOARD_ROWS) {
-            // Choca con limite del tablero
-            collisionChar = self;
-        } else {
-            int collisionId = CharacterManager.instance.GetId(destiny);
-            if (collisionId < 0) {
-                // Se le empuja correctamente
-                shoved.SetPosition(destiny);
-                collisionChar = null;
-            } else {
-                // choca contra collisionId
-                collisionChar = CharacterManager.instance.Get(collisionId);
-            }
-        }
-
-        //target.PrepareShoveAnimation(origin);
-        return collisionChar;
+    #region ProtectedMethods
+    /// <summary>
+    /// Simulate a dice roll
+    /// </summary>
+    /// <param name="dices">Number of dices</param>
+    /// <param name="targetArmor">Target armor (vlaue required to success)</param>
+    /// <returns>Number of successful dices</returns>
+    protected int RollDices(int dices, int targetArmor) {
+        return DiceManager.instance.RollDices(dices, targetArmor);
     }
-    */
 
+    /// <summary>
+    /// Get CaracterController at specified position
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    protected CharacterController GetCharacter(Vector2Int position) {
+        int targetId = CharacterManager.instance.GetId(position);
+        if (targetId >= 0) return CharacterManager.instance.Get(targetId);
+        else return null;
+    }
+
+    /// <summary>
+    /// Shove specified character from specified position
+    /// </summary>
+    /// <param name="shoved">Character who receive shove</param>
+    /// <param name="shoverTile">Position from which shove</param>
+    /// <returns>Info about shove result</returns>
     protected ShoveInfo Shove(CharacterController shoved, Vector2Int shoverTile) {
         List<CharacterController> shoveDamage = new List<CharacterController>();
 
@@ -191,17 +196,17 @@ public abstract class Skill : MonoBehaviour {
         Vector2Int destiny;
         Vector2Int prevDestiny = BoardUtils.GetShoveDestiny(origin, shoverTile);
         if (prevDestiny.x < 0 || prevDestiny.y < 0 || prevDestiny.x >= Const.BOARD_COLS || prevDestiny.y >= Const.BOARD_ROWS) {
-            // Choca con limite del tablero
+            // Shoved character collide aginst board limits
             destiny = origin;
             shoveDamage.Add(shoved);
         } else {
             characterCollisionId = CharacterManager.instance.GetId(prevDestiny);
             if (characterCollisionId < 0) {
-                // Se le empuja correctamente
+                // Shoved character not collide
                 shoved.SetPosition(prevDestiny);
                 destiny = prevDestiny;
             } else {
-                // choca contra collisionId
+                // Shoved character collide against characterCollisionId
                 destiny = origin;
                 CharacterController characterCollision = CharacterManager.instance.Get(characterCollisionId);
                 shoveDamage.Add(shoved);
@@ -212,9 +217,25 @@ public abstract class Skill : MonoBehaviour {
 
         return new ShoveInfo(origin, destiny, shoverTile, characterCollisionId);
     }
+    #endregion
 
+    #region PrivateMethods
+    // Apply effect of collision after shove some time later to sync with animation
     IEnumerator ShoveDamage(List<CharacterController> characters) {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(Const.SHOVE_COLLISION_TIME);
         foreach (CharacterController character in characters) character.ChangeHealth(-1);
     }
+
+    bool LineOfSight(CharacterController caster, CharacterController target) {
+        Vector3 direction = (target.transform.position + Vector3.up * 0.5f - caster.transform.position + Vector3.up * 0.5f).normalized;
+        RaycastHit[] allHits;
+        allHits = Physics.RaycastAll(caster.transform.position, direction, 10);
+        foreach (var hit in allHits) {
+            CharacterController nextCharacter = hit.collider.GetComponentInParent<CharacterController>();
+            if (nextCharacter == target) return true;
+            if (nextCharacter.GetPlayer() != caster.GetPlayer()) return false;
+        }
+        return false;
+    }
+    #endregion
 }

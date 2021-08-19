@@ -4,39 +4,33 @@ using UnityEngine;
 using Mirror;
 
 public class BeamLightController : NetworkBehaviour {
-    bool moving = false;
-    float moveTime = 1;
-    Vector3 originPosition;
-    Vector3 targetPosition;
-    float time = 0;
-    Vector3 mask = new Vector3(1, 0, 1);
-    Vector3 offset = new Vector3(0, 3, 0);
+    CharacterController currentCharacter = null;
+    CharacterController nextCharacter = null;
 
     void Start() {
         GameManager.instance.OnStartTurn += StartTurnHandler;
     }
 
-    void Update() {
-        if (moving) Move(Time.deltaTime);
+    void LateUpdate() {
+        if (currentCharacter != null) transform.position = currentCharacter.transform.position + Vector3.up * Const.BEAMLIGHT_OFFSET;
     }
 
     [ClientRpc]
     void StartTurnHandler(object userConnection, int characterId, bool canSkip) {
-        Debug.Log("Change Beam of Light");
-        CharacterController character = CharacterManager.instance.Get(characterId);
-        transform.SetParent(character.transform);
-        originPosition = Vector3.Scale(transform.position, mask) + offset;
-        targetPosition = Vector3.Scale(character.transform.position, mask) + offset;
-        moveTime = Vector3.Distance(originPosition, targetPosition) / 4;
-        time = 0;
-        moving = true;
+        currentCharacter = null;
+        nextCharacter = CharacterManager.instance.Get(characterId);
+        Vector3 originPosition = transform.position;
+        Vector3 targetPosition = nextCharacter.transform.position + Vector3.up * Const.BEAMLIGHT_OFFSET;
+        float moveTime = Vector3.Distance(originPosition, targetPosition) / 4;
+        StartCoroutine(Move(originPosition, targetPosition, moveTime));
     }
 
-    void Move(float t) {
-        time += t;
-
-        if (time / moveTime > 1) moving = false;
-
-        transform.position = Vector3.Lerp(originPosition, targetPosition, time / moveTime);
+    IEnumerator Move(Vector3 origin, Vector3 destiny, float moveTime) {
+        for (float f = 0; f <= moveTime; f += Time.deltaTime) {
+            transform.position = Vector3.Lerp(origin, destiny, f / moveTime);
+            yield return null;
+        }
+        currentCharacter = nextCharacter;
+        nextCharacter = null;
     }
 }

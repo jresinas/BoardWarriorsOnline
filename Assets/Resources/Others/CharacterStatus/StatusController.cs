@@ -20,7 +20,7 @@ public class StatusController : MonoBehaviour {
         CharacterManager.instance.OnChangeEnergy += ChangeEnergyHandler;
     }
 
-    void Update() {
+    void LateUpdate() {
         Camera camera = ClientManager.instance.GetCamera();
         if (camera != null) transform.rotation = camera.transform.rotation;
     }

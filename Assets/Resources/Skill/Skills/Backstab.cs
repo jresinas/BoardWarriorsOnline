@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Backstab : SkillNormal {
     public override SkillResult Play(Vector2Int destiny) {
-        CharacterController target = GetTarget(destiny);
+        CharacterController target = GetCharacter(destiny);
         int dices = (AlliesAdjacent(target) > 0) ? 8 : 4;
         int targetArmor = target.GetArmor();
         int damage = RollDices(dices, targetArmor);

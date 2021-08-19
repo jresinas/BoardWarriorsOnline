@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Charge : SkillNormal {
     public override SkillResult Play(Vector2Int destiny) {
-        CharacterController target = GetTarget(destiny);
+        CharacterController target = GetCharacter(destiny);
         List<int> observers = new List<int>();
         ShoveInfo shoveInfo = Shove(target, self.GetPosition());
         if (shoveInfo.characterCollisionId >= 0) observers.Add(shoveInfo.characterCollisionId);

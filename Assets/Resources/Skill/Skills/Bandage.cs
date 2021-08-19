@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bandage : SkillNormal {
     public override SkillResult Play(Vector2Int destiny) {
-        CharacterController target = GetTarget(destiny);
+        CharacterController target = GetCharacter(destiny);
         target.ChangeHealth(2);
         return new SkillResult(new int[] { target.id }, true);
     }
