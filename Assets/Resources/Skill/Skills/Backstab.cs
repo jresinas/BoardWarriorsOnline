@@ -21,8 +21,7 @@ public class Backstab : SkillNormal {
         Vector2Int position = target.GetPosition();
         Vector2Int[] adjacentVectors = { Vector2Int.left, Vector2Int.up, Vector2Int.right, Vector2Int.down };
         foreach (Vector2Int adjacentVector in adjacentVectors) {
-            TileController tileAdjacent = BoardManager.instance.GetTile(position + adjacentVector);
-            int characterId = tileAdjacent.GetCharacter();
+            int characterId = CharacterManager.instance.GetId(position + adjacentVector);
             if (characterId > 0 && allies.Contains(characterId)) alliesAdjacent++;
         }
 

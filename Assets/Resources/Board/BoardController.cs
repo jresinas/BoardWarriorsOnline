@@ -32,8 +32,8 @@ public class BoardController : MonoBehaviour {
     public void ShowMoveMarks(Vector2Int position, int range) {
         for (int i = 0; i < Const.BOARD_ROWS; i++) {
             for (int j = 0; j < Const.BOARD_COLS; j++) {
-                // if (BoardUtils.Distance(position, new Vector2Int(j, i)) <= range && tiles[i][j].GetCharacter() < 0) {
-                if (BoardUtils.Reach(position, new Vector2Int(j, i), range) && tiles[i][j].GetCharacter() < 0) {
+                Vector2Int destinyPosition = new Vector2Int(j, i);
+                if (BoardUtils.Reach(position, destinyPosition, range) && CharacterManager.instance.GetId(destinyPosition) < 0) {
                         tiles[i][j].ShowMoveMark();
                 }
             }

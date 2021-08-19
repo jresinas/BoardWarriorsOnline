@@ -5,12 +5,10 @@ using UnityEngine;
 using Mirror;
 
 public class BoardManager : NetworkBehaviour {
-    //public Vector2Int start;
-    //public Vector2Int end;
-    //public List<Vector2Int> path;
-
     public static BoardManager instance = null;
 
+    // Event triggered on client when player click on a Tile.
+    // * Vector2Int: tile position
     public event EventHandler<Vector2Int> OnClickTile;
 
     [SerializeField] BoardController board;
@@ -28,22 +26,16 @@ public class BoardManager : NetworkBehaviour {
         board.LoadTiles();
     }
 
-    //void Update() {
-    //    if (Input.GetKeyDown("space")) {
-    //        List<Vector2Int>? pathi = BoardUtils.GetPath(start, end, 0);
-    //        if (pathi != null) path = pathi;
-    //        else Debug.Log("Path null");
-    //    }
-    //}
+    // Get TileController of specific position
+    public TileController GetTile(Vector2Int position) {
+        return board.GetTile(position);
+    }
 
     public void ClickTile(Vector2Int position) {
         if (OnClickTile != null) OnClickTile(this, position);
     }
 
-    public TileController GetTile(Vector2Int position) {
-        return board.GetTile(position);
-    }
-
+    #region EventHandlers
     [ClientRpc]
     void EndOfTurnHandler(object source, EventArgs args) {
         board.HideMarks();
@@ -67,6 +59,7 @@ public class BoardManager : NetworkBehaviour {
             ShowMoveMarks(characterId);
         }
     }
+    #endregion
 
     void ShowMoveMarks(int characterId) {
         CharacterController character = CharacterManager.instance.Get(characterId);

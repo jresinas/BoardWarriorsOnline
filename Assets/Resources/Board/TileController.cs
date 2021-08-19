@@ -17,23 +17,17 @@ public class TileController : NetworkBehaviour, IPointerClickHandler {
 
     public void HideMark() {
         MeshRenderer mr = GetComponent<MeshRenderer>();
-        //mr.material.color = new Color32(255, 255, 255, 255);
-        //mr.material.color = new Color32(178, 178, 178, 255);
-        mr.material.color = new Color32(154, 154, 154, 255);
+        mr.material.color = Const.TILE_DEFAULT;
     }
 
     public void ShowMoveMark() {
         MeshRenderer mr = GetComponent<MeshRenderer>();
-        mr.material.color = new Color32(125, 200, 125, 255);
+        mr.material.color = Const.TILE_GREEN;
     }
 
     public void ShowSkillMark() {
         MeshRenderer mr = GetComponent<MeshRenderer>();
-        mr.material.color = new Color32(200, 125, 125, 255);
-    }
-
-    public int GetCharacter() {
-        return CharacterManager.instance.GetId(position);
+        mr.material.color = Const.TILE_RED;
     }
 
     public void OnPointerClick(PointerEventData eventData) {

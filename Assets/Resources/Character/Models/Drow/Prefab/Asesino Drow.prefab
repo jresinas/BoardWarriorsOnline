@@ -2276,9 +2276,9 @@ MonoBehaviour:
   characterShove: {fileID: -1823526311482015235}
   id: 0
   position: {x: 0, y: 0}
-  animationTime: 0.5
   name: Elre Iarwarin
   surname: Elve Assassin
+  maxHealth: 2
   movement: 3
   armor: 2
   skills:
@@ -2286,12 +2286,8 @@ MonoBehaviour:
   - {fileID: 5228802640969546255}
   - {fileID: -6560378582427464376}
   - {fileID: 6792802613616083025}
-  maxHealth: 2
   portrait: {fileID: 0}
   health: 0
-  leftHand: {fileID: 0}
-  rightHand: {fileID: 0}
-  body: {fileID: 0}
 --- !u!114 &8719126963549223383
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2323,6 +2319,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 3202882307661485009}
   self: {fileID: 2060469218482784611}
+  animationTime: 0.5
 --- !u!114 &-3744417109872400881
 MonoBehaviour:
   m_ObjectHideFlags: 0

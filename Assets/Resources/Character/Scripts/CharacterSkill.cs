@@ -5,17 +5,14 @@ using UnityEngine;
 public class CharacterSkill : MonoBehaviour {
     [SerializeField] Animator anim;
     [SerializeField] CharacterController self;
+
     List<CharacterController> targetCharacters;
     List<CharacterController> observerCharacters;
     Skill skill;
     bool success;
     string data;
 
-    /*
-    public bool shove = false;
-    public Vector2Int shoveOrigin;
-    */
-
+    #region Get&Set
     public List<CharacterController> GetTargets() {
         return targetCharacters;
     }
@@ -23,9 +20,17 @@ public class CharacterSkill : MonoBehaviour {
     public bool GetSuccess() {
         return success;
     }
+    #endregion
 
-    //public void StartPlay(Skill skill, CharacterController targetCharacter, bool success) {
-    public void StartPlay(Skill skill, int[] targetIds, bool success, int[] observerIds, string data) {
+    /// <summary>
+    /// Start using skill animation
+    /// </summary>
+    /// <param name="skill">Skill to use</param>
+    /// <param name="targetIds">Array of character ids directly affected by skill animation</param>
+    /// <param name="success">True if skill was executed successfully and will impact on targets</param>
+    /// <param name="observerIds">Array of character ids indirectly affected by skill</param>
+    /// <param name="data">Additional data provided from skill execution (serialized in JSON)</param>
+    public void StartSkill(Skill skill, int[] targetIds, bool success, int[] observerIds, string data) {
         this.targetCharacters = CharacterManager.instance.Get(targetIds);
         this.observerCharacters = CharacterManager.instance.Get(observerIds);
         this.skill = skill;
@@ -36,10 +41,10 @@ public class CharacterSkill : MonoBehaviour {
         characterIds.AddRange(observerIds);
         characterIds.Add(self.GetId());
         SkillManager.instance.StartAnimation(characterIds);
-        StartAnimation();
+        PrepareCharacters();
     }
 
-    void StartAnimation() {
+    void PrepareCharacters() {
         if (targetCharacters.Count > 0) transform.LookAt(targetCharacters[0].transform);
         Waiting();
         foreach (CharacterController targetCharacter in targetCharacters) {
@@ -54,33 +59,15 @@ public class CharacterSkill : MonoBehaviour {
     }
 
     IEnumerator WaitDiceRoll() {
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(Const.DICE_ROLL_TIME);
         anim.SetTrigger(skill.GetAnimation());
-    }
-
-    // Attacking character 
-    //void Impact() {
-    //    foreach (CharacterController targetCharacter in targetCharacters) {
-    //        if (targetCharacter != self) targetCharacter.ReceiveImpact(success);
-    //    }
-    //}
-
-    // During attack, waiting dice roll
-    public void Waiting() {
-        anim.SetTrigger("Waiting");
-    }
-
-    public void Impact(string type = "Damage") {
-        foreach (CharacterController targetCharacter in targetCharacters) {
-            if (targetCharacter != self) {
-                if (!success) targetCharacter.Dodge();
-                else {
-                    ReceiveImpact(targetCharacter, type);
-                }
-            }
-        }
-    }   
+    }    
     
+    /// <summary>
+    /// Controls impact effect on character and activate appropriate animation
+    /// </summary>
+    /// <param name="targetCharacter">CharacterController of character impacted</param>
+    /// <param name="type">Type of impact: Damage or Shove</param>
     public void ReceiveImpact(CharacterController targetCharacter, string type) {
         if (targetCharacter.GetHealth() <= 0) targetCharacter.Death();
         else {
@@ -98,6 +85,7 @@ public class CharacterSkill : MonoBehaviour {
         }
     }
 
+    #region ActivateAnimations
     public void Damage() {
         anim.SetTrigger("Damage");
     }
@@ -110,14 +98,15 @@ public class CharacterSkill : MonoBehaviour {
         anim.SetBool("Death", true);
     }
 
+    public void Waiting() {
+        anim.SetTrigger("Waiting");
+    }
+    #endregion
+
     public void EndAnimation() {
         if (!anim.GetBool("Death")) anim.SetTrigger("EndAnimation");
         targetCharacters = null;
         skill = null;
-    }
-
-    void Effect(int number) {
-        skill.AnimationEffect(number);
     }
 
     public void DeathFadeOut() {
@@ -127,15 +116,32 @@ public class CharacterSkill : MonoBehaviour {
             StartCoroutine(FadeOut(render));
         }
     }
-    
+
     IEnumerator FadeOut(Renderer render) {
         render.material.ToFadeMode();
         Color color = render.material.color;
         for (float f = 0; f <= Const.CHAR_FADE_OUT_SECONDS; f += Time.deltaTime) {
-            color.a = Mathf.Lerp(1f, 0f, f/Const.CHAR_FADE_OUT_SECONDS);
+            color.a = Mathf.Lerp(1f, 0f, f / Const.CHAR_FADE_OUT_SECONDS);
             render.material.color = color;
             yield return null;
         }
         gameObject.SetActive(false);
     }
+
+    #region AnimEventCallbacks
+    void Impact(string type = "Damage") {
+        foreach (CharacterController targetCharacter in targetCharacters) {
+            if (targetCharacter != self) {
+                if (!success) targetCharacter.Dodge();
+                else {
+                    ReceiveImpact(targetCharacter, type);
+                }
+            }
+        }
+    }
+
+    void Effect(int number) {
+        skill.AnimationEffect(number);
+    }
+    #endregion
 }

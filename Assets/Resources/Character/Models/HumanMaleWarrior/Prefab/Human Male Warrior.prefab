@@ -626,9 +626,9 @@ MonoBehaviour:
   characterShove: {fileID: 6277354686977857196}
   id: 0
   position: {x: 0, y: 0}
-  animationTime: 1
   name: Garran
   surname: Human Warrior
+  maxHealth: 2
   movement: 2
   armor: 0
   skills:
@@ -636,11 +636,8 @@ MonoBehaviour:
   - {fileID: 4943359797614711333}
   - {fileID: 95568550017484503}
   - {fileID: 3001247557368821874}
-  maxHealth: 2
   portrait: {fileID: 21300000, guid: d5efbe453075a864c9b59a7463e5799c, type: 3}
-  leftHand: {fileID: 0}
-  rightHand: {fileID: 0}
-  body: {fileID: 0}
+  health: 0
 --- !u!114 &7351193204919807862
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -655,6 +652,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 8650089534068628174}
   self: {fileID: 470737390838893953}
+  animationTime: 1
 --- !u!114 &4856626022840889354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -683,7 +681,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 8650089534068628174}
   self: {fileID: 470737390838893953}
-  origin: {x: 0, y: 0}
 --- !u!114 &4482454264383577022
 MonoBehaviour:
   m_ObjectHideFlags: 0

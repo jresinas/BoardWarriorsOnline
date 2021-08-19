@@ -7,12 +7,25 @@ using Mirror;
 public class CharacterManager : NetworkBehaviour {
     public static CharacterManager instance = null;
 
+    // Event triggered pn client when pointer starts hovering over a character
+    // * int: character id
     public event EventHandler<int> OnCharacterHoverEnter;
+    // Event triggered on client when pointer ends hovering over a character
+    // * int: character id
     public event EventHandler<int> OnCharacterHoverExit;
+    // Event triggered on client when character's health is modified
+    // * int: character id
+    // * int: new health value
     public event Action<int, int> OnChangeHealth;
+    // Event triggered on client when character's energy is modified
+    // * int: character id
+    // * int: new energy value
     public event Action<int, int> OnChangeEnergy;
+    // Event triggered on server when a character is death (health <= 0)
+    // * int: character id
     public event EventHandler<int> OnDeath;
 
+    // List of characters in game
     public SyncList<Transform> characters = new SyncList<Transform>();
 
     void Awake() {
@@ -29,7 +42,9 @@ public class CharacterManager : NetworkBehaviour {
         GameManager.instance.OnUseResponseSkillPost += UseResponseSkillPostHandler;
     }
 
-    //public void AddCharacter(CharacterController character, Vector2Int position, int player) {
+    /// <summary>
+    /// Add new character to the game
+    /// </summary>
     public void AddCharacter(Transform character, Vector2Int position, int player) {
         characters.Add(character);
         CharacterController characterController = character.GetComponent<CharacterController>();
@@ -38,6 +53,9 @@ public class CharacterManager : NetworkBehaviour {
         characterController.SetPlayer(player);
     }
 
+    /// <summary>
+    /// Returns the CharacterController for a given id
+    /// </summary>
     public CharacterController Get(int id) {
         if (id < Const.CHAR_NUMBER && id >= 0) {
             CharacterController character = characters[id].GetComponent<CharacterController>();
@@ -46,6 +64,9 @@ public class CharacterManager : NetworkBehaviour {
         return null;
     }
 
+    /// <summary>
+    /// Returns a list of CharacterController for a given array of ids
+    /// </summary>
     public List<CharacterController> Get(int[] ids) {
         List<CharacterController> targets = new List<CharacterController>();
         foreach (int id in ids) {
@@ -55,6 +76,9 @@ public class CharacterManager : NetworkBehaviour {
         return targets;
     }
 
+    /// <summary>
+    /// Returns the character id in specified position of the board
+    /// </summary>
     public int GetId(Vector2Int position) {
         for (int i = 0; i < Const.CHAR_NUMBER; i++) {
             CharacterController character = Get(i);
@@ -63,6 +87,9 @@ public class CharacterManager : NetworkBehaviour {
         return -1;
     }
 
+    /// <summary>
+    /// Returns the list of characters id owned by specified player
+    /// </summary>
     public List<int> GetPlayerCharacters(int player) {
         List<int> characters = new List<int>();
         for (int i = 0; i < Const.CHAR_NUMBER; i++) {
@@ -72,18 +99,21 @@ public class CharacterManager : NetworkBehaviour {
         return characters;
     }
 
-    public NetworkConnection GetOwner(int id) {
-        CharacterController character = Get(id);
+    /// <summary>
+    /// Returns the player connection for a given character id
+    /// </summary>
+    public NetworkConnection GetOwner(int characterId) {
+        CharacterController character = Get(characterId);
         if (character != null) {
             NetworkIdentity ni = character.GetComponent<NetworkIdentity>();
             return ni.connectionToClient;
         } else return null;
     }
 
+    #region Permissions
     [Server]
     public bool AllowMove(int characterId, Vector2Int position) {
         CharacterController character = Get(characterId);
-        // return BoardUtils.Distance(character.GetPosition(), position) <= character.GetMovement();
         return BoardUtils.Reach(character.GetPosition(), position, character.GetMovement());
     }
 
@@ -96,6 +126,13 @@ public class CharacterManager : NetworkBehaviour {
         } else return false;
     }
 
+    /// <summary>
+    /// Check if a skill used could be responded by another skill
+    /// </summary>
+    /// <param name="casterId">Character id who use the original skill</param>
+    /// <param name="skillIndex">Skill (index) used by original caster</param>
+    /// <param name="destiny">Position that targets original skill</param>
+    /// <returns></returns>
     [Server]
     public bool CanResponse(int casterId, int skillIndex, Vector2Int destiny) {
         bool result = false;
@@ -114,10 +151,12 @@ public class CharacterManager : NetworkBehaviour {
         }
         return result;
     }
+    #endregion
 
+    #region EventHandlers
     void StartGameHandler(object source, EventArgs args) {
         CharacterController character;
-        for (int i = 0; i < Const.CHAR_NUMBER; i++) if ((character = Get(i)) != null) character.LocateCharacter();
+        for (int i = 0; i < Const.CHAR_NUMBER; i++) if ((character = Get(i)) != null) character.PlaceCharacter();
     }
 
     void StartRoundHandler(object source, EventArgs args) {
@@ -129,7 +168,7 @@ public class CharacterManager : NetworkBehaviour {
     private void EndTurndHandler(object source, EventArgs args) {
         foreach (Transform character in characters) {
             CharacterController cc = character.GetComponent<CharacterController>();
-            if (cc != null) cc.RefreshHealth();
+            if (cc != null) RefreshHealth(cc.id, cc.GetHealth());
         }
     }
 
@@ -139,7 +178,6 @@ public class CharacterManager : NetworkBehaviour {
         Vector2Int currentPosition = character.GetPosition();
         character.MoveAnimation(currentPosition, destiny);
         character.Move(destiny);
-        //Get(characterId).transform.position = BoardManager.instance.GetTile(position).transform.position;
     }
 
     [Server]
@@ -158,12 +196,14 @@ public class CharacterManager : NetworkBehaviour {
     void UseResponseSkillPostHandler(int casterId, int skillIndex, int targetId, int result, int[] results) {
         Debug.Log("ResponseSkillPost");
     }
+    #endregion
 
-
+    [Client]
     public void EnterHover(int characterId) {
         if (OnCharacterHoverEnter!= null) OnCharacterHoverEnter(this, characterId);
     }
 
+    [Client]
     public void ExitHover(int characterId) {
         if (OnCharacterHoverExit != null) OnCharacterHoverExit(this, characterId);
     }
@@ -173,7 +213,7 @@ public class CharacterManager : NetworkBehaviour {
         if (OnChangeEnergy != null) OnChangeEnergy(characterId, energy);
     }
 
-    //[ClientRpc]
+    [Client]
     public void RefreshHealth(int characterId, int health) {
         if (OnChangeHealth != null) OnChangeHealth(characterId, health);
     }

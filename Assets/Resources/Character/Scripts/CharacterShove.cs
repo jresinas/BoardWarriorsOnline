@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Skill data class to retrieve info about shove
+/// </summary>
 public class ShoveInfo {
     public Vector2Int shovedOrigin;
     public Vector2Int shovedDestiny;
@@ -20,6 +23,10 @@ public class CharacterShove : MonoBehaviour {
     [SerializeField] Animator anim;
     [SerializeField] CharacterController self;
 
+    /// <summary>
+    /// Initialize shove effect related to data
+    /// </summary>
+    /// <param name="data">ShoveInfo data serialized as JSON</param>
     public void StartShove(string data) {
         ShoveInfo shoveInfo = JsonUtility.FromJson<ShoveInfo>(data);
 
@@ -31,42 +38,39 @@ public class CharacterShove : MonoBehaviour {
         Vector3 destinyPosition;
 
         if (prevDestinyTile.x < 0 || prevDestinyTile.y < 0 || prevDestinyTile.x >= Const.BOARD_COLS || prevDestinyTile.y >= Const.BOARD_ROWS) {
-            // Choca con limite del tablero
+            // Shoved character collide aginst board limits
             destinyPosition = currentPosition + ((prevDestinyPosition - currentPosition) / 2);
         } else {
             if (shoveInfo.characterCollisionId < 0) {
-                // Se le empuja correctamente
+                // Shoved character not collide
                 destinyPosition = prevDestinyPosition;
             } else {
-                // choca contra collisionId
+                // Shoved character collide against characterCollisionId
                 destinyPosition = currentPosition + ((prevDestinyPosition - currentPosition) * 3 / 4);
             }
         }
 
-        Vector3 originPosition = BoardManager.instance.GetTile(shoverTile).transform.position + Vector3.up * Const.CHAR_OFFSET;
-        transform.LookAt(originPosition);
+        Vector3 shoverPosition = BoardManager.instance.GetTile(shoverTile).transform.position + Vector3.up * Const.CHAR_OFFSET;
+        transform.LookAt(shoverPosition);
         anim.SetBool("Shove", true);
         StartCoroutine(Shove(currentPosition, destinyPosition, shoveInfo.characterCollisionId));
     }
-  
+
+    IEnumerator Shove(Vector3 originPosition, Vector3 targetPosition, int characterCollisionId) {
+        for (float f = 0; f <= Const.SHOVE_ANIM_TIME; f += Time.deltaTime) {
+            transform.position = Vector3.Lerp(originPosition, targetPosition, f / Const.SHOVE_ANIM_TIME);
+            yield return null;
+        }
+        EndShove(characterCollisionId);
+    }
 
     void EndShove(int characterCollisionId) {
         CharacterController collisionChar = CharacterManager.instance.Get(characterCollisionId);
-
-        Debug.Log("End Shove");
         if (collisionChar != null) {
             self.ReceiveImpact("Damage");
             collisionChar.ReceiveImpact("Damage");
         } else {
             anim.SetBool("Shove", false);
         }
-    }
-
-    IEnumerator Shove(Vector3 originPosition, Vector3 targetPosition, int characterCollisionId) {
-        for (float f = 0; f <= 0.8f; f += Time.deltaTime) {
-            transform.position = Vector3.Lerp(originPosition, targetPosition, f / 0.8f);
-            yield return null;
-        }
-        EndShove(characterCollisionId);
     }
 }

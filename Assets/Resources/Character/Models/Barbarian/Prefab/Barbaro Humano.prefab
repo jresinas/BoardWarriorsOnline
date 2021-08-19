@@ -565,9 +565,9 @@ MonoBehaviour:
   characterShove: {fileID: -4308424467586923596}
   id: 0
   position: {x: 0, y: 0}
-  animationTime: 1
   name: Skarl
   surname: Human Barbarian
+  maxHealth: 10
   movement: 5
   armor: 2
   skills:
@@ -575,12 +575,8 @@ MonoBehaviour:
   - {fileID: -7763561353965280845}
   - {fileID: -5569749395958243429}
   - {fileID: -6384361421745248098}
-  maxHealth: 10
   portrait: {fileID: 0}
   health: 0
-  leftHand: {fileID: 0}
-  rightHand: {fileID: 0}
-  body: {fileID: 0}
 --- !u!114 &-8985315874755183373
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,6 +608,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 5162172454058531712}
   self: {fileID: 4107072779529713061}
+  animationTime: 1
 --- !u!114 &-7412458734869633317
 MonoBehaviour:
   m_ObjectHideFlags: 0

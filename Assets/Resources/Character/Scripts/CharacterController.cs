@@ -14,21 +14,16 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     [SyncVar] public Vector2Int position;
     [SyncVar] int player;
 
-    [SerializeField] float animationTime;
     [SerializeField] string name;
     [SerializeField] string surname;
+    [SerializeField] int maxHealth;
     [SerializeField] int movement;
     [SerializeField] int armor;
     [SerializeField] Skill[] skills = new Skill[Const.SKILL_NUMBER];
-    [SerializeField] int maxHealth;
     public Sprite portrait;
 
     [SyncVar] public int health;
     [SyncVar] int energy;
-
-    public Transform leftHand;
-    public Transform rightHand;
-    public Transform body;
 
     void Awake() {
         health = maxHealth;
@@ -86,10 +81,6 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
         CharacterManager.instance.RefreshEnergy(id, energy);
     }
 
-    public void RefreshHealth() {
-        CharacterManager.instance.RefreshHealth(id, health);
-    }
-
     public void SetPlayer(int player) {
         this.player = player;
     }
@@ -104,111 +95,89 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
     }
     #endregion
 
-
+    /// <summary>
+    /// Place character on clients on its current tile
+    /// </summary>
     [ClientRpc]
-    public void LocateCharacter() {
+    public void PlaceCharacter() {
         transform.position = BoardManager.instance.GetTile(position).transform.position + Vector3.up * Const.CHAR_OFFSET;
-        characterMove.StartCharacterMove(player, animationTime);
+        characterMove.Idle();
     }
 
+    /// <summary>
+    /// Move character on server side
+    /// </summary>
+    /// <param name="position">Destiny position</param>
     [Server]
     public void Move(Vector2Int position) {
         SetPosition(position);
     }
 
+    /// <summary>
+    /// Starts character move animation on client side
+    /// </summary>
+    /// <param name="origin">Origin position (needed because Mirror sync reasons)</param>
+    /// <param name="destiny">Destiny position</param>
     [ClientRpc]
     public void MoveAnimation(Vector2Int origin, Vector2Int destiny) {
-        //GetComponent<Animator>().SetBool("Walk", true);
         List<Vector2Int> path = BoardUtils.GetPath(origin, destiny, player);
         characterMove.StartMove(path);
     }
 
-    /*
-    [Server]
-    public int Shove(Vector2Int origin) {
-        int collisionId;
-        Vector2Int destiny = BoardUtils.GetShoveDestiny(position, origin);
-        if (destiny.x < 0 || destiny.y < 0 || destiny.x >= Const.BOARD_COLS || destiny.y >= Const.BOARD_ROWS) {
-            collisionId = id;
-        } else {
-            collisionId = CharacterManager.instance.GetId(destiny);
-            if (collisionId < 0) {
-                SetPosition(destiny);
-            }
-        }
-       
-        PrepareShoveAnimation(origin);
-        return collisionId;
-    }
-    */
-
+    /// <summary>
+    /// Use skill on server side
+    /// </summary>
+    /// <param name="skillIndex">Character skill index</param>
+    /// <param name="destiny">Skill target position</param>
+    /// <returns>Results of skill execution</returns>
     [Server]
     public SkillResult UseSkill(int skillIndex, Vector2Int destiny) {
         Skill skill = GetSkill(skillIndex);
-        //CharacterController target = CharacterManager.instance.Get(targetId);
         return skill.Play(destiny);
     }
 
+    /// <summary>
+    /// Starts skil use animation on client side
+    /// </summary>
+    /// <param name="skillIndex">Character skill index to use</param>
+    /// <param name="targetIds">Array of character ids directly affected by skill animation</param>
+    /// <param name="success">True if skill was executed successfully and will impact on targets</param>
+    /// <param name="observerIds">Array of character ids indirectly affected by skill</param>
+    /// <param name="data">Additional data provided from skill execution (serialized in JSON)</param>
     [ClientRpc]
     public void UseSkillAnimation(int skillIndex, int[] targetIds, bool success, int[] observerIds, string data) {
         Skill skill = GetSkill(skillIndex);
-        characterSkill.StartPlay(skill, targetIds, success, observerIds, data);
-    }
-
-    public void OnPointerEnter(PointerEventData eventData) {
-        CharacterManager.instance.EnterHover(id);
-    }
-
-    public void OnPointerExit(PointerEventData eventData) {
-        CharacterManager.instance.ExitHover(id);
+        characterSkill.StartSkill(skill, targetIds, success, observerIds, data);
     }
 
     #region Animations
+    /// <summary>
+    /// Starts skill waiting animation (before executing)
+    /// </summary>
     public void Waiting() {
         characterSkill.Waiting();
     }
 
-    /*
-    public void ReceiveImpact(bool success) {
-        Debug.Log("CharacterController - ReceiveImpact");
-        RefreshHealth();
-        characterSkill.ReceiveImpact(success);
-    }
-    
-
-    [ClientRpc]
-    public void PrepareShoveAnimation(Vector2Int origin) {
-        //characterSkill.shove = true;
-        //characterSkill.shoveOrigin = origin;
-        characterShove.origin = origin;
-    }
-
-
-    [Client]
-    public void ShoveAnimation(Vector2Int origin) {
-        //Vector2Int destiny = BoardUtils.GetShoveDestiny(position, origin);
-        characterShove.StartShove(origin, position);
-        //characterSkill.shove = false;
-    }
-    */
-
+    /// <summary>
+    /// Starts skill impact animation
+    /// </summary>
+    /// <param name="type">Type of impact: Damage (default) or Shove</param>
     public void ReceiveImpact(string type = null) {
         characterSkill.ReceiveImpact(this, type);
     }
 
     public void ReceiveDamage() {
-        RefreshHealth();
+        CharacterManager.instance.RefreshHealth(id, health);
         characterSkill.Damage();
     }
 
     public void ReceiveShove(string data) {
-        RefreshHealth();
+        CharacterManager.instance.RefreshHealth(id, health);
         characterShove.StartShove(data);
     }
 
-
     public void Death() {
-        RefreshHealth();
+        CharacterManager.instance.RefreshHealth(id, health);
         characterSkill.Death();
     }
 
@@ -220,8 +189,21 @@ public class CharacterController : NetworkBehaviour, IPointerEnterHandler, IPoin
         characterSkill.EndAnimation();
     }
 
+    /// <summary>
+    /// Starts fade out effect
+    /// </summary>
     public void DeathFadeOut() {
         characterSkill.DeathFadeOut();
+    }
+    #endregion
+
+    #region PointerEvent
+    public void OnPointerEnter(PointerEventData eventData) {
+        CharacterManager.instance.EnterHover(id);
+    }
+
+    public void OnPointerExit(PointerEventData eventData) {
+        CharacterManager.instance.ExitHover(id);
     }
     #endregion
 }

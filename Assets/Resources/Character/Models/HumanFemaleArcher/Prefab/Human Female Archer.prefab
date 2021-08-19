@@ -2694,9 +2694,9 @@ MonoBehaviour:
   characterShove: {fileID: -205074404755259135}
   id: 0
   position: {x: 0, y: 0}
-  animationTime: 1
   name: Arissa
   surname: Human Archer
+  maxHealth: 5
   movement: 6
   armor: 0
   skills:
@@ -2704,12 +2704,8 @@ MonoBehaviour:
   - {fileID: 966771677262918522}
   - {fileID: 3735111252896116246}
   - {fileID: 7320743002806489274}
-  maxHealth: 5
   portrait: {fileID: 0}
   health: 0
-  leftHand: {fileID: 365635311551308443}
-  rightHand: {fileID: 7424182928324106894}
-  body: {fileID: 0}
 --- !u!114 &317646578236723729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2724,6 +2720,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anim: {fileID: 2820106360518373022}
   self: {fileID: -4995975760832362927}
+  animationTime: 1
 --- !u!114 &-5174482603915282880
 MonoBehaviour:
   m_ObjectHideFlags: 0
