@@ -1,31 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class CharacterMove : MonoBehaviour {
     [SerializeField] Animator anim;
     [SerializeField] CharacterController self;
+    // Character animation time spent on move to an adjacent tile 
     [SerializeField] float animationTime;
 
-    int player = 0;
-
-    int destPoint;
+    int player;
     List<Vector2Int> path;
-
-    Vector3 originPosition;
-    Vector3 targetPosition;
-    bool animating = false;
-    float time = 0;
 
     void Start() {
         player = self.GetPlayer();
     }
 
-    void Update() {
-        if (animating) Move(Time.deltaTime);
-    }
-
+    /// <summary>
+    /// Set character to idle status
+    /// </summary>
     public void Idle() {
         StartCoroutine(SetIdle());
     }
@@ -37,39 +29,36 @@ public class CharacterMove : MonoBehaviour {
 
     }
 
-    public bool StartMove(List<Vector2Int> path) {
-        if (!animating && path.Count > 0) {
-                destPoint = 0;
+    /// <summary>
+    /// Start move animation across specified path
+    /// </summary>
+    /// <param name="path">List of positions to move through</param>
+    public void StartMove(List<Vector2Int> path) {
+        if (path.Count > 0) {
             this.path = path;
             Step();
-            return true;
         }
-        return false;
     }
 
     void Step() {
-        if (path.Count != 0 && destPoint < path.Count) {
-            time = 0;
-            originPosition = transform.position;
-            targetPosition = BoardManager.instance.GetTile(path[destPoint]).transform.position + Vector3.up * Const.CHAR_OFFSET;
+        if (path.Count > 0) {
+            Vector3 originPosition = transform.position;
+            Vector3 targetPosition = BoardManager.instance.GetTile(path[0]).transform.position + Vector3.up * Const.CHAR_OFFSET;
+            path.RemoveAt(0);
 
             transform.LookAt(targetPosition);
             anim.SetBool("Walk", true);
 
-            destPoint++;
-            animating = true;
-        } else {
-            anim.SetBool("Walk", false);
-            animating = false;
-        }
+            StartCoroutine(Move(originPosition, targetPosition));
+        } else anim.SetBool("Walk", false);
     }
 
 
-    void Move(float t) {
-        time += t;
-
-        if (time / animationTime > 1) Step();
-
-        transform.position = Vector3.Lerp(originPosition, targetPosition, time / animationTime);
+    IEnumerator Move(Vector3 origin, Vector3 destiny) {
+        for (float f = 0; f <= animationTime; f += Time.deltaTime) {
+            transform.position = Vector3.Lerp(origin, destiny, f / animationTime);
+            yield return null;
+        }
+        Step();
     }
 }
