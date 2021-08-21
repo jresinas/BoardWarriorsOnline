@@ -17,12 +17,14 @@ public class BeamLightController : NetworkBehaviour {
 
     [ClientRpc]
     void StartTurnHandler(object userConnection, int characterId, bool canSkip) {
-        currentCharacter = null;
-        nextCharacter = CharacterManager.instance.Get(characterId);
-        Vector3 originPosition = transform.position;
-        Vector3 targetPosition = nextCharacter.transform.position + Vector3.up * Const.BEAMLIGHT_OFFSET;
-        float moveTime = Vector3.Distance(originPosition, targetPosition) / 4;
-        StartCoroutine(Move(originPosition, targetPosition, moveTime));
+        if (currentCharacter == null || characterId != currentCharacter.GetId()) {
+            currentCharacter = null;
+            nextCharacter = CharacterManager.instance.Get(characterId);
+            Vector3 originPosition = transform.position;
+            Vector3 targetPosition = nextCharacter.transform.position + Vector3.up * Const.BEAMLIGHT_OFFSET;
+            float moveTime = Vector3.Distance(originPosition, targetPosition) / 4;
+            StartCoroutine(Move(originPosition, targetPosition, moveTime));
+        }
     }
 
     IEnumerator Move(Vector3 origin, Vector3 destiny, float moveTime) {

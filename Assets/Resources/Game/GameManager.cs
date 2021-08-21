@@ -38,10 +38,13 @@ public class GameManager : NetworkBehaviour {
     public event Action<NetworkConnection, bool> OnWaitingResponseSkill;
     public event EventHandler OnEndActions;
 
-    public int turn;
+    //public int turn;
 
     [SyncVar] public List<int> charactersPriority = new List<int>(); //int[] charactersPriority = new int[Const.CHAR_NUMBER];
-    public int[] charactersOrder = new int[Const.CHAR_NUMBER * 2];
+    //public int[] charactersOrder = new int[Const.CHAR_NUMBER * 2];
+    LinkedList<int> firstRound = new LinkedList<int>();
+    LinkedList<int> secondRound = new LinkedList<int>();
+    bool isFirstRound;
     int activeCharacter;
     int actions = 1;
     // store data for current action waiting response
@@ -87,26 +90,41 @@ public class GameManager : NetworkBehaviour {
 
     void StartRound() {
         if (OnStartRound != null) OnStartRound(this, EventArgs.Empty);
-        for (int i = 0; i < charactersOrder.Length ; i++) charactersOrder[i] = i < charactersPriority.Count ? charactersPriority[i] : -1;
-        turn = 0;
+        //for (int i = 0; i < charactersOrder.Length ; i++) charactersOrder[i] = i < charactersPriority.Count ? charactersPriority[i] : -1;
+        //turn = 0;
+        //foreach (int id in charactersPriority) firstRound.Enqueue(id);
+        firstRound = new LinkedList<int>(charactersPriority);
+        secondRound.Clear();
         NextCharacter();
     }
-    void NextCharacter() {
-        Debug.Log("NextCharacter");
-        Debug.Log(turn);
-        Debug.Log(charactersOrder.Length);
-        Debug.Log(charactersOrder[turn]);
 
+    void NextCharacter() {
+        /*
         while (turn < charactersOrder.Length && charactersOrder[turn] < 0) turn++;
 
         if (turn >= charactersOrder.Length) StartRound();
         else {
-            Debug.Log("ELSE");
             activeCharacter = charactersOrder[turn];
             NetworkConnection owner = CharacterManager.instance.GetOwner(activeCharacter);
             SetActions(activeCharacter);
             if (OnStartTurn != null) OnStartTurn(owner, activeCharacter, turn < charactersPriority.Count);
         }
+        */
+        if (firstRound.Count > 0) {
+            activeCharacter = firstRound.First.Value;
+            firstRound.RemoveFirst();
+            isFirstRound = true;
+        } else if (secondRound.Count > 0) {
+            activeCharacter = secondRound.First.Value;
+            secondRound.RemoveFirst();
+            isFirstRound = false;
+        } else {
+            StartRound();
+            return;
+        }
+        NetworkConnection owner = CharacterManager.instance.GetOwner(activeCharacter);
+        SetActions(activeCharacter);
+        if (OnStartTurn != null) OnStartTurn(owner, activeCharacter, isFirstRound);
     }
 
     void SetActions(int characterId) {
@@ -119,20 +137,24 @@ public class GameManager : NetworkBehaviour {
     }
 
     void SkipTurn() {
-        if (OnSkipTurn != null) OnSkipTurn(this, turn);
-        if (turn < charactersPriority.Count) charactersOrder[GetSecondRound(turn)] = activeCharacter;
-        EndOfTurn();
+        if (isFirstRound) {
+            secondRound.AddFirst(activeCharacter);
+            if (OnSkipTurn != null) OnSkipTurn(this, activeCharacter);
+
+            //if (turn < charactersPriority.Count) charactersOrder[GetSecondRound(turn)] = activeCharacter;
+
+            EndOfTurn();
+        }
     }
 
     void EndTurn() {
-        Debug.Log("EndTurn");
         if (OnEndTurn != null) OnEndTurn(this, EventArgs.Empty);
         EndOfTurn();
     }
 
     void EndOfTurn() {
         if (OnEndOfTurn != null) OnEndOfTurn(this, EventArgs.Empty);
-        charactersOrder[turn] = -1;
+        //charactersOrder[turn] = -1;
         NextCharacter();
     }
     #endregion
@@ -207,13 +229,13 @@ public class GameManager : NetworkBehaviour {
             waitingResponse = null;
         }
     }
-
-    void RequestEndTurnHandler(object source, EventArgs args) {
-        CmdEndTurn();
-    }
     #endregion
 
     #region Buttons
+    void RequestEndTurnHandler(object source, EventArgs args) {
+        CmdEndTurn();
+    }
+
     [Command(requiresAuthority = false)]
     void CmdEndTurn(NetworkConnectionToClient sender = null) {
         Debug.Log("This is a command send by" + netIdentity + " who wants to finish turn");
@@ -233,29 +255,33 @@ public class GameManager : NetworkBehaviour {
 
     #region Death
     void DeathHandler(object source, int characterId) {
-        Debug.Log("Death");
+        charactersPriority.Remove(characterId);
+        if (firstRound.Contains(characterId)) firstRound.Remove(characterId);
+        if (secondRound.Contains(characterId)) secondRound.Remove(characterId);
+        if (activeCharacter == characterId) NextCharacter();
+
         // fix turn index
-        int characterIndex = charactersPriority.IndexOf(characterId);
-        if (turn > characterIndex) turn--;
-        if (turn > GetSecondRound(characterIndex)) turn--;
+        //int characterIndex = charactersPriority.IndexOf(characterId);
+        //if (turn > characterIndex) turn--;
+        //if (turn > GetSecondRound(characterIndex)) turn--;
 
         // Fix charactersPriority
-        List<int> newCharactersPriority = new List<int>(charactersPriority);
-        newCharactersPriority.Remove(characterId);
+        //List<int> newCharactersPriority = new List<int>(charactersPriority);
+        //newCharactersPriority.Remove(characterId);
 
         // Fix charactersOrder
-        int[] newCharactersOrder = new int[newCharactersPriority.Count * 2];
-        int j = 0;
-        Debug.Log(characterIndex);
-        Debug.Log(GetSecondRound(characterIndex));
-        for (int i = 0; i < charactersOrder.Length; i++) {
-            Debug.Log(i);
-            if (i != characterIndex && i != GetSecondRound(characterIndex)) {
-                Debug.Log(j);
-                newCharactersOrder[j] = charactersOrder[i];
-                j++;
-            }
-        }
+        //int[] newCharactersOrder = new int[newCharactersPriority.Count * 2];
+        //int j = 0;
+        //Debug.Log(characterIndex);
+        //Debug.Log(GetSecondRound(characterIndex));
+        //for (int i = 0; i < charactersOrder.Length; i++) {
+        //    Debug.Log(i);
+        //    if (i != characterIndex && i != GetSecondRound(characterIndex)) {
+        //        Debug.Log(j);
+        //        newCharactersOrder[j] = charactersOrder[i];
+        //        j++;
+        //    }
+        //}
 
         /*
         int[] newCharactersOrder = new int[newCharactersPriority.Count * 2]; //new int[charactersOrder.Length-2];
@@ -268,8 +294,8 @@ public class GameManager : NetworkBehaviour {
         }
         */
 
-        charactersPriority = newCharactersPriority;
-        charactersOrder = newCharactersOrder;       
+        //charactersPriority = newCharactersPriority;
+        //charactersOrder = newCharactersOrder;       
     }
     #endregion
 
@@ -302,9 +328,7 @@ public class GameManager : NetworkBehaviour {
     }
     */
 
-    int GetSecondRound(int index) {
-        Debug.Log("GetSecondRound");
-        Debug.Log(charactersPriority.Count);
-        return (charactersPriority.Count * 2) - (index + 1);
-    }
+    //int GetSecondRound(int index) {
+    //    return (charactersPriority.Count * 2) - (index + 1);
+    //}
 }

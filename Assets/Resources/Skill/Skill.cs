@@ -223,7 +223,7 @@ public abstract class Skill : MonoBehaviour {
     // Apply effect of collision after shove some time later to sync with animation
     IEnumerator ShoveDamage(List<CharacterController> characters) {
         yield return new WaitForSeconds(Const.SHOVE_COLLISION_TIME);
-        foreach (CharacterController character in characters) character.ChangeHealth(-1);
+        foreach (CharacterController character in characters) character.ChangeHealth(-Const.SHOVE_COLLISION_DAMAGE);
     }
 
     bool LineOfSight(CharacterController caster, CharacterController target) {

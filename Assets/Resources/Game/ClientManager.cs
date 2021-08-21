@@ -10,7 +10,12 @@ public class ClientManager : NetworkBehaviour {
     int playerId;
     [SerializeField] Camera[] cameras = new Camera[2];
 
+    // Event triggered on client when a player request to move a character
+    // * Vector2Int: position destiny
     public event Action<Vector2Int> OnRequestMove;
+    // Event triggered on client when a player request to move a character
+    // * int: turn character skill index
+    // * Vector2Int: skill target position
     public event Action<int, Vector2Int> OnRequestUseSkill;
     public event Action<int> OnSendResponseSkill;
 

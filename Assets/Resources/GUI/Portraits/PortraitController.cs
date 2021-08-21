@@ -4,40 +4,52 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PortraitController : MonoBehaviour {
-    //public bool change = false;
-    //bool changing = false;
     [SerializeField] Image image;
     [SerializeField] Image crystal;
     public int characterId;
-    //Color redCrystal = new Color32(210, 20, 20, 255);
-    Color redCrystal = new Color32(255, 60, 60, 255);
-    //Color blueCrystal = new Color32(20, 20, 210, 255);
-    Color blueCrystal = new Color32(100, 110, 255, 255);
+    public int index;
 
     public int GetCharacterId() {
         return characterId;
     }
 
-    public void SetCharacterId(int id) {
+    /// <summary>
+    /// Initialize portrait with specified character
+    /// </summary>
+    /// <param name="index">Portrait index</param>
+    /// <param name="id">Character id to load</param>
+    public void InitializePortrait(int index, int id) {
+        this.index = index;
         characterId = id;
         CharacterController character = CharacterManager.instance.Get(id);
         if (character != null) {
             image.sprite = character.portrait;
-            crystal.color = (character.GetPlayer() == 0) ? redCrystal : blueCrystal;
+            crystal.color = (character.GetPlayer() == 0) ? Const.RED_CRYSTAL : Const.BLUE_CRYSTAL;
         }
     }
 
+    /// <summary>
+    /// Play portrait resize animation
+    /// </summary>
+    /// <param name="startSize">Initial portrait size</param>
+    /// <param name="endSize">Finish portrait size</param>
+    /// <param name="time">Animation time</param>
     public void Resize(float startSize, float endSize, float time) {
         StartCoroutine(ResizeAnim(startSize, endSize, time));
     }
 
+    /// <summary>
+    /// Play portrait move animation
+    /// </summary>
+    /// <param name="startPosition">Initial portrait X position</param>
+    /// <param name="endPosition">Finish portrait X position</param>
+    /// <param name="time">AnimationTime</param>
     public void Move(float startPosition, float endPosition, float time) {
         StartCoroutine(MoveAnim(startPosition, endPosition, time));
     }
 
     IEnumerator ResizeAnim(float startSize, float endSize, float time) {
-        //changing = true;
-        float size = startSize;
+        float size;
         for (float f = 0; f <= time; f += Time.deltaTime) {
             size = Mathf.Lerp(startSize, endSize, f / time);
             transform.localScale = new Vector3(size, size, size);
@@ -47,8 +59,7 @@ public class PortraitController : MonoBehaviour {
     }
 
     IEnumerator MoveAnim(float startPosition, float endPosition, float time) {
-        //changing = true;
-        float position = startPosition;
+        float position;
         for (float f = 0; f <= time; f += Time.deltaTime) {
             position = Mathf.Lerp(startPosition, endPosition, f / time);
             transform.localPosition = new Vector3(position, transform.localPosition.y, transform.localPosition.z);
