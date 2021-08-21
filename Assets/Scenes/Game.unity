@@ -722,9 +722,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  turn: 0
   charactersPriority: 0000000003000000010000000400000002000000050000000600000007000000
-  charactersOrder: 0000000000000000000000000000000000000000000000000000000000000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
 --- !u!114 &254287095
 MonoBehaviour:
   m_ObjectHideFlags: 0
