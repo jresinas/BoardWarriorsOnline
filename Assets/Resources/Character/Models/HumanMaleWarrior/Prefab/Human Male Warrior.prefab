@@ -628,8 +628,8 @@ MonoBehaviour:
   position: {x: 0, y: 0}
   name: Garran
   surname: Human Warrior
-  maxHealth: 2
-  movement: 2
+  maxHealth: 4
+  movement: 5
   armor: 0
   skills:
   - {fileID: 4482454264383577022}

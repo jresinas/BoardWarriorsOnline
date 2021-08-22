@@ -1,0 +1,154 @@
+Using pre-set license
+Built from '2020.2/release' branch; Version is '2020.2.1f1 (270dd8c3da1c) revision 2559448'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 10  (10.0.0) 64bit' Language: 'es' Physical Memory: 16269 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+ COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2020.2.1f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+D:/Saniser/Documents/GitHub/BoardWarriorsOnline
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+60918
+Successfully changed project path to: D:/Saniser/Documents/GitHub/BoardWarriorsOnline
+D:/Saniser/Documents/GitHub/BoardWarriorsOnline
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 55.92 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2020.2.1f1 (270dd8c3da1c)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path D:/Saniser/Documents/GitHub/BoardWarriorsOnline/Assets
+GfxDevice: creating device client; threaded=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1050 Ti (ID=0x1c8c)
+    Vendor:   
+    VRAM:     4018 MB
+    Driver:   24.21.13.9907
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56356
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.2.1f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.002391 seconds.
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 55.49 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.325 seconds
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.002758 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Refreshing native plugins compatible for Editor in 0.52 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Find all reader and writers took 96 milliseconds
+Script Module: UnityEngine.TestRunner.dll
+Weave behaviours and messages took39 milliseconds
+Find all reader and writers took 64 milliseconds
+Script Module: SimpleWebTransport.dll
+Weave behaviours and messages took7 milliseconds
+Find all reader and writers took 69 milliseconds
+Script Module: Unity.Timeline.dll
+Weave behaviours and messages took32 milliseconds
+Find all reader and writers took 71 milliseconds
+Script Module: UnityEngine.UI.dll
+Weave behaviours and messages took61 milliseconds
+Find all reader and writers took 87 milliseconds
+Script Module: Unity.TextMeshPro.dll
+Weave behaviours and messages took72 milliseconds
+Find all reader and writers took 62 milliseconds
+Script Module: Unity.Postprocessing.Runtime.dll
+Weave behaviours and messages took28 milliseconds
+Find all reader and writers took 62 milliseconds
+Script Module: Telepathy.dll
+Weave behaviours and messages took4 milliseconds
+Find all reader and writers took 61 milliseconds
+Script Module: kcp2k.dll
+Weave behaviours and messages took3 milliseconds
+Find all reader and writers took 65 milliseconds
+Script Module: Mirror.Cloud.dll
+Weave behaviours and messages took3 milliseconds
+Find all reader and writers took 99 milliseconds
+Script Module: UnityEditor.TestRunner.dll
+Weave behaviours and messages took41 milliseconds
+Find all reader and writers took 90 milliseconds
+Script Module: UnityEditor.UI.dll
+Weave behaviours and messages took13 milliseconds
+Find all reader and writers took 101 milliseconds
+Script Module: ParrelSync.dll
+Weave behaviours and messages took4 milliseconds
+Find all reader and writers took 72 milliseconds
+Script Module: Mirror.CompilerSymbols.dll
+Weave behaviours and messages took0 milliseconds
+Mono: successfully reloaded assembly
+- Completed reload, in  4.035 seconds
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.04 seconds
+Refreshing native plugins compatible for Editor in 0.55 ms, found 0 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1628 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 186.6 MB.
+System memory in use after: 186.7 MB.
+
+Unloading 14 unused Assets to reduce memory usage. Loaded Objects now: 2116.
+Total: 3.194300 ms (FindLiveObjects: 0.253700 ms CreateObjectMapping: 0.075300 ms MarkObjects: 2.674000 ms  DeleteObjects: 0.190100 ms)
+
+========================================================================
+Received Import Request.
+  path: Assets/Resources/Character/Models/Barbarian/Prefab/Barbaro Humano.prefab
+  artifactKey: Guid(5a522f5ff033fa043933005d5592e74f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Character/Models/Barbarian/Prefab/Barbaro Humano.prefab using Guid(5a522f5ff033fa043933005d5592e74f) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'cdec7a6acb930c0535dd9242571ae4c4') in 0.904093 seconds
+  Import took 0.917854 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000310 seconds.
+  path: Assets/Resources/Character/Models/HumanMaleWarrior/Prefab/Human Male Warrior.prefab
+  artifactKey: Guid(f11a5ea7776fbc44a908490101e6c0a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Resources/Character/Models/HumanMaleWarrior/Prefab/Human Male Warrior.prefab using Guid(f11a5ea7776fbc44a908490101e6c0a4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c58366837f35dabbbaab22a6b14a5d00') in 0.336132 seconds
+  Import took 0.357760 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 413.153452 seconds.
+  path: Assets/Dev/RPG_Fantsy_(Pack)/Character_Knight
+  artifactKey: Guid(5cc3cfae4e3742a448111b23559a308b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Dev/RPG_Fantsy_(Pack)/Character_Knight using Guid(5cc3cfae4e3742a448111b23559a308b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b24e48ebd7bd3d2155c90739a1484fb8') in 0.011801 seconds
+  Import took 0.015694 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 7.506483 seconds.
+  path: Assets/Dev/RPG_Fantsy_(Pack)/Character_Orc(Hummer)/Textures
+  artifactKey: Guid(8be37a7db94ae97438432e8380870490) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Dev/RPG_Fantsy_(Pack)/Character_Orc(Hummer)/Textures using Guid(8be37a7db94ae97438432e8380870490) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4011de5b34e109c464d535a0ea3f245f') in 0.008051 seconds
+  Import took 0.011706 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 17.601230 seconds.
+  path: Assets/Dev/RPG_Fantsy_(Pack)/Character_Orc/Textures
+  artifactKey: Guid(e5573a745e95c3842b81d10ae1af7eb6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Dev/RPG_Fantsy_(Pack)/Character_Orc/Textures using Guid(e5573a745e95c3842b81d10ae1af7eb6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '5096a767a17ecc3b7eac344d5cb27f41') in 0.003298 seconds
+  Import took 0.011116 seconds .
+
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
