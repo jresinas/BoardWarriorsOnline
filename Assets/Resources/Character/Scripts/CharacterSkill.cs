@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,13 @@ public class CharacterSkill : MonoBehaviour {
     Skill skill;
     bool success;
     string data;
+
+    bool dicesReady = false;
+    bool charactersReady = false;
+
+    void Start() {
+        DiceManager.instance.OnEndRollDicesAnim += EndRollDicesAnimHandler;
+    }
 
     #region Get&Set
     public List<CharacterController> GetTargets() {
@@ -55,13 +63,28 @@ public class CharacterSkill : MonoBehaviour {
             observerCharacter.transform.LookAt(transform);
             observerCharacter.Waiting();
         }
-        StartCoroutine(WaitDiceRoll());
+        // StartCoroutine(WaitDiceRoll());
+        charactersReady = true;
+        StartAnimation();
     }
 
-    IEnumerator WaitDiceRoll() {
-        yield return new WaitForSeconds(Const.DICE_ROLL_TIME);
-        anim.SetTrigger(skill.GetAnimation());
-    }    
+    void EndRollDicesAnimHandler() {
+        dicesReady = true;
+        StartAnimation();
+    }
+
+    //IEnumerator WaitDiceRoll() {
+    //    yield return new WaitForSeconds(Const.DICE_ROLL_TIME);
+    //    anim.SetTrigger(skill.GetAnimation());
+    //}    
+
+    void StartAnimation() {
+        if (dicesReady && charactersReady) {
+            anim.SetTrigger(skill.GetAnimation());
+            dicesReady = false;
+            charactersReady = false;
+        }
+    }
     
     /// <summary>
     /// Controls impact effect on character and activate appropriate animation

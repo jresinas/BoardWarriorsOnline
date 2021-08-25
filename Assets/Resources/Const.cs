@@ -16,8 +16,10 @@ public static class Const {
     public static float CHAR_OFFSET = 0.05f;
     // Offset over Y-Axis of projectiles orientation
     public static float PROJ_OFFSET = 0.7f;
-    // Time that characters animations wait at beginning of use skill for dice roll
-    public static float DICE_ROLL_TIME = 1f;
+    // Max number of dice on each dice roll animation
+    public static int MAX_DICES = 5;
+    // Time spend on each dice roll animation
+    public static float DICE_ROLL_TIME = 2.5f;
     // Time that characters animations wait after last of them finish its skill/reaction animation to return idle position
     public static float WAIT_AFTER_SKILL_ANIM = 1.5f;
     // Time spend on fade out effect when a character dead

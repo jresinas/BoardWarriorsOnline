@@ -11,6 +11,7 @@ public class DiceManager : NetworkBehaviour {
     // * int: number of successful dices
     // * int[]: results of dice roll
     public event Action<int, int[]> OnRollDices;
+    public event Action OnEndRollDicesAnim;
 
     [SerializeField] DicesController dices;
 
@@ -35,15 +36,19 @@ public class DiceManager : NetworkBehaviour {
     /// <returns></returns>
     [Server]
     public int RollDices(int dicesNumber, int minRequired) {
-        int[] results = dices.Roll(dicesNumber);
-        ShowDices(results, minRequired);
-        int result = dices.GetResult(results, minRequired);
-        if (OnRollDices != null) OnRollDices(result, results);
-        return result;
+        RollResult rollResult = dices.Roll(dicesNumber, minRequired);
+        ShowDices(rollResult.results, minRequired);
+        if (OnRollDices != null) OnRollDices(rollResult.successes, rollResult.results);
+        return rollResult.successes;
     }
 
     [ClientRpc]
     void ShowDices(int[] results, int minRequired) {
         dices.Show(results, minRequired);
+    }
+
+    [Client]
+    public void EndRollDicesAnim() {
+        if (OnEndRollDicesAnim != null) OnEndRollDicesAnim();
     }
 }

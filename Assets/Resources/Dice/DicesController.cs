@@ -1,10 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+
+public class RollResult {
+    public int[] results;
+    public int successes;
+
+    public RollResult(int[] results, int successes) {
+        this.results = results;
+        this.successes = successes;
+    }
+}
 
 public class DicesController : MonoBehaviour {
     public Dice[] dices;
     public GameObject dicesView;
+    [SerializeField] TextMeshProUGUI totalSuccessTMP;
+    int totalSuccess;
 
     /// <summary>
     /// Disable all dices
@@ -18,24 +31,16 @@ public class DicesController : MonoBehaviour {
     /// Simulate a dice roll of a specified number of dices
     /// </summary>
     /// <param name="dicesNumber">Number of dices to roll</param>
-    /// <returns>Array with results</returns>
-    public int[] Roll(int dicesNumber) {
+    /// <param name="minRequired">Min dice value required to make a success</param>
+    /// <returns>Roll results (dice results and number of succesful dices)</returns>
+    public RollResult Roll(int dicesNumber, int minRequired) {
         int[] results = new int[dicesNumber];
-        for (int i = 0; i < dicesNumber; i++) results[i] = dices[i].Roll();
-        return results;
-    }
-
-    /// <summary>
-    /// Returns number of succesful dices for a given result of dice rolls
-    /// </summary>
-    /// <param name="results">Array of dice results</param>
-    /// <param name="minRequired">Min dice value required to success</param>
-    /// <returns></returns>
-    public int GetResult(int[] results, int minRequired) {
-        int success = 0;
-        foreach (int result in results)
-            if (result >= minRequired) success++;
-        return success;
+        int successes = 0;
+        for (int i = 0; i < dicesNumber; i++) {
+            results[i] = dices[0].Roll();
+            if (results[i] >= minRequired) successes++;
+        }
+        return new RollResult(results, successes);
     }
 
     /// <summary>
@@ -44,9 +49,34 @@ public class DicesController : MonoBehaviour {
     /// <param name="results">Array of dice results</param>
     /// <param name="minRequired">Min dice value required to success</param>
     public void Show(int[] results, int minRequired) {
-        Hide();
-        dicesView.SetActive(true);
-        for (int i = 0; i < results.Length; i++)
-            dices[i].Show(results[i], minRequired);
+        StartCoroutine(RollAnimation(results, minRequired));
     }
+
+    IEnumerator RollAnimation(int[] results, int minRequired) {
+        List<int> dices = new List<int>(results);
+        while (dices.Count > 0) {
+            Hide();
+            dicesView.SetActive(true);
+            int dicesToGet = Mathf.Min(Const.MAX_DICES, dices.Count);
+            List<int> selectedDices = dices.GetRange(0, dicesToGet);
+            dices.RemoveRange(0, dicesToGet);
+            //StartCoroutine(RollAnimationStep(selectedDices, minRequired));
+            RollAnimationStep(selectedDices, minRequired);
+            yield return new WaitForSeconds(Const.DICE_ROLL_TIME);
+            UpdateSuccess();
+        }
+        DiceManager.instance.EndRollDicesAnim();
+    }
+
+    void RollAnimationStep(List<int> results, int minRequired) {
+        for (int i = 0; i < results.Count; i++) {
+            dices[i].Show(results[i], minRequired);
+            if (results[i] >= minRequired) totalSuccess++;
+        }
+    }
+
+    void UpdateSuccess() {
+        totalSuccessTMP.text = totalSuccess.ToString();
+    }
+
 }
