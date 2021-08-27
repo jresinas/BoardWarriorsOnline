@@ -2699,7 +2699,7 @@ MonoBehaviour:
   surname: Human Archer
   maxHealth: 5
   movement: 6
-  armor: 4
+  armor: 3
   skills:
   - {fileID: 3377208043326526694}
   - {fileID: 966771677262918522}
@@ -2809,7 +2809,7 @@ MonoBehaviour:
     position: {fileID: 365635311551308443}
     rotation: {fileID: 8197443161354253540}
     time: 10
-  dicesNumber: 12
+  dicesNumber: 43
 --- !u!114 &3735111252896116246
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -24,6 +24,11 @@ public class DicesController : MonoBehaviour {
     /// </summary>
     public void Hide() {
         dicesView.SetActive(false);
+        totalSuccessTMP.text = "";
+        Restart();
+    }
+
+    void Restart() {
         foreach (Dice dice in dices) dice.Hide();
     }
 
@@ -55,7 +60,7 @@ public class DicesController : MonoBehaviour {
     IEnumerator RollAnimation(int[] results, int minRequired) {
         List<int> dices = new List<int>(results);
         while (dices.Count > 0) {
-            Hide();
+            Restart();
             dicesView.SetActive(true);
             int dicesToGet = Mathf.Min(Const.MAX_DICES, dices.Count);
             List<int> selectedDices = dices.GetRange(0, dicesToGet);

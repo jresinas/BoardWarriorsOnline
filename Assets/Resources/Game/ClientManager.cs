@@ -47,7 +47,9 @@ public class ClientManager : NetworkBehaviour {
     }
 
     void LoadCamera() {
-        GetCamera().gameObject.SetActive(true);
+        Camera camera = GetCamera();
+        GUIManager.instance.SetUICamera(camera);
+        camera.gameObject.SetActive(true);
     }
 
     public Camera GetCamera() {

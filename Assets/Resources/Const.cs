@@ -16,10 +16,6 @@ public static class Const {
     public static float CHAR_OFFSET = 0.05f;
     // Offset over Y-Axis of projectiles orientation
     public static float PROJ_OFFSET = 0.7f;
-    // Max number of dice on each dice roll animation
-    public static int MAX_DICES = 5;
-    // Time spend on each dice roll animation
-    public static float DICE_ROLL_TIME = 2.5f;
     // Time that characters animations wait after last of them finish its skill/reaction animation to return idle position
     public static float WAIT_AFTER_SKILL_ANIM = 1.5f;
     // Time spend on fade out effect when a character dead
@@ -33,6 +29,26 @@ public static class Const {
     // Damage caused to characters when collide after a shove
     public static int SHOVE_COLLISION_DAMAGE = 1;
 
+    #region Dices
+    // Max number of dice on each dice roll animation
+    public static int MAX_DICES = 5;
+    // Time spend on each dice roll animation
+    public static float DICE_ROLL_TIME = 3f;
+    // Initial sphere size
+    public static float DICE_SPHERE_BASE_SIZE = 90;
+    // Max sphere size
+    public static float DICE_SPHERE_MAX_SIZE = 150;
+    // Sphere size increment for each successful dice
+    public static float DICE_SPHERE_INC_SIZE = 6f;
+    // Default sphere alpha value
+    public static float DICE_SPHERE_BASE_ALPHA = 0.2f;
+    // Sphere alpha value when a dice success
+    public static float DICE_SPHERE_MAX_ALPHA = 0.8f;
+    // Sphere size decrement after a dice success
+    public static float DICE_SPHERE_INC_ALPHA = -0.02f;
+    #endregion
+
+    #region Portraits
     // Animation time to resize portraits when finish turn
     public static float PORTRAIT_ENDTURN_TIME = 0.25f;
     // Animation time to relocate and resize portraits when skip turn
@@ -49,6 +65,7 @@ public static class Const {
     public static float PORTRAIT_SELECT_SIZE = 1.5f;
     // Portrait size when character is unselected
     public static float PORTRAIT_UNSELECT_SIZE = 1f;
+    #endregion
 
     #region Colors
     //mr.material.color = new Color32(255, 255, 255, 255);

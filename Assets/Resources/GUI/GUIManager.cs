@@ -41,6 +41,14 @@ public class GUIManager : NetworkBehaviour {
     }
 
     #region GameEvents
+    public void SetUICamera(Camera camera) {
+        Canvas canvas = GetComponent<Canvas>();
+        Camera[] cameras = camera.GetComponentsInChildren<Camera>();
+        Camera cameraUi = null;
+        foreach (Camera cam in cameras) if (cam != camera) cameraUi = cam;
+        canvas.worldCamera = cameraUi;
+    }
+
     [TargetRpc]
     void WaitingResponseSkillHandler(NetworkConnection userConnection, bool status) {
         if (status) {
