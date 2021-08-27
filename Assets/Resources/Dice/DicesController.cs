@@ -24,6 +24,7 @@ public class DicesController : MonoBehaviour {
     /// </summary>
     public void Hide() {
         dicesView.SetActive(false);
+        totalSuccess = 0;
         totalSuccessTMP.text = "";
         Restart();
     }

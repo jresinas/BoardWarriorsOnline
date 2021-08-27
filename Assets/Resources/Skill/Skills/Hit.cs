@@ -45,7 +45,7 @@ public class Hit : SkillNormal {
         */
 
         
-        if (target.GetHealth() > 0) {
+        if (damage > 0 && target.GetHealth() > 0) {
             List<int> observers = new List<int>();
             ShoveInfo shoveInfo = Shove(target, self.GetPosition());
             if (shoveInfo.characterCollisionId >= 0) observers.Add(shoveInfo.characterCollisionId);
