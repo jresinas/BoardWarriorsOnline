@@ -13,13 +13,6 @@ public class CharacterSkill : MonoBehaviour {
     bool success;
     string data;
 
-    bool dicesReady = false;
-    bool charactersReady = false;
-
-    void Start() {
-        DiceManager.instance.OnEndRollDicesAnim += EndRollDicesAnimHandler;
-    }
-
     #region Get&Set
     public List<CharacterController> GetTargets() {
         return targetCharacters;
@@ -63,29 +56,18 @@ public class CharacterSkill : MonoBehaviour {
             observerCharacter.transform.LookAt(transform);
             observerCharacter.Waiting();
         }
-        // StartCoroutine(WaitDiceRoll());
-        charactersReady = true;
-        StartAnimation();
+
+        StartCoroutine(WaitDiceRoll());
     }
 
-    void EndRollDicesAnimHandler() {
-        dicesReady = true;
-        StartAnimation();
-    }
+    /// <summary>
+    /// Characters waiting until dice roll has finished
+    /// </summary>
+    IEnumerator WaitDiceRoll() {
+        yield return new WaitUntil(() => SkillManager.instance.diceRoll);
+        anim.SetTrigger(skill.GetAnimation());
+    }    
 
-    //IEnumerator WaitDiceRoll() {
-    //    yield return new WaitForSeconds(Const.DICE_ROLL_TIME);
-    //    anim.SetTrigger(skill.GetAnimation());
-    //}    
-
-    void StartAnimation() {
-        if (dicesReady && charactersReady) {
-            anim.SetTrigger(skill.GetAnimation());
-            dicesReady = false;
-            charactersReady = false;
-        }
-    }
-    
     /// <summary>
     /// Controls impact effect on character and activate appropriate animation
     /// </summary>

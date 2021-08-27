@@ -2,6 +2,7 @@ using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// Controls when characters ending their skill animations (use skill, receive impact, etc) and sync them to finish at the same time
@@ -11,14 +12,24 @@ public class SkillManager : MonoBehaviour {
 
     List<int> charactersInAnimation;
     List<int> charactersWaiting;
+    // Dice roll has finished
+    public bool diceRoll = false;
 
     void Awake() {
         instance = this;    
     }
 
+    void Start() {
+        DiceManager.instance.OnEndRollDicesAnim += EndRollDicesAnimHandler;
+    }
+
     public void StartAnimation(List<int> characterIds) {
         charactersInAnimation = characterIds.Distinct().ToList();
         charactersWaiting = new List<int>();
+    }
+
+    private void EndRollDicesAnimHandler() {
+        diceRoll = true;
     }
 
     public void EndSkillAnimation(int characterId) {
@@ -37,5 +48,6 @@ public class SkillManager : MonoBehaviour {
         }
         charactersInAnimation = new List<int>();
         charactersWaiting = new List<int>();
+        diceRoll = false;
     }
 }
