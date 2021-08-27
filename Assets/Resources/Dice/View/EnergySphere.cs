@@ -24,6 +24,8 @@ public class EnergySphere : MonoBehaviour {
             color.a += Const.DICE_SPHERE_INC_ALPHA;
             material.SetColor("_TintColor", color);
         }
+        // If size is greater than ba size, decrease it
+        if (transform.localScale.x > Const.DICE_SPHERE_BASE_SIZE) transform.localScale += new Vector3(Const.DICE_SPHERE_INC_SIZE, Const.DICE_SPHERE_INC_SIZE, Const.DICE_SPHERE_INC_SIZE);
     }
 
     public void Increase() {
@@ -32,8 +34,7 @@ public class EnergySphere : MonoBehaviour {
         color.a = Const.DICE_SPHERE_MAX_ALPHA;
         material.SetColor("_TintColor", color);
         // Increse sphere size
-        float newSize = Mathf.Min(Const.DICE_SPHERE_BASE_SIZE + (Const.DICE_SPHERE_INC_SIZE * amount), Const.DICE_SPHERE_MAX_SIZE);
-        transform.localScale = new Vector3(newSize, newSize, newSize);
+        transform.localScale = new Vector3(Const.DICE_SPHERE_MAX_SIZE, Const.DICE_SPHERE_MAX_SIZE, Const.DICE_SPHERE_MAX_SIZE);
 
         amount++;
         if (amount > 0) amountTMP.text = amount.ToString();

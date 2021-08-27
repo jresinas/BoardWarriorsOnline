@@ -34,17 +34,17 @@ public static class Const {
     public static int MAX_DICES = 5;
     // Time spend on each dice roll animation
     public static float DICE_ROLL_TIME = 3f;
-    // Initial sphere size
-    public static float DICE_SPHERE_BASE_SIZE = 90;
-    // Max sphere size
+    // Default sphere size
+    public static float DICE_SPHERE_BASE_SIZE = 100;
+    // Sphere size when a dice success
     public static float DICE_SPHERE_MAX_SIZE = 150;
-    // Sphere size increment for each successful dice
-    public static float DICE_SPHERE_INC_SIZE = 6f;
+    // Sphere size decrement after a dice success
+    public static float DICE_SPHERE_INC_SIZE = -2.5f;
     // Default sphere alpha value
     public static float DICE_SPHERE_BASE_ALPHA = 0.2f;
     // Sphere alpha value when a dice success
     public static float DICE_SPHERE_MAX_ALPHA = 0.8f;
-    // Sphere size decrement after a dice success
+    // Sphere alpha value decrement after a dice success
     public static float DICE_SPHERE_INC_ALPHA = -0.02f;
     #endregion
 
