@@ -9,6 +9,10 @@ public class UserController : NetworkBehaviour {
     [SerializeField] GameObject[] characters;
     public bool isTurn = false;
 
+    void Awake() {
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void LoadCharacters(int player) {
         int characterIndex = 0;
         foreach (GameObject character in characters) {
