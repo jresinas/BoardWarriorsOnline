@@ -14,6 +14,10 @@ public class NetworkManagerCustom : NetworkManager {
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
+    void Start() {
+        base.Start();
+    }
+
     public override void OnServerAddPlayer(NetworkConnection conn) {
         base.OnServerAddPlayer(conn);
 
@@ -37,12 +41,28 @@ public class NetworkManagerCustom : NetworkManager {
     }
 
     public void CreateGame() {
+        ConnectToMasterServer();
+        /*
         connectType = 0;
         SceneManager.LoadScene("Game");
+        */
     }
 
     public void JoinGame() {
+        ServerManager.instance.RequestGameServer();
+/*
         connectType = 1;
         SceneManager.LoadScene("Game");
+*/
+    }
+
+
+    void ConnectToMasterServer() {
+        StartClient();
+        //StartServer();
+    }
+
+    void ConnectToGameServer() {
+
     }
 }

@@ -39,7 +39,6 @@ public class GameManager : NetworkBehaviour {
     public event EventHandler OnEndActions;
 
     //public int turn;
-
     [SyncVar] public List<int> charactersPriority = new List<int>(); //int[] charactersPriority = new int[Const.CHAR_NUMBER];
     //public int[] charactersOrder = new int[Const.CHAR_NUMBER * 2];
     LinkedList<int> firstRound = new LinkedList<int>();
@@ -67,6 +66,7 @@ public class GameManager : NetworkBehaviour {
 
     #region SetupGame
     public void PlayersReady(GameObject[] players) {
+        Debug.Log("GameManager:PlayersReady");
         for (int i = 0; i < Const.PLAYER_NUMBER; i++) {
             UserController playerController = players[i].GetComponent<UserController>();
             playerController.LoadCharacters(i);
@@ -76,7 +76,7 @@ public class GameManager : NetworkBehaviour {
     }
 
     IEnumerator SetupGame(GameObject[] players) {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(5);
         StartGame();
     }
     #endregion

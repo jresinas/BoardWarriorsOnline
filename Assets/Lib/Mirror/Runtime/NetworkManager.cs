@@ -1247,7 +1247,9 @@ namespace Mirror
                 if (!NetworkClient.ready) NetworkClient.Ready();
                 if (autoCreatePlayer)
                 {
+                    Debug.Log("aaa");
                     NetworkClient.AddPlayer();
+                    Debug.Log("bbb");
                 }
             }
         }
